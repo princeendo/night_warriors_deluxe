@@ -90,3 +90,108 @@ Hunter" and "Night Warriors" finds nothing: neither release has an entry in
 Mednafen's Saturn database (unlike the siblings, whose entries named a cart).
 Which cart each release needs, and what `ss.cart auto` gives it, is
 `EMU-004`'s experiment.
+
+## Project-Local Configuration (`EMU-002`, 2026-11-13)
+
+Mednafen never reads the user's global configuration here: every run sets
+`MEDNAFEN_HOME` to an ignored folder in this checkout.
+
+| Home | Use |
+| --- | --- |
+| `local/mednafen/` | Interactive runs (the user plays, hears the game). |
+| `local/mednafen_quiet/` | Unattended runs: `sound.volume 0`, `video.glvsync 0`, `video.blit_timesync 0`; `firmware/` is a symlink to `../mednafen/firmware`; own `sav/` and `mcs/`. |
+
+The silent home is the siblings' practice (carried preference, not yet
+confirmed for this project). Sound stays enabled at volume 0, so emulation
+timing is unchanged. Whether a volume-0 home still records sound for
+`AUD-001` is **UNKNOWN**; use the interactive home for sound captures until
+tested. The siblings found that, with vsync on, emulation stalls while the
+display sleeps; that is a **HYPOTHESIS** here.
+
+The interactive configuration is the file Mednafen 1.32.1 generated on its
+first run (`EMU-001`'s `-help`). Both homes are pinned by
+`tools/mednafen/home.py` (copied from Cyberbots, `ENV-003`, unchanged), which
+creates the quiet home from the interactive one if it is missing:
+
+```bash
+./invenv.sh python -m tools.mednafen.home
+```
+
+The tool rewrites only existing `key value` lines and fails on a key with no
+line. Mednafen saves command-line settings into the configuration on exit, so
+rerun it after any run that passed settings on the command line. Its first run
+reported `local/mednafen: no change` and `local/mednafen_quiet: sound.volume,
+video.blit_timesync, video.glvsync`; a second run reported `no change` for
+both.
+
+Pinned settings (both homes), all equal to the 1.32.1 defaults; pinning guards
+against settings saved from a command-line run:
+
+| Setting | Value | Purpose |
+| --- | --- | --- |
+| `filesys.path_firmware` | `firmware` | BIOS files below the home. |
+| `filesys.path_sav` | `sav` | Saturn backup RAM. |
+| `filesys.path_savbackup` | `b` | Backup-RAM backups. |
+| `filesys.path_state` | `mcs` | Save states. |
+| `filesys.path_snap` | `snaps` | Screenshots. |
+| `filesys.path_movie` | `mcm` | Movies. |
+| `filesys.path_pgconfig` | `pgconfig` | Per-game overrides. |
+| `filesys.path_cheat` | `cheats` | Cheats. |
+| `filesys.fname_state` | `%f.%M%X` | Stable state filenames. |
+| `filesys.fname_snap` | `%f-%p.%x` | Stable screenshot filenames. |
+| `autosave` | `0` | No implicit state at load or exit. |
+| `debugger.autostepmode` | `0` | No debugger step mode at launch. |
+| `ss.bios_jp` | `sega_101.bin` | Japanese BIOS, for the `JT` release. |
+| `ss.bios_na_eu` | `mpr-17933.bin` | North American/European BIOS, for the `U` release. |
+| `ss.bios_sanity` | `1` | BIOS sanity checks on. |
+| `ss.cart` | `auto` | Neither release is in Mednafen's database (above), so what `auto` gives them is `EMU-004`'s test. |
+| `ss.region_autodetect` | `1` | Region taken from the disc, so each release gets its own BIOS. Which BIOS each boot used is `EMU-003`'s check. |
+
+Result: with each home, `-help` reports `Base directory:` that home and
+`Loaded 7904 valid settings and 0 unknown settings` (ignored
+`local/logs/emu002-help-mednafen.log`, `emu002-help-mednafen_quiet.log`):
+
+| File | Size | SHA-256 |
+| --- | ---: | --- |
+| `local/mednafen/mednafen.cfg` | 652,752 | `48a7cf6b03224ab6fc485965ec13a0a9d657f678b3f187d3791469686ab228fc` |
+| `local/mednafen_quiet/mednafen.cfg` | 652,750 | `ef89728844860b8334411d3bbd6195b84828956c5e446744efdc9e59ea305019` |
+
+`diff` between the two shows only the three quiet settings. Both hashes equal
+Cyberbots' and XvSF's pinned files: Mednafen's generated default holds no
+host- or game-specific content. Pad bindings are not set yet (`EMU-005`).
+
+### Saturn BIOS
+
+Copied unchanged (`cp -p`, `cmp` clean) from the Cyberbots ignored
+`local/mednafen/firmware/` (itself a copy of XvSF's and MSHvSF's) into
+`local/mednafen/firmware/`. Each matches the SHA-256 that Mednafen 1.32.1's
+own `Documentation/ss.html` (from the verified archive) gives:
+
+| File | Size | SHA-256 | Mednafen use |
+| --- | ---: | --- | --- |
+| `sega_101.bin` | 524,288 | `dcfef4b99605f872b6c3b6d05c045385cdea3d1b702906a0ed930df7bcb7deac` | `ss.bios_jp` |
+| `mpr-17933.bin` | 524,288 | `96e106f740ab448cf89f0dd49dfbac7fe5391cb6bd6e14ad5e3061c13330266f` | `ss.bios_na_eu` |
+
+This project is the first sibling to need the North American BIOS for a
+boot. Whether each BIOS boots its release is `EMU-003`'s test.
+
+### Launch Commands
+
+Interactive, from the repository root:
+
+```bash
+MEDNAFEN_HOME="$PWD/local/mednafen" \
+  vendor/mednafen/build/src/mednafen \
+  "local/disc_images/vh_saturn_jp_1m/Vampire Hunter - Darkstalkers' Revenge (Japan) (1M).cue"
+```
+
+```bash
+MEDNAFEN_HOME="$PWD/local/mednafen" \
+  vendor/mednafen/build/src/mednafen \
+  "local/disc_images/nw_saturn_us/Night Warriors - Darkstalkers' Revenge (USA).cue"
+```
+
+Unattended: the same with `MEDNAFEN_HOME="$PWD/local/mednafen_quiet"`, with
+stdout and stderr redirected to a file under the ignored `local/logs/`. Stock
+Mednafen has no log-directory setting. No disc has been loaded yet; the first
+boots are `EMU-003`, run with the user present.

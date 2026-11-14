@@ -228,3 +228,25 @@ Conclusion: `EMU-001` done. Nothing was downloaded or installed.
 
 Next action: `EMU-002` (homes; both BIOS files from Cyberbots), then
 `EMU-003` cold boots with the user present.
+
+## 2026-11-13 — SESSION-0004: project-local Mednafen homes (EMU-002)
+
+Task: EMU-002
+
+User request (2026-11-13): "Yes, start EMU-002".
+
+Action: copied `sega_101.bin` and `mpr-17933.bin` (`cp -p`) from Cyberbots'
+ignored `local/mednafen/firmware/`; `cmp` clean; SHA-256 `dcfef4b9…deac` and
+`96e106f7…266f`, both equal to Mednafen 1.32.1's `Documentation/ss.html`. Ran
+`./invenv.sh python -m tools.mednafen.home` twice (first: quiet home created,
+three quiet settings set; second: no change). Ran `-help` with each home.
+
+Result: each home loads 7,904 settings, 0 unknown. `mednafen.cfg` hashes
+`48a7cf6b…28fc` (interactive) and `ef89728…5019` (quiet) equal Cyberbots' and
+XvSF's; the diff is the three quiet settings. Details and launch commands for
+both releases in `docs/mednafen.md`.
+
+Open: whether a volume-0 home still records sound (matters for `AUD-001`);
+which BIOS each release boots with (`EMU-003`).
+
+Next action: `EMU-003`, cold boots of both releases with the user present.

@@ -37,9 +37,9 @@ task repeats a sibling task, the note names it for its method only.
   files: switching editions will need a larger track 1 or smaller patches.
 - Reverse-engineering experiments in progress: none.
 - **2026-11-13: stock Mednafen 1.32.1 built** (`EMU-001`, `docs/mednafen.md`).
-- Next unblocked tasks: `EMU-002` (project-local homes and both regions'
-  BIOS), then `EMU-003` (cold boots, with the user present), on the M0 chain
-  both investigations need; offline
+- **2026-11-13: project-local homes and both BIOS files** (`EMU-002`).
+- Next unblocked tasks: `EMU-003` (cold boots of both releases, with the user
+  present), on the M0 chain both investigations need; offline
   meanwhile: `DIFF-001` (classify the 52 differing files), `ENV-007`
   (database check), `DOC-003` (reference catalog).
 - Nothing about Vampire Hunter's internals is confirmed yet.
@@ -198,20 +198,21 @@ is not already on the base disc goes on disc).
 
 ### EMU-002 - Create the project-local Mednafen configuration
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Milestone:** M0
 - **Dependencies:** EMU-001.
 - **Blockers:** None.
 - **Objective:** Run Mednafen with a configuration and BIOS path local to this checkout, never the user's global configuration.
 - **Acceptance criteria:** The launch command, base directory, BIOS identities (filename, size, SHA-256) for **both** regions, and forced settings are recorded; `tools/mednafen/home.py` pins the interactive and quiet homes.
-- **Notes:** This project needs the Japanese BIOS `sega_101.bin` (`dcfef4b9…`) and the North American `mpr-17933.bin` (`96e106f7…`); both are in Cyberbots' `local/mednafen/firmware/`. Copy them and record their hashes. Check that Mednafen picks the BIOS by the disc's area code (`JT` vs `U`) and record which it used for each boot.
+- **Notes:** This project needs the Japanese BIOS `sega_101.bin` (`dcfef4b9…`) and the North American `mpr-17933.bin` (`96e106f7…`); both are in Cyberbots' `local/mednafen/firmware/`. Copy them and record their hashes. Check that Mednafen picks the BIOS by the disc's area code (`JT` vs `U`) and record which it used for each boot (`EMU-003`).
+- **Done 2026-11-13** (`SESSION-0004`, `docs/mednafen.md`): both BIOS files copied from Cyberbots, `cmp` clean, hashes equal to Mednafen's `ss.html`; `tools.mednafen.home` created and pinned both homes (second run: no change); each home's `-help` loads 7,904 settings with 0 unknown; both `mednafen.cfg` hashes equal Cyberbots' and XvSF's. Launch commands for both releases recorded.
 
 ### EMU-003 - Boot both releases
 
-- **Status:** `BLOCKED`
+- **Status:** `READY`
 - **Milestone:** M0
 - **Dependencies:** EMU-002, ENV-006.
-- **Blockers:** EMU-002.
+- **Blockers:** None; run with the user present.
 - **Objective:** Reach the title screen from a cold boot of each untouched image.
 - **Acceptance criteria:** Three cold boots of the Japanese 1M image and three of the US image reach a stable title screen; each boot log shows `T-1202G` or `T-1208H`; source hashes match before and after; screenshots kept locally.
 - **Notes:** Use `tools/mednafen/cold_boot.py` and the quiet home. With the user present (`local_agent_guidance.md`, "Emulator Consent").
