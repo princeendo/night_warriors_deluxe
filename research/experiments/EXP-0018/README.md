@@ -151,7 +151,8 @@ FIX=(--write 0606BEBC=0605B85C --write 0603B902=D4380009 --write 0603B9E4=0605B8
    `run.json`, and its log ends in a SIGTERM; rerun unchanged, it worked.
    Cause not found.)
 8. **To do (M2):** a cold boot of version 2, one match won as Morrigan by
-   the user, with the win quote checked; then the ending forced with the
+   the user (`session.sh local/disc002/us-enhanced-session-v2`), with the
+   win quote checked; then the ending forced with the
    stage byte only from the post-KO state, and the same forcing on the
    unpatched image as control; the cast roll checked for US names.
 
