@@ -43,13 +43,14 @@ task repeats a sibling task, the note names it for its method only.
   interface (V1-V4).
 - A new regional difference turned up in the intro (`INT-01`).
 - Reverse-engineering experiments in progress: none.
-- Next unblocked tasks: `DBG-001` (validate the state extractor against
-  `EXP-0004`'s stock dumps; offline), the last M0 tool check before
-  `AUD-001` and `END-001`. Offline meanwhile: `DIFF-001` (classify the 52
+- **2026-11-14: save-state extractor validated** (`DBG-001`, `EXP-0006`,
+  D-006). The tools for both investigations are ready.
+- Next unblocked tasks: `AUD-001` (Morrigan's voices) and `END-001` (the
+  epilogue screens), the user's first investigations. Offline meanwhile: `DIFF-001` (classify the 52
   differing files), `ENV-007` (database check), `DOC-003` (reference
   catalog).
 - Confirmed about Vampire Hunter so far: only how it boots and runs in the
-  emulator (D-001 to D-005); nothing about its internals.
+  emulator and the tools (D-001 to D-006); nothing about its internals.
 
 ## Milestones
 
@@ -291,13 +292,14 @@ is not already on the base disc goes on disc).
 
 ### DBG-001 - Validate the save-state extractor on Vampire Hunter
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Milestone:** M0
 - **Dependencies:** EMU-007.
 - **Blockers:** None. Use `EXP-0004`'s dumps and same-instant states.
 - **Objective:** Extract WRAM-L, WRAM-H, VDP1 and VDP2 VRAM from states, validated byte for byte against debugger dumps of the same instant on Vampire Hunter.
 - **Acceptance criteria:** Each region matches a stock debugger dump exactly; the result goes to `docs/discoveries.md`; cart RAM and sound RAM stay `HYPOTHESIS`.
 - **Notes:** Every sibling found each stored 16-bit element byte-swapped. Re-test, do not assume. `mcs_extract` expects a 4 MiB cart section (Cyberbots' gap); size it from the state if `EMU-004` picks another cart. Sound RAM (for `AUD-001`) is not yet supported by the extractor.
+- **Done 2026-11-14** (`EXP-0006`, D-006): extraction with the `saturn` byte order equals stock debugger dumps for WRAM-L and WRAM-H (two instants) and VDP1/VDP2 VRAM (one instant) in both releases; the unswapped order differs. Cart RAM and sound RAM not covered.
 
 ## Phase D: References
 
@@ -403,20 +405,20 @@ is not already on the base disc goes on disc).
 
 ### AUD-001 - Are Morrigan's Japanese-only voices on the US disc?
 
-- **Status:** `BLOCKED`
+- **Status:** `READY`
 - **Milestone:** M1 (investigation; no image change)
 - **Dependencies:** EMU-021, DBG-001.
-- **Blockers:** EMU-021.
+- **Blockers:** None.
 - **Objective:** For each of `AUD-01` (normal throw), `AUD-02` (command throw) and `AUD-03` (bat-seat win pose), learn what each release plays, and whether the Japanese sound is on the US disc.
 - **Acceptance criteria:** Each event is reproduced in both releases from matched checkpoints (same characters, settings and inputs) with sound recorded (ignored files, hashes kept); the sound command each release issues at the event is logged (sound RAM writes or the sound driver's command queue); the register rows get a change type (**conditionally suppressed**, **asset absent**, **not a difference**, or other) with that evidence; if the Japanese sample is on the US disc, where it is and what selects it are recorded.
 - **Notes:** Static (`SESSION-0002`): every sound file (`SOUND.HED`, `SOUND.MP`, `SOUND.TBL`, `SDDRVS*.TSK`, all `*.SEQ`) and `MORRIGA.BIN`, `MORRIGA1.SEQ`, `MORRIGA2.SEQ` are byte-identical on both discs, so **HYPOTHESIS**: the samples are present on the US disc and the US code does not call them. The report is from memory (web research source 13); a "not a difference" outcome is possible. Method: Cyberbots `EXP-0088` (`-qtrecord`, sample-level comparison); the extractor does not yet cover sound RAM (`DBG-001`). Which `PL*` overlay is Morrigan's is unknown (`DIFF-001`).
 
 ### END-001 - The per-character epilogue screens
 
-- **Status:** `BLOCKED`
+- **Status:** `READY`
 - **Milestone:** M1 (investigation; no image change)
 - **Dependencies:** EMU-021, DBG-001.
-- **Blockers:** EMU-021.
+- **Blockers:** None.
 - **Objective:** Show what follows each character's ending in each release, and find what the Japanese release uses for the post-ending artwork with scrolling text and whether the US disc still holds it.
 - **Acceptance criteria:** For one character first, the whole ending sequence (main ending, artwork and text scroll, credits) is captured in both releases without skipped transitions (states kept, screenshots agent-reviewed); the epilogue's artwork and text are tied to their files and RAM; whether the US release shows the artwork, shows it without text, or skips it is recorded; whether the Japanese text (or its graphics) is on the US disc is recorded with the comparison that shows it; register rows `END-01` to `END-03` updated. A method to reach every character's ending by forcing (not playing) is recorded.
 - **Notes:** The user (2026-11-13): "Each character has a post-ending artwork accompanied by scrolling Japanese text." Static (`SESSION-0002`): the 14 `END*.BG` files (`END00`-`END0D`) and `ENDDATA.BIN` are byte-identical on both discs; `ENDING.O` is the same size with 1,668 bytes changed (`0x5506`-`0xFA4F`). **HYPOTHESIS**: `END*.BG` are the artwork (14 files, 14 characters) and the US `ENDING.O` skips or cuts the text. Japanese text could also be drawn as graphics; no plain Shift-JIS was found. English for US Enhanced is a later `GATE-TRANSLATION` question (PSP *Chronicle*, `REF-002`, or a new translation). Cyberbots forced endings with four RAM writes (`docs/lessons_from_cyberbots.md`, lesson 4).

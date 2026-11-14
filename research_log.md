@@ -418,3 +418,28 @@ Conclusion: CONFIRMED (D-005). Agent output may be used as evidence.
 
 Next action: `DBG-001` (extractor against stock dumps of the same instant,
 offline).
+
+## 2026-11-14 — EXP-0006: extractor against stock dumps (DBG-001)
+
+Task: DBG-001
+
+User requests: "Yes, start DBG-001"; then, for the video-RAM run, "Yes, run
+it now".
+
+Action: extracted WRAM-L/H from `EXP-0004`'s same-instant states (both byte
+orders) and compared with its stock dumps; one key-driven run per release
+(Cyberbots' run-H steps, freeze at 65 s) dumped all four regions with a
+same-instant state; compared both byte orders.
+
+Result: with the `saturn` order every region equals its stock dump at every
+instant in both releases; the unswapped order differs everywhere.
+
+Mistake, corrected: the first unswapped comparison named `<region>.bin`
+instead of `<region>.state-order.bin` (missing files read as "differs"), and
+a zsh loop did not split its pairs. Redone in Python; the corrected result is
+in the experiment.
+
+Conclusion: CONFIRMED (D-006). M0's tool checks are done; `AUD-001` and
+`END-001` are ready.
+
+Next action: `AUD-001` or `END-001`, in the user's order.

@@ -82,3 +82,17 @@ write breakpoints log and continue (`bpmode log`) or halt (`bpmode halt`),
 with every register in `events.log`. Agent output may be used as evidence.
 
 Reproduce: `research/experiments/EXP-0005/README.md`, "Procedure".
+
+## D-006: The save-state extractor matches stock debugger dumps on both releases (`DBG-001`, `EXP-0006`)
+
+Holds for: Japanese 1M image and US image; WRAM-L, WRAM-H, VDP1 VRAM, VDP2
+VRAM.
+
+`tools/memory/mcs_extract.py` with its default `saturn` byte order (each
+stored 16-bit element swapped) reproduces stock debugger dumps of the same
+paused instant byte for byte: WRAM-L and WRAM-H at two instants, VDP1 and
+VDP2 VRAM at one, in each release. Without the swap (`--byte-order state`)
+every region differs. These four regions extracted from states may be used
+as evidence. Cart RAM and sound RAM are not covered.
+
+Reproduce: `research/experiments/EXP-0006/README.md`, "Procedure".

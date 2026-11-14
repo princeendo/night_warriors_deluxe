@@ -1,0 +1,47 @@
+# DBG-001 run H (jp): Cyberbots run H (debugger keys one second apart), freeze at 65 s
+65 option+a
+66 F5
+67 option+d
+68 option+3
+69 window=local/dbg001/win/jp-h-editor.png
+69 period
+69 window=local/dbg001/win/jp-h-space01.png
+69 d
+69 type=00000000 000fffff research/memory_dumps/dbg001/jp-h-wraml.bin
+69 window=local/dbg001/win/jp-h-prompt01.png
+69 return
+69 period
+69 window=local/dbg001/win/jp-h-space02.png
+69 d
+69 type=00000000 000fffff research/memory_dumps/dbg001/jp-h-wramh.bin
+69 window=local/dbg001/win/jp-h-prompt02.png
+69 return
+69 period
+69 window=local/dbg001/win/jp-h-space03.png
+69 period
+69 window=local/dbg001/win/jp-h-space04.png
+69 period
+69 window=local/dbg001/win/jp-h-space05.png
+69 period
+69 window=local/dbg001/win/jp-h-space06.png
+69 period
+69 window=local/dbg001/win/jp-h-space07.png
+69 period
+69 window=local/dbg001/win/jp-h-space08.png
+69 period
+69 window=local/dbg001/win/jp-h-space09.png
+69 d
+69 type=00000000 0007ffff research/memory_dumps/dbg001/jp-h-vdp1.bin
+69 window=local/dbg001/win/jp-h-prompt09.png
+69 return
+69 period
+69 window=local/dbg001/win/jp-h-space10.png
+69 period
+69 window=local/dbg001/win/jp-h-space11.png
+69 period
+69 window=local/dbg001/win/jp-h-space12.png
+69 d
+69 type=00000000 0007ffff research/memory_dumps/dbg001/jp-h-vdp2.bin
+69 window=local/dbg001/win/jp-h-prompt12.png
+69 return
+69 window=local/dbg001/win/jp-h-done.png

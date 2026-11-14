@@ -1,0 +1,47 @@
+# DBG-001 run H (us): Cyberbots run H (debugger keys one second apart), freeze at 65 s
+65 option+a
+66 F5
+67 option+d
+68 option+3
+69 window=local/dbg001/win/us-h-editor.png
+69 period
+69 window=local/dbg001/win/us-h-space01.png
+69 d
+69 type=00000000 000fffff research/memory_dumps/dbg001/us-h-wraml.bin
+69 window=local/dbg001/win/us-h-prompt01.png
+69 return
+69 period
+69 window=local/dbg001/win/us-h-space02.png
+69 d
+69 type=00000000 000fffff research/memory_dumps/dbg001/us-h-wramh.bin
+69 window=local/dbg001/win/us-h-prompt02.png
+69 return
+69 period
+69 window=local/dbg001/win/us-h-space03.png
+69 period
+69 window=local/dbg001/win/us-h-space04.png
+69 period
+69 window=local/dbg001/win/us-h-space05.png
+69 period
+69 window=local/dbg001/win/us-h-space06.png
+69 period
+69 window=local/dbg001/win/us-h-space07.png
+69 period
+69 window=local/dbg001/win/us-h-space08.png
+69 period
+69 window=local/dbg001/win/us-h-space09.png
+69 d
+69 type=00000000 0007ffff research/memory_dumps/dbg001/us-h-vdp1.bin
+69 window=local/dbg001/win/us-h-prompt09.png
+69 return
+69 period
+69 window=local/dbg001/win/us-h-space10.png
+69 period
+69 window=local/dbg001/win/us-h-space11.png
+69 period
+69 window=local/dbg001/win/us-h-space12.png
+69 d
+69 type=00000000 0007ffff research/memory_dumps/dbg001/us-h-vdp2.bin
+69 window=local/dbg001/win/us-h-prompt12.png
+69 return
+69 window=local/dbg001/win/us-h-done.png
