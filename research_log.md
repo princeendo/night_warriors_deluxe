@@ -443,3 +443,28 @@ Conclusion: CONFIRMED (D-006). M0's tool checks are done; `AUD-001` and
 `END-001` are ready.
 
 Next action: `AUD-001` or `END-001`, in the user's order.
+
+## 2026-11-14 — EXP-0007: recorded Morrigan sessions (AUD-001)
+
+Task: AUD-001
+
+User request: "Morrigan voices first". The user asked how to do the command
+throw; looked up (StrategyWiki, Night Warriors moves): Vector Drain is a
+half-circle back + medium or heavy punch, close.
+
+Action: `EXP-0007/session.sh` ran the patched Mednafen with `-soundrecord`
+and the session recorder (a state every second, a screenshot every half
+second) for each release in turn; the user played Morrigan.
+
+Result: about 7 minutes per release (Japanese: Victor and Bishamon beaten;
+US: Victor beaten, Bishamon unfinished after the controller disconnected).
+The bat-seat win pose appears in both releases. The user: "Morrigan seemed
+to have some more dialogue in the JP version." The sound driver is Sega's
+standard `SDDRVS` Ver1.33b; `MORRIGA1.SEQ` looks like a 23-sequence bank
+(HYPOTHESIS).
+
+Mistakes: the first contact sheets used ffmpeg `drawtext`, which this build
+lacks; rebuilt without labels.
+
+Next action: replay states before the bat-seat pose (then the throws) in
+each release with sound-command logging.

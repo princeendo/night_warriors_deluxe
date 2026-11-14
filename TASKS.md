@@ -42,7 +42,8 @@ task repeats a sibling task, the note names it for its method only.
   pad, hotkey screenshots and states, stock debugger dumps, and the agent
   interface (V1-V4).
 - A new regional difference turned up in the intro (`INT-01`).
-- Reverse-engineering experiments in progress: none.
+- Reverse-engineering experiments in progress: none; `AUD-001` is
+  `IN_PROGRESS` (`EXP-0007` captured the sessions).
 - **2026-11-14: save-state extractor validated** (`DBG-001`, `EXP-0006`,
   D-006). The tools for both investigations are ready.
 - Next unblocked tasks: `AUD-001` (Morrigan's voices) and `END-001` (the
@@ -405,13 +406,14 @@ is not already on the base disc goes on disc).
 
 ### AUD-001 - Are Morrigan's Japanese-only voices on the US disc?
 
-- **Status:** `READY`
+- **Status:** `IN_PROGRESS`
 - **Milestone:** M1 (investigation; no image change)
 - **Dependencies:** EMU-021, DBG-001.
 - **Blockers:** None.
 - **Objective:** For each of `AUD-01` (normal throw), `AUD-02` (command throw) and `AUD-03` (bat-seat win pose), learn what each release plays, and whether the Japanese sound is on the US disc.
 - **Acceptance criteria:** Each event is reproduced in both releases from matched checkpoints (same characters, settings and inputs) with sound recorded (ignored files, hashes kept); the sound command each release issues at the event is logged (sound RAM writes or the sound driver's command queue); the register rows get a change type (**conditionally suppressed**, **asset absent**, **not a difference**, or other) with that evidence; if the Japanese sample is on the US disc, where it is and what selects it are recorded.
 - **Notes:** Static (`SESSION-0002`): every sound file (`SOUND.HED`, `SOUND.MP`, `SOUND.TBL`, `SDDRVS*.TSK`, all `*.SEQ`) and `MORRIGA.BIN`, `MORRIGA1.SEQ`, `MORRIGA2.SEQ` are byte-identical on both discs, so **HYPOTHESIS**: the samples are present on the US disc and the US code does not call them. The report is from memory (web research source 13); a "not a difference" outcome is possible. Method: Cyberbots `EXP-0088` (`-qtrecord`, sample-level comparison); the extractor does not yet cover sound RAM (`DBG-001`). Which `PL*` overlay is Morrigan's is unknown (`DIFF-001`).
+- **Progress 2026-11-14:** `EXP-0007` recorded one Morrigan session per release (sound, a state every second, screenshots); the bat-seat pose occurs in both releases; the user heard "some more dialogue" in the Japanese one. Next: replay states before each event with sound-command logging.
 
 ### END-001 - The per-character epilogue screens
 

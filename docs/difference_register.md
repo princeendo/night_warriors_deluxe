@@ -41,7 +41,7 @@ difference**.
 | QUO-01 | Victory quotes | Inventories and selection differ (arcade lead; English has health and mirror conditions). | — | — | — | — | UNKNOWN | `QUO-001` |
 | AUD-01 | Morrigan normal throw | Extra JP voice sample (Saturn report, from memory). | — (report from memory) | Sound files, `MORRIGA.BIN` and `MORRIGA*.SEQ` byte-identical on both discs (static) | — | — | UNKNOWN | `AUD-001` |
 | AUD-02 | Morrigan command throw | Extra JP voice sample (same report). | — (report from memory) | Sound files, `MORRIGA.BIN` and `MORRIGA*.SEQ` byte-identical on both discs (static) | — | — | UNKNOWN | `AUD-001` |
-| AUD-03 | Morrigan bat-seat win pose | Full JP spoken line (same report). | — (report from memory) | Sound files, `MORRIGA.BIN` and `MORRIGA*.SEQ` byte-identical on both discs (static) | — | — | UNKNOWN | `AUD-001` |
+| AUD-03 | Morrigan bat-seat win pose | Full JP spoken line (same report). | Pose seen (`EXP-0007`, vs. Bishamon round 3); the user heard "some more dialogue" in the Japanese session | Pose seen (`EXP-0007`, vs. Victor round 3); same files as AUD-01 | — | — | UNKNOWN | `AUD-001` |
 | AUD-04 | Donovan victory audio | Extra JP victory sounds (arcade lead). | — | as AUD-01 | — | — | UNKNOWN | `AUD-001` |
 | ANI-01 | Sasquatch victories | JP pose/sound differences (arcade lead); a US Saturn guide documents a hidden pose. | — | — | — | — | UNKNOWN | `AUD-001` |
 | BIO-01 | Manual biographies | US manual has character stories; JP/US booklet comparison outstanding. | — | — | — | — | UNKNOWN (off-disc) | `REF-003` |
