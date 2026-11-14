@@ -545,3 +545,25 @@ each release's names.
 
 Next action: find where the Japanese epilogue text comes from and whether
 the US disc holds it.
+
+## 2026-11-14 — EXP-0011: the epilogue text's source (END-001)
+
+Task: END-001
+
+User request: "Yes, check the disc".
+
+Action and dead ends: no Shift-JIS on either disc. Diffing VDP1/VDP2 VRAM
+between the releases was too noisy (art at different positions). Searching
+for runs of font codes matched graphics everywhere (codes are small
+numbers). What worked: `MOJI.CHR` (a 1,026-glyph 16x16 font) sits in VDP1
+VRAM in both releases; the Japanese epilogue frame draws 213 glyph sprites,
+the US one none; the first row's codes, looked up in `MOJI.TBL`, occur once
+in Japanese RAM and once on each disc, in `ST1JPN.BIN` at `0xE20`.
+
+Result: `ST1JPN.BIN` (identical on both discs) is loaded only by the Japanese
+release at the ending; the US release loads `ST2USA.BIN` (English ending
+dialogue) and no `ST1` file. The epilogue text is on the US disc (D-011).
+`ST1USA.BIN` is not English text; its purpose is open.
+
+Next action: the other 13 endings, then the code that chooses the text
+files.

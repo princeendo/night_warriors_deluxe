@@ -35,7 +35,7 @@ difference**.
 | NAM-02 | Fighter names | Gallon/Jon Talbain, Zabel Zarock/Lord Raptor, Aulbath/Rikuo, Phobos/Huitzil, Lei-Lei/Hsien-Ko. | Cast roll: GALLON (`EXP-0010`) | Cast roll: JON TALBAIN, HSIEN-KO (`EXP-0010`); file names keep the JP names | renamed | — | CONFIRMED in the cast roll | `REF-004`, `LOC-001` |
 | NAM-03 | Supporting name | Anita is Amanda in the Western localization. | — | — | — | — | UNKNOWN | `REF-004` |
 | NAM-04 | Supporting name | Lin-Lin/Mei-Ling: only a lead for later games. | — | — | — | — | UNKNOWN | `REF-004` |
-| END-01 | Post-ending epilogue | JP epilogue text over the scrolling character art is absent from export; the art scroll remains. | Morrigan: epilogue paragraph over her scrolling art (`EXP-0010`) | Morrigan: the same art scrolls at the same time, no text; whether the text is on the disc is UNKNOWN | omitted (presentation) | PSP gallery (to verify) | CONFIRMED for Morrigan (D-010); 13 characters open | `END-001` |
+| END-01 | Post-ending epilogue | JP epilogue text over the scrolling character art is absent from export; the art scroll remains. | Morrigan: epilogue paragraph over her art (`EXP-0010`), from `ST1JPN.BIN` in `MOJI` codes (`EXP-0011`) | Morrigan: same art, no text; `ST1JPN.BIN` and the font are on the disc (identical) and the font is loaded, but no `ST1` file is (`EXP-0011`) | conditionally suppressed | PSP gallery (to verify) or new translation | CONFIRMED for Morrigan (D-010, D-011); 13 characters open | `END-001` |
 | END-02 | Main endings | Rewritten, different page counts (arcade lead). | — | — | — | — | UNKNOWN | `END-001` |
 | END-03 | Pyron's ending | English: consuming Earth; JP: collecting planets (reported). | — | — | — | — | UNKNOWN | `END-001` |
 | QUO-01 | Victory quotes | Inventories and selection differ (arcade lead; English has health and mirror conditions). | — | — | — | — | UNKNOWN | `QUO-001` |
@@ -64,6 +64,6 @@ From `references/saturn_us/README.md` (2026-11-13). Both discs hold the same
 | FILE-05 | `P00.BIN`, `P03_.BIN`, `P03_.SPR` | 1,179 and 46 bytes differ; `P03_.SPR` +288 bytes | UNKNOWN | UNKNOWN | `DIFF-001` |
 | FILE-06 | `PL01`-`PL14` `.O`/`.O2` | 28 files; same size except `PL08` (-60) and `PL09` (+16) | UNKNOWN; per-character by count (14) | UNKNOWN | `DIFF-001` |
 | FILE-07 | `SOBJ01`-`SOBJ12.O3` | same sizes, 55-215 bytes each | UNKNOWN | UNKNOWN | `DIFF-001` |
-| FILE-08 | `ST1USA.BIN`, `ST2USA.BIN` | same sizes; 116 and 8,073 bytes differ; their `JPN` and `HIS` siblings are identical | UNKNOWN | UNKNOWN | `DIFF-001`, `DIFF-002` |
+| FILE-08 | `ST1USA.BIN`, `ST2USA.BIN` | same sizes; 116 and 8,073 bytes differ; their `JPN` and `HIS` siblings are identical | `ST1JPN.BIN`: Japanese epilogue text (D-011); `ST2JPN`/`ST2USA`: main-ending dialogue per language (`EXP-0011`); `ST1USA`/`ST1HIS`/`ST2HIS`: not loaded at the ending, purpose UNKNOWN; `ST1USA` is not English text | UNKNOWN | `DIFF-001`, `DIFF-002` |
 | FILE-09 | `VH_ABS.TXT`, `VH_BIB.TXT`, `VH_CPY.TXT` | emptied on the US disc | ISO descriptive files, presumably never shown in game | UNKNOWN | `DIFF-001` |
 | FILE-10 | Track 2 | JP: about 18 s of audio; US: silence | UNKNOWN (probably the CD-player warning) | UNKNOWN | `DIFF-001` |

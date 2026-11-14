@@ -147,3 +147,18 @@ the artwork with no text. Change type: omitted (presentation). Whether the
 text is on the US disc is not yet known.
 
 Reproduce: `research/experiments/EXP-0010/README.md`, "Procedure", step 3.
+
+## D-011: The Japanese epilogue text is on the US disc in `ST1JPN.BIN` and is never loaded there (`END-001`, `EXP-0011`)
+
+Holds for: Japanese 1M image and US image; traced for Morrigan's epilogue.
+
+The epilogue paragraph is stored in `ST1JPN.BIN` as big-endian 16-bit
+character codes listed in `MOJI.TBL`, and drawn as 16x16 VDP1 sprites from
+the 1,026-glyph font `MOJI.CHR` (loaded at VDP1 VRAM `0x24B98`). The
+Japanese release loads `ST1JPN.BIN` into WRAM-H at `0x060C9C00` (with
+`ST2JPN.BIN`) for the ending. The US release loads `MOJI.CHR` and `MOJI.TBL`
+too but, at the ending, only `ST2USA.BIN` (its English main-ending text) and
+no `ST1` file. `ST1JPN.BIN`, `MOJI.CHR` and `MOJI.TBL` are byte-identical on
+both discs. Change type: conditionally suppressed (asset present).
+
+Reproduce: `research/experiments/EXP-0011/README.md`.
