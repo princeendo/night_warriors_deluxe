@@ -211,3 +211,20 @@ the same replay plays no such line. Morrigan's code (`PL05.O`, at
 when the flag is 0. The flag is therefore not only the epilogue switch.
 
 Reproduce: `research/experiments/EXP-0014/README.md`, "Procedure" step 3.
+
+## D-015: The flag is a region switch; it also selects the characters' names (`DISC-002`, `EXP-0015`)
+
+Holds for: US image; Morrigan's ending from state `f00011016`; static tables
+in both `MAIN.BIN` files.
+
+With the flag `0x0608089A` cleared at Morrigan's winning KO and the language
+byte left at English, the US cast roll names the second character GALLON;
+the unpatched US release names it JON TALBAIN. Both `MAIN.BIN` files hold
+two 14-entry name-graphic tables (Japanese `0x3829`-`0x3836`; US the same
+except `0x3837`-`0x383B` for characters 2, 4, 9, 11, 13), two sets of name
+positions, and two sets of fight-display name tiles, each chosen by this
+flag; the flag also selects the MODE SELECT graphics and text spacing rules
+(code reading, `EXP-0015`). Clearing it therefore turns the US release's
+names back to the Japanese ones.
+
+Reproduce: `research/experiments/EXP-0015/README.md`, "Procedure" step 4.

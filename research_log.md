@@ -651,3 +651,26 @@ runs (not tested whether random).
 
 Next action: decide with the user whether to map the `MAIN.BIN` table
 readers before the one-byte patch, or patch first and compare screens.
+
+## 2026-11-14 — EXP-0015: mapping the region flag's readers (DISC-002)
+
+User request: "Map them first".
+
+Action: PC census (`EXP-0015/pc_census.py`) of the 21 US `MAIN.BIN`
+readers from power-on (7,200 frames) and over the 411 US session states (60
+frames each, 7 min 42 s); named each screen from the session screenshots.
+Read every reader and compared its table pair: name graphics, name
+positions, fight-display name tiles (US entries differ for characters 2, 4,
+9, 11, 13: the renamed five), MODE SELECT graphics, Japanese punctuation
+spacing, US glyph substitutions, ending script tables, a pause check, three
+readers that act only on value 4. All checked tables are also in the
+Japanese `MAIN.BIN`. Continued the `EXP-0012` flag-cleared ending to the
+credits: the cast roll shows GALLON where the unpatched US run shows JON
+TALBAIN (D-015).
+
+Commands: `ruff check`/`format` on `EXP-0015/` pass.
+
+Not tested: the win, loading, fight and MODE SELECT screens with the flag
+cleared (no renamed character in the session); the pause check; `PL10`.
+
+Next action: `DISC-002`, a patch that opens only the Japanese-only branches.
