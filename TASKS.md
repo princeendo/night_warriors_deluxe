@@ -74,7 +74,11 @@ task repeats a sibling task, the note names it for its method only.
   ARCADE/VS in the US release (SUPPORTED by code, `EXP-0017`). Every reader
   of the flag is now classified; the agent's RAM writes bypass the emulated
   SH-2 cache (check that a write was read before trusting it).
-- Next: `DISC-002`, opening only those branches from a rebuilt US image.
+- **2026-11-14 (`DISC-002`, `EXP-0018`):** the first patched image's cold
+  boot turned the win quote Japanese (the `ST1` name array is shared with the
+  win screens). Version 2 loads `ST1JPN.BIN` only from the ending's own
+  call; rehearsed correctly, its cold boot is next.
+- Next: `DISC-002`, a cold boot of version 2 with a won match (needs the user).
   Still open in `END-001`: the other 13 endings, the stray glyph strip on the
   emblem card.
 
@@ -490,6 +494,7 @@ is not already on the base disc goes on disc).
 - **Acceptance criteria:** A same-size, in-place patch (`tools/disc/patch_image.py`, EDC/ECC regenerated) written to `build/`, every changed byte recorded; a cold boot of the patched image; Morrigan's ending forced as in D-009 (stage byte only) shows the Japanese epilogue after the English main ending; the unpatched image under the same forcing shows none (control); what else the cleared flag changes is checked on the screens the flag's other readers serve, or listed as open.
 - **Notes:** Clearing the flag on disc is **not** the US Enhanced patch: it also restores the Japanese names, MODE SELECT graphics and text spacing (`EXP-0015`, D-015). The Japanese-only items are separate branches: the ST1 gate (`0x0603B902`), two `ENDING.O` tests, four in `PL05` (Morrigan), two in `PL14` (Donovan?); a patch can open those alone (e.g. make each test take the JP branch). Keeping the flag at 2 also keeps the US auto-pause when a controller is missing (`EXP-0016`, D-016). Clearing the flag is one byte (`MAIN.BIN` `0x11B`, `02` → `00`). The ST1 name array's USA entry and the language switch after the main ending (D-012) are not one-byte constants: the language byte is read per line by the main-ending renderer, so the epilogue needs either its own language test changed or the USA name entry pointed at `ST1JPN` plus a renderer change. That design is this task's first experiment.
 - **Progress 2026-11-14 (`EXP-0018`):** patched image built (`build/us_enhanced_epilogue/`, five byte changes, flag and language untouched: the ST1 gate, the US ST1 name, `ST1JPN.BIN`'s slot header, two `ENDING.O` branches). Rehearsal from the old won-KO state shows the English ending, then the Japanese epilogue, then the credits. Remaining: a cold boot and a won KO played on the patched image (needs the user), then the stage-byte forcing and an unpatched control.
+- **Progress 2026-11-14 (`EXP-0018`, cold boot 1):** the cold boot of version 1 failed: the user's won match showed Morrigan's win quote in **Japanese**. The `ST1` name array also serves the win screens (`ST1USA.BIN` is the US win-quote file). Version 2 leaves the array alone and makes only the ending's call load `ST1JPN.BIN` (15 bytes in all; Track 1 `93ca264c…`). Rehearsed: English win quote; forced ending shows the English ending, then the Japanese epilogue, then CAST. Remaining: a cold boot of version 2 with a won match (needs the user), then the forcing, the unpatched control and the cast-roll names.
 
 ## Gates
 

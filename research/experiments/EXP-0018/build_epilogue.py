@@ -3,7 +3,7 @@
     ./invenv.sh python research/experiments/EXP-0018/build_epilogue.py [OUT_DIR]
 
 Reads MAIN.BIN, ENDING.O and ST1JPN.BIN from the untouched US data track,
-checks the original bytes at each site, applies the five changes in PATCHES
+checks the original bytes at each site, applies the changes in PATCHES
 (the region flag stays 2, so names, menus and US-only behaviour are kept),
 and writes the image with ``tools.disc.patch_image`` (same-size in-place
 replacement, EDC/ECC regenerated). OUT_DIR defaults to
@@ -26,6 +26,24 @@ MANIFEST = Path("references/saturn_us/README.md")
 
 # (file, file offset, original, modified, RAM address, purpose)
 PATCHES = [
+    # The ending's ST1 call loads ST1JPN.BIN by name. The shared name array is
+    # left alone: the win screens load ST1USA.BIN (English win quotes) through it.
+    (
+        "MAIN.BIN",
+        0x29902,
+        "D338",
+        "D438",
+        0x0603B902,
+        "mov.l @(0x0603B9E4),r3 -> r4: r4 = the literal (now the ST1JPN.BIN name)",
+    ),
+    (
+        "MAIN.BIN",
+        0x29904,
+        "6030",
+        "0009",
+        0x0603B904,
+        "mov.b @r3,r0 (the flag read) -> nop",
+    ),
     (
         "MAIN.BIN",
         0x29908,
@@ -36,11 +54,19 @@ PATCHES = [
     ),
     (
         "MAIN.BIN",
-        0x59EBF,
-        "5C",
-        "50",
-        0x0606BEBF,
-        "ST1 name array, US entry: 'ST1USA.BIN' -> 'ST1JPN.BIN' (0x0605B850)",
+        0x299E4,
+        "0608089A",
+        "0605B850",
+        0x0603B9E4,
+        "literal, used only at 0x0603B902: region flag address -> ST1JPN.BIN name",
+    ),
+    (
+        "MAIN.BIN",
+        0x299E8,
+        "0603790E",
+        "06013DF8",
+        0x0603B9E8,
+        "literal, used only at 0x0603B90A: language-indexed ST1 loader -> file loader",
     ),
     (
         "ST1JPN.BIN",

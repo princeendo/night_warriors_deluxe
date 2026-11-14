@@ -739,3 +739,25 @@ corrected `EXP-0016`.
 Next action: the user plays one match as Morrigan on the patched image
 (`EXP-0018/session.sh`); then force the ending and compare with the
 unpatched image.
+
+## 2026-11-14 — EXP-0018: cold boot of version 1 fails; version 2 (DISC-002)
+
+User request: "Yes, start it" (one match as Morrigan on the patched image).
+
+Result: the user won 2-0 vs. Sasquatch from power-on; the win-quote screen
+showed Morrigan's **Japanese** win quote. DISPROVEN: "`ST1USA.BIN` is only a
+placeholder and the `ST1` name array is used only by the ending" (EXP-0012,
+EXP-0018 version 1). The array is read by the `ST1` loader `0x0603790E`,
+which `MAIN.BIN` also calls from `0x06014208` and `0x0601E16C` with no flag
+test; `ST1USA.BIN` is the US win-quote file (SUPPORTED).
+
+Action: version 2 leaves the array alone and makes the ending's call load
+`ST1JPN.BIN` directly (two single-use literals and two instructions at
+`0x0603B902`-`0x0603B9E8`; see EXP-0018). Rebuilt (Track 1 `93ca264c…`), 15
+bytes differ, sectors valid. Rehearsed from the session's bonus-screen state
+with version 2's code in RAM: English win quote; forced ending shows the
+English ending, then the Japanese epilogue, then CAST.
+
+Next action: a cold boot of version 2 with one match won as Morrigan
+(`EXP-0018/session.sh`, same path), then the forcing and the unpatched
+control.
