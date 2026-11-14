@@ -58,6 +58,9 @@ def main() -> int:
     parser.add_argument("--steps", type=int, default=120)
     parser.add_argument("--step-frames", type=int, default=30)
     parser.add_argument("--wav", action="store_true")
+    parser.add_argument(
+        "--halt-pc", help="stop at the first hit, e.g. 06038166-06038166"
+    )
     args = parser.parse_args()
     out: Path = args.out
     (out / "shots").mkdir(parents=True, exist_ok=False)
@@ -100,11 +103,25 @@ def main() -> int:
                 agent.write("workramh", offset, data)
             first = int(agent.status()["frame"])
             record["start_frame"] = first
+            if args.halt_pc:
+                agent.bpmode("halt")
+                agent.breakpoints("pc", [args.halt_pc])
             for step in range(args.steps):
                 agent.frames(args.step_frames)
                 status = agent.wait_halted(30.0)
                 rel = int(status["frame"]) - first
                 agent.screenshot(out / "shots" / f"r{rel:06d}.png")
+                if args.halt_pc and int(status["hits"]) > 0:
+                    # Halted on the PC breakpoint, not on the frame count.
+                    regs = agent.regs()
+                    sp = regs["R15"] - 0x06000000
+                    record["halt"] = {
+                        "frame": rel,
+                        "regs": {k: f"{v:08X}" for k, v in regs.items()},
+                        "stack": agent.read("workramh", sp, 64).hex(),
+                        "events": agent.events()[-3:],
+                    }
+                    break
                 if step % 10 == 9:
                     agent.run()
                     for _ in range(20):  # the halt clears on the next frame

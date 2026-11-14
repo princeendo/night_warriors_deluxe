@@ -567,3 +567,28 @@ dialogue) and no `ST1` file. The epilogue text is on the US disc (D-011).
 
 Next action: the other 13 endings, then the code that chooses the text
 files.
+
+## 2026-11-14 — EXP-0012: the epilogue switch (END-001)
+
+Task: END-001
+
+User request: "Find the switch".
+
+Action: found the `ST1`/`ST2` name tables and pointer arrays in `MAIN.BIN`,
+the ST1 loader (language byte × 4 into the array) and, with a PC breakpoint
+in a forced Japanese ending, its caller: it skips the loader when a flag
+byte is non-zero. Read both bytes in every state: Japanese 0/0, US 1
+(language) and 2 (flag).
+
+Tests in US RAM, one change at a time: language 0 mid-ending stalls the
+English dialogue (dead end); language 0 at the emblem does nothing (no file
+loaded); language 0 from the KO gives the Japanese main ending but still no
+epilogue; flag 0 loads `ST1USA.BIN`, drawn as rows of "A" (placeholder);
+flag 0 plus the USA array entry pointed at `ST1JPN` loads it but draws no
+text in English mode; then language 0 from the emblem card shows the
+Japanese epilogue after the English main ending (D-012).
+
+Note: this is the M1 outcome reached inside `END-001` before the formal
+`GATE-M0` GO; flagged to the user.
+
+Next action: where the bytes are set; other endings; English epilogue format.

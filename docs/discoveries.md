@@ -162,3 +162,23 @@ no `ST1` file. `ST1JPN.BIN`, `MOJI.CHR` and `MOJI.TBL` are byte-identical on
 both discs. Change type: conditionally suppressed (asset present).
 
 Reproduce: `research/experiments/EXP-0011/README.md`.
+
+## D-012: The epilogue is switched off in the US release by two data bytes (`END-001`, `EXP-0012`)
+
+Holds for: Japanese 1M image and US image; tested on Morrigan's ending.
+
+Both releases run the same ending code (addresses differ). At the start of
+an ending, if the byte at `0x060808EA` (Japanese; US `0x0608089A`) is 0, the
+game loads an `ST1` epilogue file whose name is chosen by the language byte
+at `0x060808D2` (Japanese; US `0x06080882`): 0 `ST1JPN.BIN`, 1 `ST1USA.BIN`,
+2 `ST1HIS.BIN`. The same language byte chooses `ST2JPN`/`ST2USA` for the main
+ending and how its text and the epilogue text are drawn. The Japanese
+release has flag 0 and language 0; the US release has flag 2 and language
+1, so it never loads an epilogue file. In US RAM, clearing the flag, pointing
+the ST1 name array's USA entry (`0x0606BEBC`) at `ST1JPN.BIN`, and setting
+the language to 0 only after the main ending shows the English main ending
+followed by the Japanese epilogue. With the flag cleared and nothing else,
+the US release loads `ST1USA.BIN`, which draws as rows of "A" (a
+placeholder).
+
+Reproduce: `research/experiments/EXP-0012/README.md`, "Reproduction".
