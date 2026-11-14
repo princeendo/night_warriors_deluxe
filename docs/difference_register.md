@@ -32,10 +32,10 @@ difference**.
 | ID | Area | Lead (from the web research) | JP evidence | US evidence | Change type | English donor | Status | Task |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | NAM-01 | Title | Vampire Hunter becomes Night Warriors; subtitle kept. | Header `VAMPIRE HUNTER`; title screen `VAMPIRE HUNTER` / `Darkstalkers' Revenge` (`EXP-0001`) | Header `NIGHT WARRIORS`; title screen `NIGHT WARRIORS` / `Darkstalkers' Revenge`; ISO volume ID still `VAMPIRE_HUNTER` | renamed | — | CONFIRMED on the title screen | `REF-004` |
-| NAM-02 | Fighter names | Gallon/Jon Talbain, Zabel Zarock/Lord Raptor, Aulbath/Rikuo, Phobos/Huitzil, Lei-Lei/Hsien-Ko. | — | File names keep the JP names on both discs | — | — | UNKNOWN | `REF-004`, `LOC-001` |
+| NAM-02 | Fighter names | Gallon/Jon Talbain, Zabel Zarock/Lord Raptor, Aulbath/Rikuo, Phobos/Huitzil, Lei-Lei/Hsien-Ko. | Cast roll: GALLON (`EXP-0010`) | Cast roll: JON TALBAIN, HSIEN-KO (`EXP-0010`); file names keep the JP names | renamed | — | CONFIRMED in the cast roll | `REF-004`, `LOC-001` |
 | NAM-03 | Supporting name | Anita is Amanda in the Western localization. | — | — | — | — | UNKNOWN | `REF-004` |
 | NAM-04 | Supporting name | Lin-Lin/Mei-Ling: only a lead for later games. | — | — | — | — | UNKNOWN | `REF-004` |
-| END-01 | Post-ending epilogue | JP epilogue text over the scrolling character art is absent from export; the art scroll remains. | The user: post-ending artwork with scrolling Japanese text, per character (2026-11-13) | 14 `END*.BG` and `ENDDATA.BIN` byte-identical on both discs; `ENDING.O` differs in 1,668 bytes (static) | — | PSP gallery (to verify) | UNKNOWN | `END-001` |
+| END-01 | Post-ending epilogue | JP epilogue text over the scrolling character art is absent from export; the art scroll remains. | Morrigan: epilogue paragraph over her scrolling art (`EXP-0010`) | Morrigan: the same art scrolls at the same time, no text; whether the text is on the disc is UNKNOWN | omitted (presentation) | PSP gallery (to verify) | CONFIRMED for Morrigan (D-010); 13 characters open | `END-001` |
 | END-02 | Main endings | Rewritten, different page counts (arcade lead). | — | — | — | — | UNKNOWN | `END-001` |
 | END-03 | Pyron's ending | English: consuming Earth; JP: collecting planets (reported). | — | — | — | — | UNKNOWN | `END-001` |
 | QUO-01 | Victory quotes | Inventories and selection differ (arcade lead; English has health and mirror conditions). | — | — | — | — | UNKNOWN | `QUO-001` |

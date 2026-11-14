@@ -520,3 +520,28 @@ recording; the control occurs in both. A US throw is visible at frames
 
 Next action: find what selects each sample, or switch to `END-001` as the
 user prefers.
+
+## 2026-11-14 — EXP-0010: forcing Morrigan's ending (END-001)
+
+Task: END-001
+
+User request: "Switch to epilogues".
+
+Static first: the `ENDING.O` differences are 1-2 byte changes with
+recurring deltas (−0x50 and others): relocated addresses, not new content
+(HYPOTHESIS). `ENDDATA.BIN` starts with an ID/offset table.
+
+Action: found the stage byte by comparing WRAM-H of stage-1 and stage-2
+states (`0x0608097B` JP, `0x0608092B` US; the same layout `0x50` apart).
+Found the fighters' vitality (max 144). Dead end: zeroing the opponent's
+vitality before the KO does not KO him (a KO is checked on a hit), and the
+input-free replay let Bishamon win. Working method: from the state just
+after the won KO, write 9 to the stage byte; the ending plays (D-009).
+
+Result: Morrigan's ending in both releases, frame-matched. The Japanese
+release shows an epilogue paragraph over her scrolling artwork; the US
+release scrolls the same artwork with no text (D-010). The cast roll uses
+each release's names.
+
+Next action: find where the Japanese epilogue text comes from and whether
+the US disc holds it.

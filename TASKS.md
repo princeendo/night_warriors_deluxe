@@ -42,8 +42,9 @@ task repeats a sibling task, the note names it for its method only.
   pad, hotkey screenshots and states, stock debugger dumps, and the agent
   interface (V1-V4).
 - A new regional difference turned up in the intro (`INT-01`).
-- Reverse-engineering experiments in progress: none; `AUD-001` is
-  `IN_PROGRESS` (`EXP-0007` captured the sessions).
+- Reverse-engineering experiments in progress: none. `AUD-001` (Morrigan's
+  voices: D-007, D-008) and `END-001` (Morrigan's epilogue: D-010) are
+  `IN_PROGRESS`.
 - **2026-11-14: save-state extractor validated** (`DBG-001`, `EXP-0006`,
   D-006). The tools for both investigations are ready.
 - Next unblocked tasks: `AUD-001` (Morrigan's voices) and `END-001` (the
@@ -419,13 +420,14 @@ is not already on the base disc goes on disc).
 
 ### END-001 - The per-character epilogue screens
 
-- **Status:** `READY`
+- **Status:** `IN_PROGRESS`
 - **Milestone:** M1 (investigation; no image change)
 - **Dependencies:** EMU-021, DBG-001.
 - **Blockers:** None.
 - **Objective:** Show what follows each character's ending in each release, and find what the Japanese release uses for the post-ending artwork with scrolling text and whether the US disc still holds it.
 - **Acceptance criteria:** For one character first, the whole ending sequence (main ending, artwork and text scroll, credits) is captured in both releases without skipped transitions (states kept, screenshots agent-reviewed); the epilogue's artwork and text are tied to their files and RAM; whether the US release shows the artwork, shows it without text, or skips it is recorded; whether the Japanese text (or its graphics) is on the US disc is recorded with the comparison that shows it; register rows `END-01` to `END-03` updated. A method to reach every character's ending by forcing (not playing) is recorded.
 - **Notes:** The user (2026-11-13): "Each character has a post-ending artwork accompanied by scrolling Japanese text." Static (`SESSION-0002`): the 14 `END*.BG` files (`END00`-`END0D`) and `ENDDATA.BIN` are byte-identical on both discs; `ENDING.O` is the same size with 1,668 bytes changed (`0x5506`-`0xFA4F`). **HYPOTHESIS**: `END*.BG` are the artwork (14 files, 14 characters) and the US `ENDING.O` skips or cuts the text. Japanese text could also be drawn as graphics; no plain Shift-JIS was found. English for US Enhanced is a later `GATE-TRANSLATION` question (PSP *Chronicle*, `REF-002`, or a new translation). Cyberbots forced endings with four RAM writes (`docs/lessons_from_cyberbots.md`, lesson 4).
+- **Progress 2026-11-14 (`EXP-0010`, D-009, D-010):** endings are forced by writing 9 to the stage byte (`0x0608097B` JP, `0x0608092B` US) right after a won KO. Morrigan's ending: the Japanese release shows an epilogue paragraph over her scrolling art; the US release scrolls the same art with no text. Next: where the Japanese text comes from (RAM, then file) and whether the US disc holds it; then the other 13 characters (each needs a won-KO state for that character).
 
 ### EDITION-001 - Design the edition switch
 

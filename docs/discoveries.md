@@ -123,3 +123,27 @@ The sample is on both discs (identical files) and loaded at the same address
 (D-007). Change type: conditionally suppressed.
 
 Reproduce: `research/experiments/EXP-0009/README.md`, "Procedure".
+
+## D-009: The stage byte, and forcing an ending (`END-001`, `EXP-0010`)
+
+Holds for: Japanese 1M image (`0x0608097B`) and US image (`0x0608092B`).
+
+During arcade mode, WRAM-H `0x0608097B` (Japanese) / `0x0608092B` (US) holds
+the 0-based stage number (0 at the first opponent, 1 at the second). Writing
+9 into it just after a won KO makes the game play the player character's
+ending instead of another fight. The work variables around it are laid out
+alike in both releases, `0x50` lower in the US release.
+
+Reproduce: `research/experiments/EXP-0010/README.md`, "Procedure", step 3.
+
+## D-010: Morrigan's epilogue text is shown in the Japanese release only (`END-001`, `EXP-0010`)
+
+Holds for: Japanese 1M image and US image; Morrigan's ending.
+
+After the main ending and an emblem card, both releases scroll Morrigan's
+full-length artwork up the screen at the same time. The Japanese release
+shows a paragraph of Japanese epilogue text over it; the US release shows
+the artwork with no text. Change type: omitted (presentation). Whether the
+text is on the US disc is not yet known.
+
+Reproduce: `research/experiments/EXP-0010/README.md`, "Procedure", step 3.
