@@ -712,3 +712,30 @@ send without a new mapping and a focus-taking key press. Read
 cache, which explains `EXP-0016`'s failed write.
 
 Next action: `DISC-002`.
+
+## 2026-11-14 — EXP-0018: the epilogue from a patched US image (DISC-002)
+
+User request: "Yes, build it".
+
+Scope: the epilogue only (`END-01`, the first difference class); Morrigan's
+voices are a second class (`AGENTS.md` rule 23) and wait for their own task.
+
+Action: found why D-012 needed the language switch: text files declare their
+own slot; `ST1JPN.BIN` declares the JP slot while the English-mode epilogue
+routine (shared with win quotes) reads the US slot. Read the two `ENDING.O`
+flag tests (card sequence; epilogue length `0x564` vs `0x384`). Built
+`build/us_enhanced_epilogue/` with five byte changes
+(`EXP-0018/build_epilogue.py`); verified only those bytes differ and all
+209,924 sectors pass EDC/ECC. Rehearsal (old state + two RAM writes for the
+`MAIN.BIN` changes): English ending, then the Japanese epilogue, then the
+credits, language byte 1 throughout.
+
+Fault found: Mednafen persisted `ss.input.port1 none` from `EXP-0016` into the
+quiet config; the first rehearsal paused and the `EXP-0016` Japanese pad
+control had no pad. Restored the config; `force.py` now restores it after each
+run; reran the Japanese control (identical to the port-1-empty run);
+corrected `EXP-0016`.
+
+Next action: the user plays one match as Morrigan on the patched image
+(`EXP-0018/session.sh`); then force the ending and compare with the
+unpatched image.

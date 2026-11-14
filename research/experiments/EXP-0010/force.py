@@ -5,7 +5,7 @@ Run from the repository root:
     ./invenv.sh python research/experiments/EXP-0010/force.py {jp,us} STATE OUT_DIR \
         [--write 0608097B=09 ...] [--steps 120] [--step-frames 30] [--wav]
         [--onhit 0601D4A2:06076ABE=00 ...] [--log-pc 0601D4EC ...]
-        [--setting ss.input.port1=none ...]
+        [--setting ss.input.port1=none ...] [--image build/.../x.cue]
 
 Launches the patched Mednafen (D-005) in the quiet home, loads STATE, pauses,
 applies each ``--write ADDRESS=HEXBYTES`` to WRAM-H (address 0x06000000-
@@ -69,6 +69,7 @@ def main() -> int:
     parser.add_argument("--onhit", action="append", default=[])
     parser.add_argument("--log-pc", action="append", default=[])
     parser.add_argument("--setting", action="append", default=[])
+    parser.add_argument("--image", type=Path, help="a .cue instead of the release's")
     args = parser.parse_args()
     out: Path = args.out
     (out / "shots").mkdir(parents=True, exist_ok=False)
@@ -87,9 +88,13 @@ def main() -> int:
     for setting in args.setting:
         name, value = setting.split("=", 1)
         command += [f"-{name}", value]
-    command.append(str(IMAGES[args.release]))
+    command.append(str(args.image or IMAGES[args.release]))
+    # Mednafen saves command-line settings into its config on exit; restore it.
+    config = HOME / "mednafen.cfg"
+    saved_config = config.read_bytes()
     record: dict[str, object] = {
         "release": args.release,
+        "image": str(args.image or IMAGES[args.release]),
         "state": str(args.state),
         "writes": [[hex(0x06000000 + o), d.hex()] for o, d in args.write],
         "onhit": args.onhit,
@@ -159,6 +164,7 @@ def main() -> int:
         finally:
             process.send_signal(signal.SIGTERM)
             record["exit_code"] = process.wait(timeout=30)
+            config.write_bytes(saved_config)
     (out / "run.json").write_text(json.dumps(record, indent=1) + "\n")
     print(json.dumps(record, indent=1))
     return 0
