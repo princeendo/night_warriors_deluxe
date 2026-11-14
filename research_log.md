@@ -592,3 +592,17 @@ Note: this is the M1 outcome reached inside `END-001` before the formal
 `GATE-M0` GO; flagged to the user.
 
 Next action: where the bytes are set; other endings; English epilogue format.
+
+## 2026-11-14 — GATE-M0 GO and M1
+
+User request: asked "Count this as M1 reached, with your GO recorded now?",
+the user answered "Yes, record GO".
+
+Action: recorded the GO in `TASKS.md` (`GATE-M0` DONE; `DIFF-003` and
+`DBG-002` to `DBG-004` closed for `END-01` Morrigan with their evidence from
+`EXP-0010` to `EXP-0012`; `RE-001` done) and in
+`docs/localization_policy.md`. Deviation recorded: the GO followed the first
+RAM change instead of preceding it, and `REF-004` was not done.
+
+Next action: write up the M2 tasks (`DISC-001`: where the epilogue flag and
+language byte are set; `DISC-002`: the same result from a rebuilt US image).

@@ -51,8 +51,17 @@ task repeats a sibling task, the note names it for its method only.
   epilogue screens), the user's first investigations. Offline meanwhile: `DIFF-001` (classify the 52
   differing files), `ENV-007` (database check), `DOC-003` (reference
   catalog).
-- Confirmed about Vampire Hunter so far: only how it boots and runs in the
-  emulator and the tools (D-001 to D-006); nothing about its internals.
+- **2026-11-14: M1 reached, GATE-M0 GO recorded** (`EXP-0012`, D-012).
+  The first difference is `END-01`, Morrigan's epilogue: in US RAM, clearing
+  the epilogue flag, pointing the US `ST1` slot at `ST1JPN.BIN` and setting
+  the language byte to Japanese after the main ending shows the Japanese
+  epilogue after the English ending. The user (2026-11-14), asked "Count
+  this as M1 reached, with your GO recorded now?": "Yes, record GO". M1 was
+  reached inside `END-001` before the gate; the user accepted it as is.
+- Next (M2, tasks to write up first): where the two bytes are set
+  (`DISC-001`), then the same result from a rebuilt US image (`DISC-002`).
+  Still open in `END-001`: the other 13 endings, the stray glyph strip on the
+  emblem card.
 
 ## Milestones
 
@@ -368,40 +377,44 @@ is not already on the base disc goes on disc).
 
 ### DIFF-003 - Choose the first difference and its milestone unit
 
-- **Status:** `BLOCKED`
+- **Status:** `DONE` (2026-11-14, by the user's `GATE-M0` GO)
 - **Milestone:** M1
 - **Dependencies:** REF-004, DIFF-001, AUD-001, END-001.
 - **Blockers:** REF-004.
 - **Objective:** Pick one register row (and one character, where it applies) as the M1 target, and fix the milestone unit for its class.
 - **Acceptance criteria:** The choice and reason are recorded; the difference is captured in both releases under the same action and settings; a checkpoint shortly before it exists in the US release.
+- **Result:** `END-01`, Morrigan's epilogue; milestone unit: one character's ending. Captured in both releases under the same forcing (`EXP-0010`); US checkpoint before it: `local/aud001/us-session/rec/states/f00011016.mcs` (won KO) and `local/end001/us-enhanced-test/states/r006089.mc0` (emblem card). Reason: the user's priorities and the first item reached (`EXP-0012`). `REF-004` (its blocker) was not done; the user's GO accepted the choice without it.
 - **Notes:** Candidates by the web research's weight: one character's epilogue (END-01), one Morrigan voice event (AUD-01 to AUD-03, whose sound files are identical on both discs), one renamed character (NAM-02). The user's priorities (2026-11-13): Morrigan's voices (`AUD-001`) and the epilogues (`END-001`); choose between them from those tasks' findings.
 
 ### DBG-002 - Observe how the chosen difference is selected
 
-- **Status:** `BLOCKED`
+- **Status:** `DONE` (2026-11-14, for `END-01` Morrigan, by the user's `GATE-M0` GO)
 - **Milestone:** M1
 - **Dependencies:** EMU-021, DIFF-003.
 - **Blockers:** EMU-021.
 - **Objective:** Learn whether the chosen item is fixed or varies from one checkpoint, in both releases, before planning checkpoints.
 - **Acceptance criteria:** Several replays of one checkpoint per release, with what is shown or played recorded.
+- **Result:** the ending sequence is fixed for one character: the US release forced four times from `f00011016` (`EXP-0010`, `EXP-0012`) and the Japanese twice from the `f00023129` line gave the same main ending each time.
 
 ### DBG-003 - Capture checkpoints
 
-- **Status:** `BLOCKED`
+- **Status:** `DONE` (2026-11-14, for `END-01` Morrigan, by the user's `GATE-M0` GO)
 - **Milestone:** M1
 - **Dependencies:** DBG-002.
 - **Blockers:** DBG-002.
 - **Objective:** States and evidence before the item, during it, and after it, in both releases.
 - **Acceptance criteria:** Each checkpoint is reproducible from its state and named in an experiment record.
+- **Result:** checkpoints before (won KO), during (main ending, emblem card) and after (epilogue) the item in both releases, kept every 300 frames under `local/end001/` and named in `EXP-0010` and `EXP-0012`.
 
 ### DBG-004 - Find the code and data behind the chosen difference
 
-- **Status:** `BLOCKED`
+- **Status:** `DONE` (2026-11-14, for `END-01` Morrigan, by the user's `GATE-M0` GO)
 - **Milestone:** M1
 - **Dependencies:** DBG-001, DBG-003, DIFF-001.
 - **Blockers:** DBG-003.
 - **Objective:** Find what each release runs or reads at the item, and where they diverge.
 - **Acceptance criteria:** The renderer or sound call is identified by a controlled change; the data in RAM is located; the divergence is tied to a `FILE-nn` row (or shown to be elsewhere); whether the other release's content is already on the base disc is recorded as tested or open.
+- **Result:** the ST1 loader and its gate found by a PC breakpoint and confirmed by controlled writes (`EXP-0012`); the text located in RAM and on both discs (`ST1JPN.BIN`, `EXP-0011`); the divergence is not in a `FILE-nn` row's code but in two WRAM-H data bytes (D-012); the Japanese content is on the US disc (D-011). Where the bytes are set is `DISC-001`.
 
 ## Phase F: The User's First Investigations
 
@@ -445,12 +458,13 @@ is not already on the base disc goes on disc).
 
 ### GATE-M0 - Confirm environment and checkpoint prerequisites
 
-- **Status:** `BLOCKED`
+- **Status:** `DONE` (2026-11-14)
 - **Milestone:** M0
 - **Dependencies:** ENV-001 to ENV-006, EMU-001 to EMU-007, EMU-020, EMU-021, DBG-001 to DBG-004, DIFF-003.
 - **Blockers:** Dependencies not done.
 - **Objective:** Make an explicit go/no-go decision before the first live RAM mutation.
 - **Acceptance criteria:** Every dependency is `DONE`; no unresolved workflow blocker can invalidate M1 evidence; the user's GO is recorded verbatim.
+- **GO:** The user (2026-11-14), asked "Count this as M1 reached, with your GO recorded now?": "Yes, record GO". Given after the M1 outcome was shown (`EXP-0012`), not before the first RAM write as planned. `DIFF-003` and `DBG-002` to `DBG-004` were closed for `END-01` by `EXP-0010` to `EXP-0012`; `REF-004` was not done and the user accepted M1 without it.
 
 ### GATE-TRANSLATION - Confirm English sources and policy
 
@@ -469,7 +483,7 @@ tasks" just in time). The method for each is in the three sibling documents.
 
 | ID | Milestone | Outline |
 | --- | --- | --- |
-| RE-001 | M1 | Switch the chosen item in live RAM of the US release, with a no-write control. |
+| RE-001 | M1 | **Done** (`EXP-0012`, D-012; no-write control `EXP-0010` `us-ko-n9-b`): Morrigan's Japanese epilogue in US RAM. |
 | DISC-001 | M2 | Trace the RAM data to its disc file by a write breakpoint from a pre-load checkpoint; identify the format. |
 | DISC-002 | M2 | Reproduce the M1 change from a rebuilt image (same-size, in place, EDC/ECC regenerated with `tools/disc/patch_image.py`); cold-boot play check by the agent. |
 | RE-002 | M3 | Selection: what picks each instance (character, opponent, health, route), and forcing it from a checkpoint. |
