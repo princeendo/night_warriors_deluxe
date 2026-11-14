@@ -761,3 +761,21 @@ English ending, then the Japanese epilogue, then CAST.
 Next action: a cold boot of version 2 with one match won as Morrigan
 (`EXP-0018/session.sh`, same path), then the forcing and the unpatched
 control.
+
+## 2026-11-14 — EXP-0018: cold boot of version 2, M2 reached (DISC-002)
+
+User request: "Yes, start it" (one match as Morrigan on version 2).
+
+Result: the user won 2-0 vs. Victor from power-on; the win quote is English.
+From the bonus-screen state `f00007741`, the ending forced with the stage
+byte only (`--steps 420`) shows the English main ending, the emblem card,
+the Japanese epilogue, the art, and the cast roll with US names. Control
+(unpatched image, unpatched won-KO state `f00011016`, same forcing): the
+same ending and cast roll, the art with no text. CONFIRMED (D-017);
+`DISC-002` DONE, M2 for `END-01` (Morrigan).
+
+Not checked: the other 13 endings; what the `ENDING.O` card branch
+(`0x0600CFCC`) adds (the card shows in the control too); the screens served
+by the other two `ST1` load sites.
+
+Next action: the other 13 endings under `END-01`.

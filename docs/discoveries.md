@@ -242,3 +242,24 @@ human player's missing pad (its bit clear in `0x06076ABE`, rebuilt each frame
 by `0x06013C20`) toggles pause only when the flag is non-zero.
 
 Reproduce: `research/experiments/EXP-0016/README.md`, "Procedure".
+
+## D-017: A 15-byte patch of the US image shows the Japanese epilogue and keeps the US release (`DISC-002`, `EXP-0018`)
+
+Holds for: the US image (Track 1 `d0960087…70da`) patched by
+`research/experiments/EXP-0018/build_epilogue.py` (Track 1 `93ca264c…39ab`);
+Morrigan's ending.
+
+Fifteen bytes in three files: in `MAIN.BIN` the ending's `ST1` call
+(`0x0603B902`-`0x0603B90E`) loads `ST1JPN.BIN` by name through the file
+loader `0x06013DF8` instead of taking the name from the language-indexed
+array `0x0606BEB8`, with no flag test; `ST1JPN.BIN` declares the US text slot
+`0x1BC` (header byte 3, `BA` → `BC`); `ENDING.O` takes the flag-0 branches at
+`0x0600CFCC` and `0x0600D0D0` (card sequence, epilogue length `0x564`). The
+region flag stays 2 and the language 1. From a cold boot and a won match the
+win quote is English; the ending forced with the stage byte alone shows the
+English main ending, then the Japanese epilogue, then a cast roll with the US
+names. The unpatched image shows the art with no text. The array must stay
+unchanged: the win screens load `ST1USA.BIN` through it (changing its US
+entry turned the win quote Japanese).
+
+Reproduce: `research/experiments/EXP-0018/README.md`, steps 6-9.

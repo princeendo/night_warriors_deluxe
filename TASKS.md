@@ -78,7 +78,12 @@ task repeats a sibling task, the note names it for its method only.
   boot turned the win quote Japanese (the `ST1` name array is shared with the
   win screens). Version 2 loads `ST1JPN.BIN` only from the ending's own
   call; rehearsed correctly, its cold boot is next.
-- Next: `DISC-002`, a cold boot of version 2 with a won match (needs the user).
+- **2026-11-14: M2 reached** (`DISC-002` done, `EXP-0018`, D-017): the
+  version 2 image, cold-booted and played, keeps the English win quote and
+  shows Morrigan's Japanese epilogue after the English ending, with US cast
+  names; the unpatched control shows none.
+- Next: the other 13 endings under `END-01` (same patch, one forcing each),
+  before any generalisation or a second difference class (rule 23).
   Still open in `END-001`: the other 13 endings, the stray glyph strip on the
   emblem card.
 
@@ -487,7 +492,7 @@ is not already on the base disc goes on disc).
 
 ### DISC-002 - The US Enhanced epilogue from a rebuilt US image
 
-- **Status:** `IN_PROGRESS`
+- **Status:** `DONE` (2026-11-14, `EXP-0018`, D-017; M2 reached for `END-01`, Morrigan)
 - **Milestone:** M2
 - **Dependencies:** DISC-001.
 - **Objective:** Reproduce D-012 (English main ending, then the Japanese epilogue) from a patched copy of the US image with no RAM writes.
@@ -495,6 +500,7 @@ is not already on the base disc goes on disc).
 - **Notes:** Clearing the flag on disc is **not** the US Enhanced patch: it also restores the Japanese names, MODE SELECT graphics and text spacing (`EXP-0015`, D-015). The Japanese-only items are separate branches: the ST1 gate (`0x0603B902`), two `ENDING.O` tests, four in `PL05` (Morrigan), two in `PL14` (Donovan?); a patch can open those alone (e.g. make each test take the JP branch). Keeping the flag at 2 also keeps the US auto-pause when a controller is missing (`EXP-0016`, D-016). Clearing the flag is one byte (`MAIN.BIN` `0x11B`, `02` → `00`). The ST1 name array's USA entry and the language switch after the main ending (D-012) are not one-byte constants: the language byte is read per line by the main-ending renderer, so the epilogue needs either its own language test changed or the USA name entry pointed at `ST1JPN` plus a renderer change. That design is this task's first experiment.
 - **Progress 2026-11-14 (`EXP-0018`):** patched image built (`build/us_enhanced_epilogue/`, five byte changes, flag and language untouched: the ST1 gate, the US ST1 name, `ST1JPN.BIN`'s slot header, two `ENDING.O` branches). Rehearsal from the old won-KO state shows the English ending, then the Japanese epilogue, then the credits. Remaining: a cold boot and a won KO played on the patched image (needs the user), then the stage-byte forcing and an unpatched control.
 - **Progress 2026-11-14 (`EXP-0018`, cold boot 1):** the cold boot of version 1 failed: the user's won match showed Morrigan's win quote in **Japanese**. The `ST1` name array also serves the win screens (`ST1USA.BIN` is the US win-quote file). Version 2 leaves the array alone and makes only the ending's call load `ST1JPN.BIN` (15 bytes in all; Track 1 `93ca264c…`). Rehearsed: English win quote; forced ending shows the English ending, then the Japanese epilogue, then CAST. Remaining: a cold boot of version 2 with a won match (needs the user), then the forcing, the unpatched control and the cast-roll names.
+- **Done 2026-11-14 (`EXP-0018`, D-017):** cold boot of version 2, Morrigan won 2-0 vs. Victor: English win quote; the ending forced with the stage byte only shows the English main ending, the Japanese epilogue, then the cast roll with US names (JON TALBAIN, HSIEN-KO, LORD RAPTOR); the unpatched control shows the art with no text. The flag stays 2, so nothing else it selects changes. Listed as open: the other 13 endings, the JP punctuation spacing (`0x06037AE4`, stays off), the ending script tables (`0x060367A4`, stay US), what the `0x0600CFCC` card branch adds, and the screens served by the other `ST1` load sites (`0x06014208`, `0x0601E16C`).
 
 ## Gates
 
@@ -527,7 +533,7 @@ tasks" just in time). The method for each is in the three sibling documents.
 | --- | --- | --- |
 | RE-001 | M1 | **Done** (`EXP-0012`, D-012; no-write control `EXP-0010` `us-ko-n9-b`): Morrigan's Japanese epilogue in US RAM. |
 | DISC-001 | M2 | **Done** (`EXP-0013`, D-013): see the task above. |
-| DISC-002 | M2 | Reproduce the M1 change from a rebuilt image (same-size, in place, EDC/ECC regenerated with `tools/disc/patch_image.py`); cold-boot play check by the agent. |
+| DISC-002 | M2 | **Done** (`EXP-0018`, D-017): the Japanese epilogue from a 15-byte patch of the US image, cold-boot checked. |
 | RE-002 | M3 | Selection: what picks each instance (character, opponent, health, route), and forcing it from a checkpoint. |
 | RE-003 | M3 | Generator for one character; every instance verified live by forcing. |
 | RE-004 | M4 | A second character through the same mechanism. |

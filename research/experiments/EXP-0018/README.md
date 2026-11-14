@@ -1,9 +1,8 @@
 # EXP-0018: The Japanese Epilogue From a Patched US Image
 
 Task: DISC-002
-Status: IN_PROGRESS (version 2 built and rehearsed; the cold-boot run of
-version 2 needs a won KO played on it)
-Confidence: SUPPORTED (rehearsal); the M2 criterion is not yet met
+Status: DONE
+Confidence: CONFIRMED (version 2, cold boot, Morrigan; M2 reached)
 
 ## Observation
 
@@ -150,11 +149,41 @@ FIX=(--write 0606BEBC=0605B85C --write 0603B902=D4380009 --write 0603B9E4=0605B8
    (`r008780`). (A first attempt at the win-screen run left no screenshots or
    `run.json`, and its log ends in a SIGTERM; rerun unchanged, it worked.
    Cause not found.)
-8. **To do (M2):** a cold boot of version 2, one match won as Morrigan by
-   the user (`session.sh local/disc002/us-enhanced-session-v2`), with the
-   win quote checked; then the ending forced with the
-   stage byte only from the post-KO state, and the same forcing on the
-   unpatched image as control; the cast roll checked for US names.
+8. **Cold boot of version 2 (the M2 run;** user request "Yes, start it").
+   The user played Morrigan vs. Victor from power-on and won 2-0
+   (`session.sh local/disc002/us-enhanced-session-v2`; 144 states, 283
+   screenshots). Win quote in **English**: "By the abyss! You offer no
+   challenge to me!" (`f00008350.png`, `f0858bda…`).
+9. **Ending forced with the stage byte only** from that session's
+   bonus-screen state `f00007741` (`5309a81d…`), before any `ST1` load, and
+   the control: the same forcing on the unpatched image from the unpatched
+   session's won-KO state (a version 2 state cannot be the control: its RAM
+   holds the patched `MAIN.BIN`):
+
+```bash
+C="build/us_enhanced_epilogue/Night Warriors - Darkstalkers' Revenge (USA).cue"
+./invenv.sh python research/experiments/EXP-0010/force.py us \
+  local/disc002/us-enhanced-session-v2/rec/states/f00007741.mcs local/disc002/m2-v2 \
+  --image "$C" --write 0608092B=09 --steps 420
+./invenv.sh python research/experiments/EXP-0010/force.py us \
+  local/aud001/us-session/rec/states/f00011016.mcs local/disc002/m2-control \
+  --write 0608092B=09 --steps 420
+```
+
+| Run | Screens (agent-reviewed, 420 screenshots each) | Key frames |
+| --- | --- | --- |
+| Version 2 | English main ending (Pyron, Lucien), emblem card, **Japanese epilogue** paragraph, Morrigan's art, NOW LOADING, CAST: DEMITRI, **JON TALBAIN**, VICTOR, HSIEN-KO, LORD RAPTOR, MORRIGAN, ANAKARIS, FELICIA | epilogue `r006842` `e39da4f2…`; `r010030` JON TALBAIN `792d37cd…` |
+| Unpatched control | the same English main ending and emblem card, Morrigan's art **with no text**, the same cast roll with US names | art `r007264` `25bc3f8e…`; `r009611` JON TALBAIN `bb5aa899…` |
+
+## Conclusion
+
+**CONFIRMED (Morrigan):** the US image patched with the 15 bytes of version 2,
+cold-booted and played, shows the English win quote and the English main
+ending, then Morrigan's Japanese epilogue; the cast roll keeps the US names.
+The unpatched image under the same forcing shows the art without text. This
+is M2 for the first difference class (`END-01`), D-017. Version 1 (the shared
+name array changed) is DISPROVEN as a design: it turned the win quotes
+Japanese.
 
 ## A Tooling Fault Found Here
 
@@ -168,6 +197,11 @@ auto-pause, D-016), and the `EXP-0016` Japanese "pad" control in fact had port
 
 - Morrigan only; the other 13 epilogues are expected to work the same way
   (one `ST1JPN.BIN`), not tested.
+- The emblem card ("1ST A") appears in the control too, so what the
+  `0x0600CFCC` branch adds to the card sequence is not isolated; the patched
+  run's sequence was not compared frame by frame with the Japanese release.
+- The other two `ST1` load sites (`0x06014208`, `0x0601E16C`) were seen only
+  through the win screen; which screens each serves is UNKNOWN.
 - The JP-only punctuation spacing (`0x06037AE4`, flag-gated) stays off, so a
   few Japanese punctuation marks may sit 3-8 pixels wider than in the
   Japanese release (not compared).
