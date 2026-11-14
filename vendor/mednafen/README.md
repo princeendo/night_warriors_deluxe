@@ -2,7 +2,7 @@
 
 The stock Mednafen 1.32.1 source and build will stay unmodified in the ignored
 `vendor/mednafen/src/` and `vendor/mednafen/build/` (`EMU-001`,
-`docs/mednafen.md` once written). Do not commit source archives, binaries,
+`docs/mednafen.md`). Do not commit source archives, binaries,
 runtime state, BIOS files, or game data.
 
 ## Agent-Interface Patch (`EMU-021`)

@@ -36,8 +36,10 @@ task repeats a sibling task, the note names it for its method only.
   (0.3 MiB) against about 2.1 MB for one region's copy of the 52 differing
   files: switching editions will need a larger track 1 or smaller patches.
 - Reverse-engineering experiments in progress: none.
-- Next unblocked tasks: `EMU-001` (stock Mednafen 1.32.1, reusing the sibling
-  archive), which starts the M0 chain both investigations need; offline
+- **2026-11-13: stock Mednafen 1.32.1 built** (`EMU-001`, `docs/mednafen.md`).
+- Next unblocked tasks: `EMU-002` (project-local homes and both regions'
+  BIOS), then `EMU-003` (cold boots, with the user present), on the M0 chain
+  both investigations need; offline
   meanwhile: `DIFF-001` (classify the 52 differing files), `ENV-007`
   (database check), `DOC-003` (reference catalog).
 - Nothing about Vampire Hunter's internals is confirmed yet.
@@ -185,20 +187,21 @@ is not already on the base disc goes on disc).
 
 ### EMU-001 - Pin and build stock Mednafen
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Milestone:** M0
 - **Dependencies:** ENV-002.
 - **Blockers:** Ask before downloading source or installing build dependencies.
 - **Objective:** Have a stock Mednafen build under ignored `vendor/` with its exact version, source URL, hash, and build commands recorded.
 - **Acceptance criteria:** `docs/mednafen.md` records the version, source hash, configure and build commands, and the binary's `-help` banner.
 - **Notes:** All three siblings used stock 1.32.1 (`de7eb94a…3832`), so the agent patch applies unchanged. The archive is in Cyberbots' and XvSF's `local/downloads/mednafen-1.32.1/`; copy it after checking its hash instead of downloading again. Homebrew's `mednafen` is not the pinned build.
+- **Done 2026-11-13** (`SESSION-0003`, `docs/mednafen.md`): archive copied from Cyberbots, hash `de7eb94a…3832` equal to the siblings'; built with the siblings' flags in 3 min; binary `de542817…582a`, 21,318,680 bytes; `-help` banner shows 1.32.1 with the `ss` module (exit 255, as the siblings'). Neither release is in Mednafen's Saturn database (for `EMU-004`). Nothing downloaded or installed.
 
 ### EMU-002 - Create the project-local Mednafen configuration
 
-- **Status:** `BLOCKED`
+- **Status:** `READY`
 - **Milestone:** M0
 - **Dependencies:** EMU-001.
-- **Blockers:** EMU-001.
+- **Blockers:** None.
 - **Objective:** Run Mednafen with a configuration and BIOS path local to this checkout, never the user's global configuration.
 - **Acceptance criteria:** The launch command, base directory, BIOS identities (filename, size, SHA-256) for **both** regions, and forced settings are recorded; `tools/mednafen/home.py` pins the interactive and quiet homes.
 - **Notes:** This project needs the Japanese BIOS `sega_101.bin` (`dcfef4b9…`) and the North American `mpr-17933.bin` (`96e106f7…`); both are in Cyberbots' `local/mednafen/firmware/`. Copy them and record their hashes. Check that Mednafen picks the BIOS by the disc's area code (`JT` vs `U`) and record which it used for each boot.

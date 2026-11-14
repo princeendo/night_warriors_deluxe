@@ -204,3 +204,27 @@ settles them.
 
 Next action: `EMU-001` (pinned Mednafen) to start the M0 chain; offline
 meanwhile, `DIFF-001`.
+
+## 2026-11-13 — SESSION-0003: stock Mednafen (EMU-001)
+
+Task: EMU-001
+
+User request (2026-11-13): "Yes, start EMU-001".
+
+Action: copied `mednafen-1.32.1.tar.xz` (`cp -c`) from Cyberbots'
+`local/downloads/`; size 3,571,236 and SHA-256 `de7eb94a…3832` equal the
+siblings'. Extracted with `bsdtar` to `vendor/mednafen/src/`; configured and
+built in `vendor/mednafen/build/` with the siblings' flags (`docs/mednafen.md`).
+`configure` 30 s, `make -j12` 2 min 31 s, both exit 0. Ran `-help` with
+`MEDNAFEN_HOME=local/mednafen`.
+
+Result: binary `vendor/mednafen/build/src/mednafen`, 21,318,680 bytes, SHA-256
+`de542817…582a` (differs from Cyberbots' build on macOS 26.7.2, as
+expected). Banner: Mednafen 1.32.1 with the `ss` module; exit 255 for
+`-help`, as in every sibling. `grep` of `src/ss/` finds no database entry for
+`T-1202G` or `T-1208H`.
+
+Conclusion: `EMU-001` done. Nothing was downloaded or installed.
+
+Next action: `EMU-002` (homes; both BIOS files from Cyberbots), then
+`EMU-003` cold boots with the user present.
