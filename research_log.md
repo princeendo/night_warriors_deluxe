@@ -250,3 +250,30 @@ Open: whether a volume-0 home still records sound (matters for `AUD-001`);
 which BIOS each release boots with (`EMU-003`).
 
 Next action: `EMU-003`, cold boots of both releases with the user present.
+
+## 2026-11-13 — EXP-0001: cold boots of both releases (EMU-003)
+
+Task: EMU-003
+
+User request (2026-11-13): "Yes, boot them now".
+
+Hypothesis: stock Mednafen with the silent home cold-boots each untouched
+image to its title with no input, on its own region's BIOS, the same way each
+time.
+
+Action: three 120 s no-input boots per release with
+`tools.mednafen.cold_boot`, `sav/` emptied before each, source manifests
+before and after (`research/experiments/EXP-0001/README.md`).
+
+Result: all six exit 0; logs show `T-1202G`/`JT`/`0x1` and
+`T-1208H`/`U`/`0x4`, both `Cart: Backup Memory`; frames byte-identical within
+each release; titles from about 63 s; sources unchanged. Mednafen's code
+(`ss.cpp` BIOS selection and sanity check) ties region `0x1` to
+`sega_101.bin` and `0x4` to `mpr-17933.bin`. The intro differs at second 39
+(a red `DARKSTALKERS` card in the US release, a white screen with a dark mark
+in the Japanese one): new register row `INT-01`.
+
+Conclusion: CONFIRMED (D-001). `cold_boot.py` re-validated on Vampire Hunter.
+
+Next action: `EMU-004` (cart settings), `EMU-005` (pad), `EMU-006`
+(screenshots and states), with the user present.

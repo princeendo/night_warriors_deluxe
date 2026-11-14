@@ -31,7 +31,7 @@ difference**.
 
 | ID | Area | Lead (from the web research) | JP evidence | US evidence | Change type | English donor | Status | Task |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| NAM-01 | Title | Vampire Hunter becomes Night Warriors; subtitle kept. | Header title `VAMPIRE HUNTER` | Header title `NIGHT WARRIORS`; ISO volume ID still `VAMPIRE_HUNTER` | renamed (header only so far) | — | UNKNOWN on screen | `REF-004` |
+| NAM-01 | Title | Vampire Hunter becomes Night Warriors; subtitle kept. | Header `VAMPIRE HUNTER`; title screen `VAMPIRE HUNTER` / `Darkstalkers' Revenge` (`EXP-0001`) | Header `NIGHT WARRIORS`; title screen `NIGHT WARRIORS` / `Darkstalkers' Revenge`; ISO volume ID still `VAMPIRE_HUNTER` | renamed | — | CONFIRMED on the title screen | `REF-004` |
 | NAM-02 | Fighter names | Gallon/Jon Talbain, Zabel Zarock/Lord Raptor, Aulbath/Rikuo, Phobos/Huitzil, Lei-Lei/Hsien-Ko. | — | File names keep the JP names on both discs | — | — | UNKNOWN | `REF-004`, `LOC-001` |
 | NAM-03 | Supporting name | Anita is Amanda in the Western localization. | — | — | — | — | UNKNOWN | `REF-004` |
 | NAM-04 | Supporting name | Lin-Lin/Mei-Ling: only a lead for later games. | — | — | — | — | UNKNOWN | `REF-004` |
@@ -46,6 +46,7 @@ difference**.
 | ANI-01 | Sasquatch victories | JP pose/sound differences (arcade lead); a US Saturn guide documents a hidden pose. | — | — | — | — | UNKNOWN | `AUD-001` |
 | BIO-01 | Manual biographies | US manual has character stories; JP/US booklet comparison outstanding. | — | — | — | — | UNKNOWN (off-disc) | `REF-003` |
 | SYS-01 | Appendix/settings | Present under both titles; not a JP-only feature (reported). | — | — | — | — | UNKNOWN | `REF-004` |
+| INT-01 | Intro | Found in `EXP-0001`, not in the web research. | Second 38 of a cold boot: a white screen with a dark mark (one sample) | Second 39: a red `DARKSTALKERS` logo card (second 38 black) | — | — | SUPPORTED as a difference (one-second sampling) | `REF-004` |
 | OTHER-01 | Everything else | Opening/attract, menus, credits, blood, presentation, music, mechanics, loading/saves, hidden content: no comparison yet. | — | — | — | — | UNKNOWN | `REF-004`, `DIFF-001` |
 
 ## Static Differences Between The Data Tracks
