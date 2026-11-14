@@ -374,3 +374,23 @@ Conclusion: CONFIRMED (D-004). Hotkey runs need the user hands-off.
 
 Next action: `EMU-020` (put the agent-patch reuse question to the user);
 `DBG-001` can run offline meanwhile.
+
+## 2026-11-14 — SESSION-0006: why stock is not enough (EMU-020)
+
+Task: EMU-020
+
+Question to the user: "Reuse the siblings' Mednafen agent-interface patch
+here (EMU-020)?" Answer (2026-11-14): "Yes, reuse it".
+
+Action: wrote `docs/mednafen_agent_interface.md`: the siblings' evidence
+(MSHvSF `EMU-012`/`EMU-020`, XvSF and Cyberbots `EMU-020`), this project's
+own (`EXP-0003`: a lost F9, an F12 ignored for 30 s; `EXP-0004`: a disturbed
+run that wrote no dumps, registers read by eye), and why `AUD-001` and
+`END-001` need machine-readable reads, writes, breakpoints and registers.
+The MSHvSF protocol reference is copied below it (via Cyberbots `bac6fde`).
+Recorded the decision in `docs/localization_policy.md`.
+
+Conclusion: `EMU-020` done.
+
+Next action: `EMU-021`: build the patch on a copy of the stock source and
+run V1-V4 on both releases.

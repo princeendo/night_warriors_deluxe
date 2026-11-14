@@ -47,8 +47,9 @@ task repeats a sibling task, the note names it for its method only.
   (`EMU-006`, `EXP-0003`, D-003).
 - **2026-11-14: stock debugger dumps, writes and breakpoints work** (`EMU-007`,
   `EXP-0004`, D-004).
-- Next unblocked tasks: `EMU-020` (ask about reusing the agent patch), then
-  `EMU-021`; `DBG-001` (validate the state extractor against `EXP-0004`'s
+- **2026-11-14: agent-interface patch reuse approved** (`EMU-020`).
+- Next unblocked tasks: `EMU-021` (build the patched Mednafen and run V1-V4
+  on both releases); `DBG-001` (validate the state extractor against `EXP-0004`'s
   dumps, offline); on the M0 chain both
   investigations need; offline
   meanwhile: `DIFF-001` (classify the 52 differing files), `ENV-007`
@@ -274,22 +275,23 @@ is not already on the base disc goes on disc).
 
 ### EMU-020 - Record why stock Mednafen is insufficient
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Milestone:** M0
 - **Dependencies:** EMU-007.
 - **Blockers:** None; ask the user about reusing the patch.
 - **Objective:** Satisfy `AGENTS.md` rule 16 before using the patched build.
 - **Acceptance criteria:** A short record cites MSHvSF `EMU-012`/`EMU-020`, XvSF `EMU-020` and Cyberbots `EMU-020` and confirms the same limits apply here; the user is asked whether to reuse the patch (deferred here from `DOC-002`) and the answer is recorded verbatim.
+- **Done 2026-11-14** (`docs/mednafen_agent_interface.md`): sibling evidence cited; this project's own limits from `EXP-0003` and `EXP-0004` (lost F9, ignored F12, a disturbed run with no dumps, registers read by eye). The user: "Yes, reuse it".
 
 ### EMU-021 - Build and validate the agent interface
 
-- **Status:** `BLOCKED`
+- **Status:** `READY`
 - **Milestone:** M0
 - **Dependencies:** EMU-020.
-- **Blockers:** EMU-020.
+- **Blockers:** None; boots run with the user present (no key presses, so hands-off is not needed).
 - **Objective:** Drive Mednafen from Python so the user only plays.
 - **Acceptance criteria:** `vendor/mednafen/patches/0001-agent-interface.patch` (`c30146ef…5244`) applies to the pinned version and builds; validations V1-V4 (`docs/mednafen_agent_interface.md`) pass on Vampire Hunter states of both releases; `tools/mednafen/agent.py` tests pass.
-- **Notes:** Cyberbots' agent quirks (no save while halted; one Mednafen per home unless `MEDNAFEN_ALLOWMULTI=1`; RAM-written pad input is not seen through the SH-2 cache) are in `docs/lessons_from_cyberbots.md`, section 3. Copy `docs/mednafen_agent_interface.md` from Cyberbots with a header note in this task.
+- **Notes:** Cyberbots' agent quirks (no save while halted; one Mednafen per home unless `MEDNAFEN_ALLOWMULTI=1`; RAM-written pad input is not seen through the SH-2 cache) are in `docs/lessons_from_cyberbots.md`, section 3.
 
 ### DBG-001 - Validate the save-state extractor on Vampire Hunter
 
