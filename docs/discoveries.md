@@ -228,3 +228,17 @@ flag; the flag also selects the MODE SELECT graphics and text spacing rules
 names back to the Japanese ones.
 
 Reproduce: `research/experiments/EXP-0015/README.md`, "Procedure" step 4.
+
+## D-016: The US release pauses when a controller is missing; the region flag decides it (`DISC-002`, `EXP-0016`)
+
+Holds for: Japanese 1M image and US image; a Morrigan-vs-Victor fight state
+of each, port 1 set to no device at start-up.
+
+With no device in port 1, the US release shows PAUSE within a frame of
+loading the fight state and stays paused; with the region flag
+(`0x0608089A`) written to 0 it plays on. The Japanese release plays on with
+port 1 empty. The check is in the fight-frame routine at US `0x0601D474`: a
+human player's missing pad (its bit clear in `0x06076ABE`, rebuilt each frame
+by `0x06013C20`) toggles pause only when the flag is non-zero.
+
+Reproduce: `research/experiments/EXP-0016/README.md`, "Procedure".

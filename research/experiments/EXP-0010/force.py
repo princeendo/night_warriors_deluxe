@@ -4,12 +4,17 @@ Run from the repository root:
 
     ./invenv.sh python research/experiments/EXP-0010/force.py {jp,us} STATE OUT_DIR \
         [--write 0608097B=09 ...] [--steps 120] [--step-frames 30] [--wav]
+        [--onhit 0601D4A2:06076ABE=00 ...] [--log-pc 0601D4EC ...]
+        [--setting ss.input.port1=none ...]
 
 Launches the patched Mednafen (D-005) in the quiet home, loads STATE, pauses,
 applies each ``--write ADDRESS=HEXBYTES`` to WRAM-H (address 0x06000000-
 0x060FFFFF), runs, and saves a screenshot every ``--step-frames`` frames for
 ``--steps`` steps, plus a state every 10 steps (kept as checkpoints).
-``--wav`` also records the sound. No input is sent. Outputs stay under the
+``--wav`` also records the sound. ``--onhit PC:ADDRESS=HEXBYTES`` (EXP-0016)
+arms a PC breakpoint in log mode and applies the write each time PC has
+executed; ``--log-pc`` logs hits (registers) at PC; ``--setting NAME=VALUE``
+passes ``-NAME VALUE`` to Mednafen. No input is sent. Outputs stay under the
 ignored OUT_DIR.
 """
 
@@ -61,6 +66,9 @@ def main() -> int:
     parser.add_argument(
         "--halt-pc", help="stop at the first hit, e.g. 06038166-06038166"
     )
+    parser.add_argument("--onhit", action="append", default=[])
+    parser.add_argument("--log-pc", action="append", default=[])
+    parser.add_argument("--setting", action="append", default=[])
     args = parser.parse_args()
     out: Path = args.out
     (out / "shots").mkdir(parents=True, exist_ok=False)
@@ -76,11 +84,17 @@ def main() -> int:
     command = [str(BINARY)]
     if args.wav:
         command += ["-soundrecord", str((out / "sound.wav").resolve())]
+    for setting in args.setting:
+        name, value = setting.split("=", 1)
+        command += [f"-{name}", value]
     command.append(str(IMAGES[args.release]))
     record: dict[str, object] = {
         "release": args.release,
         "state": str(args.state),
         "writes": [[hex(0x06000000 + o), d.hex()] for o, d in args.write],
+        "onhit": args.onhit,
+        "log_pc": args.log_pc,
+        "settings": args.setting,
     }
     with (out / "mednafen.log").open("wb") as log:
         process = subprocess.Popen(
@@ -106,6 +120,16 @@ def main() -> int:
             if args.halt_pc:
                 agent.bpmode("halt")
                 agent.breakpoints("pc", [args.halt_pc])
+            elif args.onhit or args.log_pc:
+                agent.bpmode("log")
+                pcs = [spec.split(":")[0] for spec in args.onhit] + args.log_pc
+                agent.breakpoints("pc", [f"{pc}-{pc}" for pc in pcs])
+                for spec in args.onhit:
+                    pc, write = spec.split(":")
+                    address, data = write.split("=")
+                    agent.onhit_write(
+                        int(pc, 16), int(address, 16), bytes.fromhex(data)
+                    )
             for step in range(args.steps):
                 agent.frames(args.step_frames)
                 status = agent.wait_halted(30.0)

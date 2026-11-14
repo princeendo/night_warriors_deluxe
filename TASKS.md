@@ -68,6 +68,8 @@ task repeats a sibling task, the note names it for its method only.
   TALBAIN). Both releases hold both regions' tables; the flag picks. The
   Japanese-only items (epilogue gate, Morrigan's four voice calls, two
   `PL14` sound calls) are separate branches that a patch can open alone.
+- **2026-11-14:** the flag's pause check is a US-only auto-pause when a
+  controller is missing (`EXP-0016`, D-016).
 - Next: `DISC-002`, opening only those branches from a rebuilt US image.
   Still open in `END-001`: the other 13 endings, the stray glyph strip on the
   emblem card.
@@ -482,7 +484,7 @@ is not already on the base disc goes on disc).
 - **Dependencies:** DISC-001.
 - **Objective:** Reproduce D-012 (English main ending, then the Japanese epilogue) from a patched copy of the US image with no RAM writes.
 - **Acceptance criteria:** A same-size, in-place patch (`tools/disc/patch_image.py`, EDC/ECC regenerated) written to `build/`, every changed byte recorded; a cold boot of the patched image; Morrigan's ending forced as in D-009 (stage byte only) shows the Japanese epilogue after the English main ending; the unpatched image under the same forcing shows none (control); what else the cleared flag changes is checked on the screens the flag's other readers serve, or listed as open.
-- **Notes:** Clearing the flag on disc is **not** the US Enhanced patch: it also restores the Japanese names, MODE SELECT graphics and text spacing (`EXP-0015`, D-015). The Japanese-only items are separate branches: the ST1 gate (`0x0603B902`), two `ENDING.O` tests, four in `PL05` (Morrigan), two in `PL14` (Donovan?); a patch can open those alone (e.g. make each test take the JP branch). Clearing the flag is one byte (`MAIN.BIN` `0x11B`, `02` → `00`). The ST1 name array's USA entry and the language switch after the main ending (D-012) are not one-byte constants: the language byte is read per line by the main-ending renderer, so the epilogue needs either its own language test changed or the USA name entry pointed at `ST1JPN` plus a renderer change. That design is this task's first experiment.
+- **Notes:** Clearing the flag on disc is **not** the US Enhanced patch: it also restores the Japanese names, MODE SELECT graphics and text spacing (`EXP-0015`, D-015). The Japanese-only items are separate branches: the ST1 gate (`0x0603B902`), two `ENDING.O` tests, four in `PL05` (Morrigan), two in `PL14` (Donovan?); a patch can open those alone (e.g. make each test take the JP branch). Keeping the flag at 2 also keeps the US auto-pause when a controller is missing (`EXP-0016`, D-016). Clearing the flag is one byte (`MAIN.BIN` `0x11B`, `02` → `00`). The ST1 name array's USA entry and the language switch after the main ending (D-012) are not one-byte constants: the language byte is read per line by the main-ending renderer, so the epilogue needs either its own language test changed or the USA name entry pointed at `ST1JPN` plus a renderer change. That design is this task's first experiment.
 
 ## Gates
 

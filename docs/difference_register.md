@@ -47,6 +47,7 @@ difference**.
 | BIO-01 | Manual biographies | US manual has character stories; JP/US booklet comparison outstanding. | — | — | — | — | UNKNOWN (off-disc) | `REF-003` |
 | SYS-01 | Appendix/settings | Present under both titles; not a JP-only feature (reported). | — | — | — | — | UNKNOWN | `REF-004` |
 | INT-01 | Intro logo card | Found in `EXP-0001`, not in the web research. | Second 38-39 of a cold boot: a red hand-drawn logo starting "VAM" being drawn on black (`EXP-0002` 038; `EXP-0001` 038 caught a white flash of it) | Second 39: a red `DARKSTALKERS` logo card | rewritten (HYPOTHESIS: the Japanese card spells the Japanese title) | — | SUPPORTED as a difference (one-second sampling) | `REF-004` |
+| SYS-01 | Controller removed during a fight | Found in `EXP-0015`, not in the web research. | Plays on with port 1 empty (`EXP-0016`) | Pauses at once; plays on if the region flag is cleared in RAM (D-016) | conditionally suppressed (US-only behaviour, region flag) | — | CONFIRMED (D-016) | `DISC-002` |
 | AUD-05 | Morrigan hurt voice | Found in `EXP-0008`, not in the web research. | Sample `4F10C` plays when Morrigan is hit (1 s states) | Never in the whole US recording (`EXP-0009`) | conditionally suppressed (SUPPORTED) | — | SUPPORTED | `AUD-001` |
 | OTHER-01 | Everything else | Opening/attract, menus, credits, blood, presentation, music, mechanics, loading/saves, hidden content: no comparison yet. | — | — | — | — | UNKNOWN | `REF-004`, `DIFF-001` |
 

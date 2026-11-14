@@ -674,3 +674,23 @@ Not tested: the win, loading, fight and MODE SELECT screens with the flag
 cleared (no renamed character in the session); the pause check; `PL10`.
 
 Next action: `DISC-002`, a patch that opens only the Japanese-only branches.
+
+## 2026-11-14 — EXP-0016: the region flag's pause check (DISC-002)
+
+User request: "Check pause first".
+
+Action: read the fight-frame routine `0x0601D474` and the pad routine
+`0x06013C20`. First test, `--onhit` writing `0x06076ABE` = 0 before the
+read: no effect; a trace showed the routine still read 3 (HYPOTHESIS: the
+SH-2 data cache hides agent writes; recorded in known unknowns). Second
+test, port 1 set to no device (`-ss.input.port1 none`): US pauses at once
+(logged: pad missing, flag 2, pause toggled); US with the flag cleared plays
+on (flag-0 branch, neither PC reached); Japanese plays on (D-016). New
+register row `SYS-01`.
+
+Tools: `EXP-0010/force.py` gained `--onhit`, `--log-pc` and `--setting`;
+`ruff check`/`format` pass.
+
+Mistake: the Japanese run logged a US address; its log is not used.
+
+Next action: `DISC-002`, opening only the Japanese-only branches.
