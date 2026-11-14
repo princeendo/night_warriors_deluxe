@@ -70,6 +70,10 @@ task repeats a sibling task, the note names it for its method only.
   `PL14` sound calls) are separate branches that a patch can open alone.
 - **2026-11-14:** the flag's pause check is a US-only auto-pause when a
   controller is missing (`EXP-0016`, D-016).
+- **2026-11-14:** the flag's title check makes only player 1's Start begin
+  ARCADE/VS in the US release (SUPPORTED by code, `EXP-0017`). Every reader
+  of the flag is now classified; the agent's RAM writes bypass the emulated
+  SH-2 cache (check that a write was read before trusting it).
 - Next: `DISC-002`, opening only those branches from a rebuilt US image.
   Still open in `END-001`: the other 13 endings, the stray glyph strip on the
   emblem card.

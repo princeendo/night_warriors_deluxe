@@ -694,3 +694,21 @@ Tools: `EXP-0010/force.py` gained `--onhit`, `--log-pc` and `--setting`;
 Mistake: the Japanese run logged a US address; its log is not used.
 
 Next action: `DISC-002`, opening only the Japanese-only branches.
+
+## 2026-11-14 — EXP-0017: the region flag's title check (DISC-002)
+
+User request: "Check title test first".
+
+Action: found `TITLE.O` loaded at `0x06001000` in the title-menu WRAM-H
+(US state `f00001903`), and read the flag readers of both `TITLE.O` files.
+US: with the flag set, only player 1's Start begins ARCADE or VS. Japanese:
+the flag selects whether two copyright lines are drawn; the US file picks
+two or three lines (adding CAPCOM U.S.A.) by the language byte. Register
+rows `SYS-02`, `TTL-01` (SUPPORTED).
+
+Not run: the input test needs a player-2 Start press, which the agent cannot
+send without a new mapping and a focus-taking key press. Read
+`src-agent/src/ss/debug.inc`: the agent's write bypasses the emulated SH-2
+cache, which explains `EXP-0016`'s failed write.
+
+Next action: `DISC-002`.
