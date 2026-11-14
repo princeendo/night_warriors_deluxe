@@ -468,3 +468,30 @@ lacks; rebuilt without labels.
 
 Next action: replay states before the bat-seat pose (then the throws) in
 each release with sound-command logging.
+
+## 2026-11-14 — EXP-0008: which Morrigan samples each release plays (AUD-001)
+
+Task: AUD-001
+
+User request: "Yes, run it" (replay the saved moments and log the sounds).
+
+Action and dead ends: sound-RAM logging per frame (`sndlog.py`) found a
+busy area at `0x700`-`0x7BF` (not decoded). Reading the SCSP slot registers
+through the agent's `physical` space at `0x25B00000` returned only zeros:
+the debugger does not map them. Save states hold them (`[SCSP] SlotRegs`),
+so `slots.py` reads active slots from states and `dense.py` saves a state
+every ~4 frames while a replay runs.
+
+Result: both releases load `MORRIGA.BIN` at sound RAM `0x3B2C0`. The Japanese
+bat-seat pose plays Morrigan sample `0x56D60`; the US pose plays none of her
+samples, though the bytes are identical in its RAM (D-007). Over the whole
+sessions (1 s states), Morrigan samples `50C2C` (close grab), `41220` (air
+carry, Vector Drain) and `4F10C` (being hit) appear only in the Japanese
+session.
+
+Mistake, corrected before commit: the experiment record first said the pose
+frames in the replays came from reviewed screenshots; `dense.py` takes none.
+The timing now cites the session screenshots.
+
+Next action: locate US throws (session screenshots) and replay matched
+Japanese and US throws densely; then trace what selects each sample.

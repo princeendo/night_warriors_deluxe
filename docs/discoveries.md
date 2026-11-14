@@ -96,3 +96,16 @@ every region differs. These four regions extracted from states may be used
 as evidence. Cart RAM and sound RAM are not covered.
 
 Reproduce: `research/experiments/EXP-0006/README.md`, "Procedure".
+
+## D-007: Morrigan's bat-seat win line is on the US disc but not played (`AUD-001`, `EXP-0008`)
+
+Holds for: Japanese 1M image (plays it) and US image (does not).
+
+Both releases load `MORRIGA.BIN` into sound RAM at `0x3B2C0`. In the
+Japanese release, Morrigan's bat-seat win pose plays the 8-bit sample at
+sound RAM `0x56D60` (loop end `0x215F`; `MORRIGA.BIN` offset `0x1BAA0`) on an
+SCSP slot. In the US release the same pose plays no sample from Morrigan's
+region, although those 8,544 bytes are identical in its sound RAM. Change
+type: conditionally suppressed. What selects the sample is not known.
+
+Reproduce: `research/experiments/EXP-0008/README.md`, "Reproduction".
