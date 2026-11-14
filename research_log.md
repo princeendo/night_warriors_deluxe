@@ -495,3 +495,28 @@ The timing now cites the session screenshots.
 
 Next action: locate US throws (session screenshots) and replay matched
 Japanese and US throws densely; then trace what selects each sample.
+
+## 2026-11-14 — EXP-0009: Morrigan's samples in the recordings (AUD-001)
+
+Task: AUD-001
+
+User request: "Yes, confirm throws".
+
+First attempt: a live slot logger saving a state every 4 frames during play
+(`live.py`). The user: "I already did this. Why are we doing it again?" and
+"It's going to be hard to do this. The game is very obviously stuttering
+from what you're doing." Stopped it (no process left; settings unchanged).
+Lesson: no frequent state saves during user play.
+
+Action: matched-filter search (`wavsearch.py`, ffmpeg `afir`) of the
+`EXP-0007` WAV recordings for each Morrigan sample at the pitch read from its
+slot registers, with a control sample both releases play.
+
+Result: the four Japanese-only samples occur in the Japanese recording (the
+throw voice five times, two more than the states showed) and never in the US
+recording; the control occurs in both. A US throw is visible at frames
+4,263-4,313 with no throw voice. Normal-throw voice CONFIRMED suppressed
+(D-008); Vector Drain and hurt voices SUPPORTED.
+
+Next action: find what selects each sample, or switch to `END-001` as the
+user prefers.

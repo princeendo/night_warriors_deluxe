@@ -109,3 +109,17 @@ region, although those 8,544 bytes are identical in its sound RAM. Change
 type: conditionally suppressed. What selects the sample is not known.
 
 Reproduce: `research/experiments/EXP-0008/README.md`, "Reproduction".
+
+## D-008: Morrigan's normal-throw voice is on the US disc but not played (`AUD-001`, `EXP-0009`)
+
+Holds for: Japanese 1M image (plays it) and US image (does not).
+
+At Morrigan's normal throw, the Japanese release plays the 8-bit sample at
+sound RAM `0x50C2C` (`MORRIGA.BIN` offset `0x1596C`, 3,477 samples, played at
+13,168 Hz). A waveform search of a 400-second play recording finds it at
+every Japanese throw and nowhere in the US recording, which includes an
+observed US throw; a control sample both releases play is found in both.
+The sample is on both discs (identical files) and loaded at the same address
+(D-007). Change type: conditionally suppressed.
+
+Reproduce: `research/experiments/EXP-0009/README.md`, "Procedure".

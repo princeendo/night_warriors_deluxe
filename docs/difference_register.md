@@ -39,15 +39,15 @@ difference**.
 | END-02 | Main endings | Rewritten, different page counts (arcade lead). | — | — | — | — | UNKNOWN | `END-001` |
 | END-03 | Pyron's ending | English: consuming Earth; JP: collecting planets (reported). | — | — | — | — | UNKNOWN | `END-001` |
 | QUO-01 | Victory quotes | Inventories and selection differ (arcade lead; English has health and mirror conditions). | — | — | — | — | UNKNOWN | `QUO-001` |
-| AUD-01 | Morrigan normal throw | Extra JP voice sample (Saturn report, from memory). | Sample `50C2C` (`MORRIGA.BIN`) plays at close grabs (`EXP-0008`, 1 s states) | Not seen in the US session; US throws not yet located | conditionally suppressed (SUPPORTED) | — | SUPPORTED | `AUD-001` |
-| AUD-02 | Morrigan command throw | Extra JP voice sample (same report). | Sample `41220` plays as Morrigan carries the opponent up (Vector Drain) (`EXP-0008`) | Not seen in the US session; not yet located | conditionally suppressed (SUPPORTED) | — | SUPPORTED | `AUD-001` |
+| AUD-01 | Morrigan normal throw | Extra JP voice sample (Saturn report, from memory). | Sample `50C2C` plays at every throw (`EXP-0009`, waveform search) | Never in the whole US recording, including an observed throw; sample present | conditionally suppressed | — | CONFIRMED (D-008) | `AUD-001` |
+| AUD-02 | Morrigan command throw | Extra JP voice sample (same report). | Sample `41220` plays as Morrigan carries the opponent up (Vector Drain) (`EXP-0008`) | Never in the whole US recording (`EXP-0009`); no US Vector Drain identified yet | conditionally suppressed (SUPPORTED) | — | SUPPORTED | `AUD-001` |
 | AUD-03 | Morrigan bat-seat win pose | Full JP spoken line (same report). | Pose plays Morrigan sample `56D60` (`EXP-0008`, dense) | Pose plays none of her samples; the sample is in sound RAM, identical (`EXP-0008`) | conditionally suppressed | — | CONFIRMED (D-007) | `AUD-001` |
 | AUD-04 | Donovan victory audio | Extra JP victory sounds (arcade lead). | — | as AUD-01 | — | — | UNKNOWN | `AUD-001` |
 | ANI-01 | Sasquatch victories | JP pose/sound differences (arcade lead); a US Saturn guide documents a hidden pose. | — | — | — | — | UNKNOWN | `AUD-001` |
 | BIO-01 | Manual biographies | US manual has character stories; JP/US booklet comparison outstanding. | — | — | — | — | UNKNOWN (off-disc) | `REF-003` |
 | SYS-01 | Appendix/settings | Present under both titles; not a JP-only feature (reported). | — | — | — | — | UNKNOWN | `REF-004` |
 | INT-01 | Intro logo card | Found in `EXP-0001`, not in the web research. | Second 38-39 of a cold boot: a red hand-drawn logo starting "VAM" being drawn on black (`EXP-0002` 038; `EXP-0001` 038 caught a white flash of it) | Second 39: a red `DARKSTALKERS` logo card | rewritten (HYPOTHESIS: the Japanese card spells the Japanese title) | — | SUPPORTED as a difference (one-second sampling) | `REF-004` |
-| AUD-05 | Morrigan hurt voice | Found in `EXP-0008`, not in the web research. | Sample `4F10C` plays when Morrigan is hit (1 s states) | Not seen in the US session | conditionally suppressed (SUPPORTED) | — | SUPPORTED | `AUD-001` |
+| AUD-05 | Morrigan hurt voice | Found in `EXP-0008`, not in the web research. | Sample `4F10C` plays when Morrigan is hit (1 s states) | Never in the whole US recording (`EXP-0009`) | conditionally suppressed (SUPPORTED) | — | SUPPORTED | `AUD-001` |
 | OTHER-01 | Everything else | Opening/attract, menus, credits, blood, presentation, music, mechanics, loading/saves, hidden content: no comparison yet. | — | — | — | — | UNKNOWN | `REF-004`, `DIFF-001` |
 
 ## Static Differences Between The Data Tracks
