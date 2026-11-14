@@ -18,6 +18,11 @@ these files as immutable; derived images belong under `build/`.
 | `Vampire Hunter - Darkstalkers' Revenge (Japan) (2M, 4M).zip` | `1bbebc01d1c2874b39deeb63bc8307720804f64f3a4d1f43182c9093f4d97a7e` | `local/disc_images/vh_saturn_jp_2m4m/` |
 | `Vampire Hunter - Darkstalkers' Revenge (Japan) (3M).zip` | `1c320343fe0faf9a0807b8615952428345e5c93bbac26e2198de66517f5cd83c` | `local/disc_images/vh_saturn_jp_3m/` |
 
+**Working image (user decision, 2026-11-13):** the project works from the
+1M image only. The 2M/4M and 3M folders were deleted locally the same day,
+since their data track is identical; their archives remain in
+`~/Downloads/vh_nw_saturn/` and their hashes stay below as provenance.
+
 Release description: `Vampire Hunter: Darkstalkers' Revenge (Japan), Sega
 Saturn T-1202G V1.000 19960128; three Redump-style BIN/CUE sets labelled (1M),
 (2M, 4M) and (3M), supplied by the user 2026-11-13; release identity as named,

@@ -144,3 +144,63 @@ internals is confirmed.
 Next action: `DOC-002` (the base release and the sibling decisions),
 `EMU-001` (Mednafen 1.32.1 from the sibling archive after a hash check),
 `DIFF-001` (classify the differing files), `ENV-007`.
+
+## 2026-11-13 — SESSION-0002: first decisions and static leads
+
+Task: DOC-002, AUD-001, END-001, EDITION-001 (write-ups only)
+
+Goal: record the user's first decisions and turn their two investigation
+requests into tasks, with whatever a static look can add.
+
+User decisions (2026-11-13, verbatim):
+
+- "If we don't need all the separate JP releases, we can keep just one and
+  work from that."
+- "I definitely want to check the US disc for whether the Morrigan info is
+  present."
+- "Apparently, there are individual character story epilogue screens in the
+  JP version that don't exist in the US version. We should investigate."
+- "Each character has a post-ending artwork accompanied by scrolling Japanese
+  text."
+- "For this release, my goal is to have the "Ultimate" edition have the
+  option for the user to switch between the JP original, the US original,
+  and the US "Enhanced" which incorporates the missing JP pieces. If there
+  are pieces in the US version which don't exist in the JP version, we can
+  also create an "Enhanced" version for JP."
+
+Action:
+
+- Kept the Japanese 1M image; deleted `local/disc_images/vh_saturn_jp_2m4m/`
+  and `local/disc_images/vh_saturn_jp_3m/` (identical data track,
+  `SESSION-0001`; archives remain in `~/Downloads/vh_nw_saturn/`).
+- Wrote `docs/localization_policy.md` (decisions, and what is deferred to
+  which task); `DOC-002` closed with every other decision deferred by name.
+- Static look (from `references/*/iso_listing.json`):
+  - `MORRIGA.BIN`, `MORRIGA1.SEQ`, `MORRIGA2.SEQ` and every sound file are
+    byte-identical on both discs.
+  - The 14 `END*.BG` files (`END00`-`END0D`, 53,156 to 502,752 bytes) and
+    `ENDDATA.BIN` (7,821 bytes) are byte-identical; `ENDING.O` is not
+    (`FILE-04`).
+  - Track 1's last used sector is 209,774 of 209,924 in both releases: 150
+    free sectors (0.3 MiB). The 52 differing files total 2,162,163 bytes
+    (JP) and 2,169,101 bytes (US).
+- Wrote up `AUD-001`, `END-001` (both blocked on the M0 chain) and
+  `EDITION-001` (backlog) in `TASKS.md`.
+
+Hypotheses (to test, not to assume):
+
+1. Morrigan's Japanese-only voices are on the US disc and the US code does
+   not call them (`AUD-001`). Static evidence only shows the sound files are
+   the same.
+2. The `END*.BG` files are the 14 characters' post-ending artwork, present on
+   both discs, and the US `ENDING.O` leaves out the scrolling text
+   (`END-001`). Two of them (`END0C`, `END0D`) have the same size, so the
+   count may not map one file per character.
+3. An image holding both regions' editions needs more than track 1's free
+   tail (`EDITION-001`).
+
+Conclusion: both investigations need a running emulator; nothing static
+settles them.
+
+Next action: `EMU-001` (pinned Mednafen) to start the M0 chain; offline
+meanwhile, `DIFF-001`.

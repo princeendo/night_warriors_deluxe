@@ -1,0 +1,29 @@
+# Edition Policy
+
+The user's policy decisions for Vampire Hunter Ultimate (`DOC-002`). Each row
+quotes the user. These are policy, not facts: whether each one is achievable
+on these discs is found by experiment.
+
+## Decisions (2026-11-13)
+
+| Topic | The user's words | Meaning for this project |
+| --- | --- | --- |
+| Editions in the image | "For this release, my goal is to have the "Ultimate" edition have the option for the user to switch between the JP original, the US original, and the US "Enhanced" which incorporates the missing JP pieces. If there are pieces in the US version which don't exist in the JP version, we can also create an "Enhanced" version for JP." | One image, with an in-game choice of **JP original**, **US original** and **US Enhanced** (US plus the Japanese-only content), and **JP Enhanced** only if the US release turns out to have content the Japanese one lacks. Working interpretation, to confirm in `EDITION-001`: "original" means behaving exactly as that release does. How the choice is offered and stored, and what it costs on disc, is found by `EDITION-001`. |
+| Japanese source image | "If we don't need all the separate JP releases, we can keep just one and work from that." | The three Japanese images share one byte-identical data track, so the project works from the **1M** image only (`local/disc_images/vh_saturn_jp_1m/`). The other two were deleted locally on 2026-11-13; the supplied archives remain in `~/Downloads/vh_nw_saturn/`, and their hashes stay in `references/saturn_jp/README.md`. |
+| First investigations | "I definitely want to check the US disc for whether the Morrigan info is present." and "Apparently, there are individual character story epilogue screens in the JP version that don't exist in the US version. We should investigate. Each character has a post-ending artwork accompanied by scrolling Japanese text." | The Morrigan voice leads (`AUD-01` to `AUD-03`, task `AUD-001`) and the epilogue screens (`END-01`, task `END-001`) are the user's first priorities. They set the order for `DIFF-003`. |
+
+## Deferred To Evidence
+
+| Topic | Deferred to | Why |
+| --- | --- | --- |
+| English source for the Japanese epilogue text in US Enhanced (PSP *Chronicle*, arcade, new translation) | `END-001`, then `GATE-TRANSLATION` | First learn what text exists and whether the US disc still holds it. |
+| Reuse of the patched Mednafen (`AGENTS.md` rule 16) | `EMU-020` | Asked when the stock build boots both releases. |
+| Release formats and timing; patches as GitHub Release assets only (rule 21) | `REL-001` | Adding files or growing track 1 may rule out SSP (`docs/lessons_from_cyberbots.md`, section 4). |
+| Names in each edition (Gallon/Jon Talbain etc., Amanda/Anita) | `LOC-001` | Probably "as that release" for the originals; to ask for the Enhanced editions. |
+| Arcade sets and PSP image as references | `REF-001`, `REF-002` | Asked when an investigation needs them. |
+| The carried preferences in `local_agent_guidance.md` | next decision round | Followed as the user's latest known preferences meanwhile. |
+
+## Translation Gates
+
+None yet. Any English that is not already on the US disc goes on disc only
+after `GATE-TRANSLATION` (`TASKS.md`).

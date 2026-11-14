@@ -23,7 +23,8 @@ Those files are a method, not a map: **nothing in them is a fact about Vampire
 Hunter.** This project differs in kind: both regions are on hand, the US
 release already has official English, and the work is mostly finding,
 explaining and merging regional differences rather than translating a whole
-script. `references/web_research/` holds the user's web research on those
+script. The target is one image offering the JP original, the US original and
+a US Enhanced edition (`docs/localization_policy.md`). `references/web_research/` holds the user's web research on those
 differences; it is a list of leads, not evidence about these discs.
 
 ## Before Each Session
@@ -95,7 +96,7 @@ transcript, guide, or arcade observation is a lead.
     patch (`vendor/mednafen/patches/`) may be built once stock Mednafen boots
     Vampire Hunter (`EMU-003`), `EMU-020` records why stock Mednafen is
     insufficient, citing the sibling evidence, and the user has confirmed reuse
-    (`DOC-002`). Re-run the interface validations V1-V4 on Vampire Hunter
+    (asked in `EMU-020`). Re-run the interface validations V1-V4 on Vampire Hunter
     (`EMU-021`) before using it as evidence.
 17. Any Mednafen change beyond that patch is the smallest useful change, with the
     upstream URL, version/revision, patches, rationale, and build steps preserved.
@@ -107,7 +108,7 @@ transcript, guide, or arcade observation is a lead.
     save states, memory dumps, screenshots, audio captures, or emulator
     binaries. The siblings' exception (release patch files, xdelta and SSP and
     zips of them, published as GitHub Release assets and never committed) is to
-    be confirmed for this project in `DOC-002`.
+    be confirmed for this project in `REL-001`.
 22. Keep binary evidence locally under ignored paths. Commit hashes, addresses,
     scripts, schemas, small synthetic fixtures, and derived factual metadata.
 23. Do not start a second difference class (`docs/difference_register.md`)
@@ -146,8 +147,9 @@ transcript, guide, or arcade observation is a lead.
     otherwise (`DOC-002`). Do not silently modernize names (Amanda, Anita) or
     wording.
 31. The three Japanese pressings share one byte-identical data track
-    (`references/saturn_jp/README.md`). Name the exact image a patch applies to
-    in every build and release.
+    (`references/saturn_jp/README.md`); the project works from the 1M image
+    (user decision 2026-11-13). Name the exact image a patch applies to in
+    every build and release.
 
 ## Task Discipline
 

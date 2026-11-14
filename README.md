@@ -6,10 +6,12 @@ Hunter: Darkstalkers' Revenge** (T-1202G) and the US **Night Warriors:
 Darkstalkers' Revenge** (T-1208H). Each release has content the other lacks:
 the web research behind the project points at the Japanese ending epilogues,
 rewritten endings and victory quotes, voice samples, poses, and character
-names. Which release is the base, which differences are merged, and which
-become options are not decided yet (`DOC-002` in [TASKS.md](TASKS.md)).
+names. The image will let the player choose the **JP original**, the **US
+original**, or a **US Enhanced** edition that adds the Japanese-only content
+(and a JP Enhanced one if the US release has anything the Japanese lacks); see
+[docs/localization_policy.md](docs/localization_policy.md).
 
-Any English the base release lacks will come from an official source where
+Any English the US release lacks will come from an official source where
 one exists and be marked as a new translation where none does.
 
 The repository holds the tools, the difference inventory, and the expected
@@ -35,7 +37,7 @@ Nothing yet. The inventory of differences to resolve is
 
 ## Patch Files
 
-Not yet. Formats are a `DOC-002` decision; the siblings published xdelta
+Not yet. Formats are decided in `REL-001`; the siblings published xdelta
 (and, where possible, Sega Saturn Patcher `.ssp`) patches as GitHub Release
 assets only. The images a patch applies to are named in
 [references/saturn_jp/README.md](references/saturn_jp/README.md) and
@@ -81,7 +83,7 @@ Game data stays under ignored paths:
 
 | Path | Holds |
 | --- | --- |
-| `local/disc_images/vh_saturn_jp_1m/`, `vh_saturn_jp_2m4m/`, `vh_saturn_jp_3m/` | The untouched Japanese BIN/CUE sets (never modified) |
+| `local/disc_images/vh_saturn_jp_1m/` | The untouched Japanese BIN/CUE set, 1M pressing (never modified) |
 | `local/disc_images/nw_saturn_us/` | The untouched US BIN/CUE set (never modified) |
 | `local/extracted/saturn_jp/`, `local/extracted/saturn_us/` | Files extracted from each track 1 |
 | `local/logs/` | Tool output |

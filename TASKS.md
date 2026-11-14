@@ -23,11 +23,23 @@ task repeats a sibling task, the note names it for its method only.
   them byte-identical, **including every sound file**; 52 files differ,
   mostly program overlays (`MAIN.BIN`, `ENDING.O`, `PL01`-`PL14`,
   `SOBJ01`-`SOBJ12`). What any difference does is **UNKNOWN**.
+- **2026-11-13: first decisions** (`SESSION-0002`, `DOC-002`,
+  `docs/localization_policy.md`). The image will offer **JP original**, **US
+  original** and **US Enhanced** (US plus the Japanese-only content), and **JP
+  Enhanced** if the US release has content the Japanese one lacks
+  (`EDITION-001`). Work from the Japanese 1M image only. First
+  investigations: Morrigan's voices on the US disc (`AUD-001`) and the
+  per-character epilogue screens (`END-001`).
+- Static leads for both (`SESSION-0002`): Morrigan's files and every sound
+  file are byte-identical on both discs; so are the 14 `END*.BG` files and
+  `ENDDATA.BIN`, while `ENDING.O` differs. Track 1 has only 150 free sectors
+  (0.3 MiB) against about 2.1 MB for one region's copy of the 52 differing
+  files: switching editions will need a larger track 1 or smaller patches.
 - Reverse-engineering experiments in progress: none.
-- Next unblocked tasks: `DOC-002` (user decisions, including which release is
-  the base), `EMU-001` (stock Mednafen 1.32.1, reusing the sibling archive),
-  `ENV-007` (database check), `DIFF-001` (classify the 52 differing files
-  offline), `DOC-003` (reference catalog).
+- Next unblocked tasks: `EMU-001` (stock Mednafen 1.32.1, reusing the sibling
+  archive), which starts the M0 chain both investigations need; offline
+  meanwhile: `DIFF-001` (classify the 52 differing files), `ENV-007`
+  (database check), `DOC-003` (reference catalog).
 - Nothing about Vampire Hunter's internals is confirmed yet.
 
 ## Milestones
@@ -41,13 +53,13 @@ item are chosen by `DIFF-003` from evidence and the user's priorities.
 | ID | Required outcome |
 | --- | --- |
 | M0 | Mednafen runs both releases; pad, screenshots, save states, debugger, agent interface, validated extraction, documentation, and Python tooling work. |
-| M1 | One regional difference (the `DIFF-003` item) is switched in live RAM of the base release: the base game shows the other release's content for that item. |
-| M2 | The same change is reproduced from an untouched base image. |
+| M1 | One regional difference (the `DIFF-003` item) is switched in live RAM of the US release: it shows the Japanese release's content for that item (the first US Enhanced change). |
+| M2 | The same change is reproduced from an untouched US image. |
 | M3 | That difference is handled programmatically for every instance of one character (or the item's natural unit). |
 | M4 | A second character works through the same generalized mechanism. |
 | M5 | The whole roster is handled for that difference class. |
 | M6 | The next difference class, in the user's order, repeats M1-M5 under its own tasks; one class at a time (`AGENTS.md` rule 23). |
-| M7 | Selectable variants (names, region-specific content) as options, if the user wants them (`LOC-001`). |
+| M7 | The edition switch: JP original, US original, US Enhanced (and JP Enhanced if needed) in one image (`EDITION-001`). |
 | M8 | Combined image: every register row resolved; coverage register closed. |
 | M9 | Special cases (unused assets, hidden content, debug features), each with an explicit task. |
 
@@ -123,8 +135,8 @@ is not already on the base disc goes on disc).
 - **Milestone:** M0 (do early; XvSF did this the day before release)
 - **Dependencies:** ENV-006.
 - **Blockers:** None. Cyberbots' first try (`WebFetch` of redump.org) was refused; it succeeded later in the built-in browser.
-- **Objective:** Raise each image's identity from **SUPPORTED** to **CONFIRMED**, and learn what the Japanese labels (1M, 2M/4M, 3M) distinguish.
-- **Acceptance criteria:** Each image's track hashes match a named database entry (size, CRC-32, MD5, SHA-1 per track), or a mismatch is recorded with its consequence; every Redump entry for both titles is listed.
+- **Objective:** Raise the identity of the two working images (Japanese 1M, US) from **SUPPORTED** to **CONFIRMED**, and learn what the Japanese labels (1M, 2M/4M, 3M) distinguish.
+- **Acceptance criteria:** Each working image's track hashes match a named database entry (size, CRC-32, MD5, SHA-1 per track), or a mismatch is recorded with its consequence; every Redump entry for both titles is listed.
 - **Notes:** Static evidence so far: the Japanese track 1 is identical in all three; their track 2 differs only by a 1-4 sample offset (`references/saturn_jp/README.md`). A release must name the exact image(s) it applies to either way (`AGENTS.md` rule 31).
 
 ## Phase B: Documentation And Decisions
@@ -141,13 +153,14 @@ is not already on the base disc goes on disc).
 
 ### DOC-002 - Put the project decisions to the user
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Milestone:** GATE-TRANSLATION (base-release question: before `DIFF-003`)
 - **Dependencies:** DOC-001.
 - **Blockers:** None.
 - **Objective:** Ask the user to decide, confirm, or defer the decisions this project needs, including those carried from the siblings (`docs/playbook_from_mshvsf.md` "The User's MSHvSF Localization Decisions", `docs/lessons_from_xvsf.md` "User Decisions Worth Re-asking", `docs/lessons_from_cyberbots.md` section 6).
 - **Acceptance criteria:** Each decision has a recorded answer (verbatim, dated) or an explicit deferral to the task that produces its evidence, in `research_log.md` and `docs/localization_policy.md` (created by this task, on the Cyberbots file's structure: answered / deferred / per-gate tables).
-- **Notes:** Multiple-choice questions with a "(Recommended)" option. Project-specific: **which release is the base** (the US image with Japanese content restored, or the Japanese image with the US English brought in); which Japanese pressing a release names; which difference classes are in scope and in what order (epilogues, main-ending rewrites, victory quotes, voices and poses, names, other); English sources and their order (US Saturn wording kept; PSP *Darkstalkers Chronicle*; arcade *Night Warriors*; new translation marked as such; fan transcripts as locators only); names policy (US, JP, or a toggle; Amanda/Anita); whether regional variants become options. Carried: reuse of the patched Mednafen (`AGENTS.md` rule 16); release formats and timing (rule 21); push and hardware-check policy; the preferences in `local_agent_guidance.md`.
+- **Done 2026-11-13** (`SESSION-0002`): the user decided the editions (JP original, US original, US Enhanced, JP Enhanced if needed), the working Japanese image (1M) and the first investigations (`AUD-001`, `END-001`), unprompted; every other decision is deferred by name to the task that produces its evidence (`docs/localization_policy.md`, "Deferred To Evidence"). Those questions are asked there.
+- **Notes (original scope):** Multiple-choice questions with a "(Recommended)" option. Project-specific: **which release is the base** (the US image with Japanese content restored, or the Japanese image with the US English brought in); which Japanese pressing a release names; which difference classes are in scope and in what order (epilogues, main-ending rewrites, victory quotes, voices and poses, names, other); English sources and their order (US Saturn wording kept; PSP *Darkstalkers Chronicle*; arcade *Night Warriors*; new translation marked as such; fan transcripts as locators only); names policy (US, JP, or a toggle; Amanda/Anita); whether regional variants become options. Carried: reuse of the patched Mednafen (`AGENTS.md` rule 16); release formats and timing (rule 21); push and hardware-check policy; the preferences in `local_agent_guidance.md`.
 
 ### DOC-003 - Build the reference catalog
 
@@ -243,10 +256,10 @@ is not already on the base disc goes on disc).
 
 - **Status:** `BLOCKED`
 - **Milestone:** M0
-- **Dependencies:** EMU-007, DOC-002.
+- **Dependencies:** EMU-007.
 - **Blockers:** EMU-007.
 - **Objective:** Satisfy `AGENTS.md` rule 16 before using the patched build.
-- **Acceptance criteria:** A short record cites MSHvSF `EMU-012`/`EMU-020`, XvSF `EMU-020` and Cyberbots `EMU-020` and confirms the same limits apply here; the user's `DOC-002` answer on reusing the patch is cited.
+- **Acceptance criteria:** A short record cites MSHvSF `EMU-012`/`EMU-020`, XvSF `EMU-020` and Cyberbots `EMU-020` and confirms the same limits apply here; the user is asked whether to reuse the patch (deferred here from `DOC-002`) and the answer is recorded verbatim.
 
 ### EMU-021 - Build and validate the agent interface
 
@@ -275,7 +288,7 @@ is not already on the base disc goes on disc).
 - **Status:** `BACKLOG`
 - **Milestone:** GATE-TRANSLATION
 - **Dependencies:** DOC-002.
-- **Blockers:** No arcade sets supplied. Ask the user (`DOC-002`).
+- **Blockers:** No arcade sets supplied. Ask the user when an investigation needs them (deferred from `DOC-002`).
 - **Objective:** Decide whether the CPS-II *Vampire Hunter* / *Night Warriors* sets are wanted as a reference (regional branches, English ending text, quote selection), and if so hash and verify them.
 - **Acceptance criteria:** Either each zip is hashed and matched to a MAME set with a pinned MAME version, or the task is `REJECTED` with the user's reason.
 - **Notes:** Cyberbots found the US arcade kept both regions' assets and chose by a region byte (`docs/lessons_from_cyberbots.md`, section 7). The web research's audio and pose leads (AUD-04, ANI-01) are arcade leads.
@@ -285,7 +298,7 @@ is not already on the base disc goes on disc).
 - **Status:** `BACKLOG`
 - **Milestone:** GATE-TRANSLATION
 - **Dependencies:** DOC-002.
-- **Blockers:** No PSP image supplied. Ask the user (`DOC-002`).
+- **Blockers:** No PSP image supplied. Ask the user when `END-001` reaches the English source question (deferred from `DOC-002`).
 - **Objective:** Decide whether the English PSP *Darkstalkers Chronicle: The Chaos Tower* is a reference for official English epilogues and revised endings, and if so record its identity.
 - **Acceptance criteria:** Either every component is hashed with an identity status, or the task is `REJECTED` with the user's reason.
 - **Notes:** The web research names it the most promising official English source (its sources 6 and 7) but its coverage and alignment with the Saturn text are unverified.
@@ -295,7 +308,7 @@ is not already on the base disc goes on disc).
 - **Status:** `BACKLOG`
 - **Milestone:** M9 or out of scope
 - **Dependencies:** DOC-002.
-- **Blockers:** No scans supplied; whether printed material is in scope is a `DOC-002` question.
+- **Blockers:** No scans supplied; whether printed material is in scope is still to ask.
 - **Objective:** Resolve `BIO-01` or reject it as outside a disc image.
 - **Acceptance criteria:** A page-level JP/US comparison with provenance, or `REJECTED` with the user's reason.
 
@@ -335,11 +348,11 @@ is not already on the base disc goes on disc).
 
 - **Status:** `BLOCKED`
 - **Milestone:** M1
-- **Dependencies:** DOC-002, REF-004, DIFF-001.
+- **Dependencies:** REF-004, DIFF-001, AUD-001, END-001.
 - **Blockers:** REF-004.
 - **Objective:** Pick one register row (and one character, where it applies) as the M1 target, and fix the milestone unit for its class.
-- **Acceptance criteria:** The choice and reason are recorded; the difference is captured in both releases under the same action and settings; a checkpoint shortly before it exists in the base release.
-- **Notes:** Candidates by the web research's weight: one character's epilogue (END-01), one Morrigan voice event (AUD-01 to AUD-03, whose sound files are identical on both discs), one renamed character (NAM-02). The user's order from `DOC-002` decides.
+- **Acceptance criteria:** The choice and reason are recorded; the difference is captured in both releases under the same action and settings; a checkpoint shortly before it exists in the US release.
+- **Notes:** Candidates by the web research's weight: one character's epilogue (END-01), one Morrigan voice event (AUD-01 to AUD-03, whose sound files are identical on both discs), one renamed character (NAM-02). The user's priorities (2026-11-13): Morrigan's voices (`AUD-001`) and the epilogues (`END-001`); choose between them from those tasks' findings.
 
 ### DBG-002 - Observe how the chosen difference is selected
 
@@ -367,6 +380,38 @@ is not already on the base disc goes on disc).
 - **Blockers:** DBG-003.
 - **Objective:** Find what each release runs or reads at the item, and where they diverge.
 - **Acceptance criteria:** The renderer or sound call is identified by a controlled change; the data in RAM is located; the divergence is tied to a `FILE-nn` row (or shown to be elsewhere); whether the other release's content is already on the base disc is recorded as tested or open.
+
+## Phase F: The User's First Investigations
+
+### AUD-001 - Are Morrigan's Japanese-only voices on the US disc?
+
+- **Status:** `BLOCKED`
+- **Milestone:** M1 (investigation; no image change)
+- **Dependencies:** EMU-021, DBG-001.
+- **Blockers:** EMU-021.
+- **Objective:** For each of `AUD-01` (normal throw), `AUD-02` (command throw) and `AUD-03` (bat-seat win pose), learn what each release plays, and whether the Japanese sound is on the US disc.
+- **Acceptance criteria:** Each event is reproduced in both releases from matched checkpoints (same characters, settings and inputs) with sound recorded (ignored files, hashes kept); the sound command each release issues at the event is logged (sound RAM writes or the sound driver's command queue); the register rows get a change type (**conditionally suppressed**, **asset absent**, **not a difference**, or other) with that evidence; if the Japanese sample is on the US disc, where it is and what selects it are recorded.
+- **Notes:** Static (`SESSION-0002`): every sound file (`SOUND.HED`, `SOUND.MP`, `SOUND.TBL`, `SDDRVS*.TSK`, all `*.SEQ`) and `MORRIGA.BIN`, `MORRIGA1.SEQ`, `MORRIGA2.SEQ` are byte-identical on both discs, so **HYPOTHESIS**: the samples are present on the US disc and the US code does not call them. The report is from memory (web research source 13); a "not a difference" outcome is possible. Method: Cyberbots `EXP-0088` (`-qtrecord`, sample-level comparison); the extractor does not yet cover sound RAM (`DBG-001`). Which `PL*` overlay is Morrigan's is unknown (`DIFF-001`).
+
+### END-001 - The per-character epilogue screens
+
+- **Status:** `BLOCKED`
+- **Milestone:** M1 (investigation; no image change)
+- **Dependencies:** EMU-021, DBG-001.
+- **Blockers:** EMU-021.
+- **Objective:** Show what follows each character's ending in each release, and find what the Japanese release uses for the post-ending artwork with scrolling text and whether the US disc still holds it.
+- **Acceptance criteria:** For one character first, the whole ending sequence (main ending, artwork and text scroll, credits) is captured in both releases without skipped transitions (states kept, screenshots agent-reviewed); the epilogue's artwork and text are tied to their files and RAM; whether the US release shows the artwork, shows it without text, or skips it is recorded; whether the Japanese text (or its graphics) is on the US disc is recorded with the comparison that shows it; register rows `END-01` to `END-03` updated. A method to reach every character's ending by forcing (not playing) is recorded.
+- **Notes:** The user (2026-11-13): "Each character has a post-ending artwork accompanied by scrolling Japanese text." Static (`SESSION-0002`): the 14 `END*.BG` files (`END00`-`END0D`) and `ENDDATA.BIN` are byte-identical on both discs; `ENDING.O` is the same size with 1,668 bytes changed (`0x5506`-`0xFA4F`). **HYPOTHESIS**: `END*.BG` are the artwork (14 files, 14 characters) and the US `ENDING.O` skips or cuts the text. Japanese text could also be drawn as graphics; no plain Shift-JIS was found. English for US Enhanced is a later `GATE-TRANSLATION` question (PSP *Chronicle*, `REF-002`, or a new translation). Cyberbots forced endings with four RAM writes (`docs/lessons_from_cyberbots.md`, lesson 4).
+
+### EDITION-001 - Design the edition switch
+
+- **Status:** `BACKLOG`
+- **Milestone:** M7 (design may start once `DIFF-001` and one of `AUD-001`/`END-001` are done)
+- **Dependencies:** DIFF-001.
+- **Blockers:** None for the static part.
+- **Objective:** Decide how one image offers JP original, US original, US Enhanced (and JP Enhanced if needed), from measured costs.
+- **Acceptance criteria:** Options with costs presented to the user as a multiple-choice question: where the choice is made (boot menu, options screen, a button held at boot), where it is stored, and how each edition gets its code and data (both regions' differing files on disc and loaded by name, or one region's files plus patches applied at load); whether "original" must be byte-for-byte that release's code; the disc-space route. The answer is recorded verbatim.
+- **Notes:** Static (`SESSION-0002`): track 1 has 150 free sectors (0.3 MiB) in both releases; one region's copy of the 52 differing files is about 2.1 MB; the header differs (`T-1202G` vs `T-1208H`, area `JT` vs `U`). Growing track 1 moves track 2 (a short warning or silence), changes the system area's sizes, and rules out SSP (`docs/lessons_from_cyberbots.md`, section 4). The system area also decides which BIOS region a real Saturn accepts: **UNKNOWN** how a merged image should be labelled. Cyberbots' options sub-menu and spare-save-byte pattern (D-055 to D-058) is the sibling precedent.
 
 ## Gates
 
@@ -396,18 +441,17 @@ tasks" just in time). The method for each is in the three sibling documents.
 
 | ID | Milestone | Outline |
 | --- | --- | --- |
-| RE-001 | M1 | Switch the chosen item in live RAM of the base release, with a no-write control. |
+| RE-001 | M1 | Switch the chosen item in live RAM of the US release, with a no-write control. |
 | DISC-001 | M2 | Trace the RAM data to its disc file by a write breakpoint from a pre-load checkpoint; identify the format. |
 | DISC-002 | M2 | Reproduce the M1 change from a rebuilt image (same-size, in place, EDC/ECC regenerated with `tools/disc/patch_image.py`); cold-boot play check by the agent. |
 | RE-002 | M3 | Selection: what picks each instance (character, opponent, health, route), and forcing it from a checkpoint. |
 | RE-003 | M3 | Generator for one character; every instance verified live by forcing. |
 | RE-004 | M4 | A second character through the same mechanism. |
 | RE-005 | M5 | Whole roster for the class; capacity; regression references. |
-| END-001 | M1-M5 for END-01/02/03 | Epilogue and ending text: reach, renderer, RAM, disc source, English donor (PSP or new), timing against the art scroll. |
+| END-002 | M1-M5 for END-01/02/03 | Epilogue and ending text for US Enhanced, after `END-001`: English donor (PSP or new), timing against the art scroll, roster. |
+| AUD-002 | M1-M5 for AUD/ANI | Voices and poses for US Enhanced, after `AUD-001`: the rest of the roster (Donovan, Sasquatch first). |
 | QUO-001 | M1-M5 for QUO-01 | Victory quotes: inventory per release, selection conditions, donor English. |
-| AUD-001 | M1-M5 for AUD/ANI | Voices and poses: which sample or animation each release selects, from the identical sound files; sample-level comparison (`EXP-0088` method). |
-| LOC-001 | M7 | Names policy and variants (NAM-02/03); whether both releases' name art is on both discs; toggle decided early (`docs/lessons_from_xvsf.md`, lesson 9). |
-| OPT-001 | M7 | An options sub-menu for regional variants, if wanted (Cyberbots D-055 to D-058 pattern). |
+| LOC-001 | M7 | Names in each edition (NAM-02/03; deferred from `DOC-002`); whether both releases' name art is on both discs; toggle decided early (`docs/lessons_from_xvsf.md`, lesson 9). |
 | UI-001 | M8 | Title, attract, menus, credits, boot warnings: each surface the register marks different. |
 | COV-001 | M8 | Coverage register: every row resolved (`docs/coverage_exceptions.md`). |
 | SPECIAL-001 | M9, user approval | Unused or unreachable assets, debug features, hidden content. |

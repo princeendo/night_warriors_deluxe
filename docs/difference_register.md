@@ -35,13 +35,13 @@ difference**.
 | NAM-02 | Fighter names | Gallon/Jon Talbain, Zabel Zarock/Lord Raptor, Aulbath/Rikuo, Phobos/Huitzil, Lei-Lei/Hsien-Ko. | — | File names keep the JP names on both discs | — | — | UNKNOWN | `REF-004`, `LOC-001` |
 | NAM-03 | Supporting name | Anita is Amanda in the Western localization. | — | — | — | — | UNKNOWN | `REF-004` |
 | NAM-04 | Supporting name | Lin-Lin/Mei-Ling: only a lead for later games. | — | — | — | — | UNKNOWN | `REF-004` |
-| END-01 | Post-ending epilogue | JP epilogue text over the scrolling character art is absent from export; the art scroll remains. | — | — | — | PSP gallery (to verify) | UNKNOWN | `END-001` |
+| END-01 | Post-ending epilogue | JP epilogue text over the scrolling character art is absent from export; the art scroll remains. | The user: post-ending artwork with scrolling Japanese text, per character (2026-11-13) | 14 `END*.BG` and `ENDDATA.BIN` byte-identical on both discs; `ENDING.O` differs in 1,668 bytes (static) | — | PSP gallery (to verify) | UNKNOWN | `END-001` |
 | END-02 | Main endings | Rewritten, different page counts (arcade lead). | — | — | — | — | UNKNOWN | `END-001` |
 | END-03 | Pyron's ending | English: consuming Earth; JP: collecting planets (reported). | — | — | — | — | UNKNOWN | `END-001` |
 | QUO-01 | Victory quotes | Inventories and selection differ (arcade lead; English has health and mirror conditions). | — | — | — | — | UNKNOWN | `QUO-001` |
-| AUD-01 | Morrigan normal throw | Extra JP voice sample (Saturn report, from memory). | — | Sound files byte-identical on both discs | — | — | UNKNOWN | `AUD-001` |
-| AUD-02 | Morrigan command throw | Extra JP voice sample (same report). | — | as AUD-01 | — | — | UNKNOWN | `AUD-001` |
-| AUD-03 | Morrigan bat-seat win pose | Full JP spoken line (same report). | — | as AUD-01 | — | — | UNKNOWN | `AUD-001` |
+| AUD-01 | Morrigan normal throw | Extra JP voice sample (Saturn report, from memory). | — (report from memory) | Sound files, `MORRIGA.BIN` and `MORRIGA*.SEQ` byte-identical on both discs (static) | — | — | UNKNOWN | `AUD-001` |
+| AUD-02 | Morrigan command throw | Extra JP voice sample (same report). | — (report from memory) | Sound files, `MORRIGA.BIN` and `MORRIGA*.SEQ` byte-identical on both discs (static) | — | — | UNKNOWN | `AUD-001` |
+| AUD-03 | Morrigan bat-seat win pose | Full JP spoken line (same report). | — (report from memory) | Sound files, `MORRIGA.BIN` and `MORRIGA*.SEQ` byte-identical on both discs (static) | — | — | UNKNOWN | `AUD-001` |
 | AUD-04 | Donovan victory audio | Extra JP victory sounds (arcade lead). | — | as AUD-01 | — | — | UNKNOWN | `AUD-001` |
 | ANI-01 | Sasquatch victories | JP pose/sound differences (arcade lead); a US Saturn guide documents a hidden pose. | — | — | — | — | UNKNOWN | `AUD-001` |
 | BIO-01 | Manual biographies | US manual has character stories; JP/US booklet comparison outstanding. | — | — | — | — | UNKNOWN (off-disc) | `REF-003` |
