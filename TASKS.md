@@ -62,7 +62,13 @@ task repeats a sibling task, the note names it for its method only.
   sets flag 2 and language 1 as two constants in `MAIN.BIN`; the Japanese
   release never writes them. The flag is also read by the title, a sprite
   overlay and three character overlays (what for: UNKNOWN).
-- Next: `DISC-002`, the same result from a rebuilt US image.
+- **2026-11-14: the flag is a broader switch** (`EXP-0014`, D-014):
+  clearing it in US RAM also makes Morrigan's bat-seat win line play. Her
+  code guards four voice calls with it; `PL14`'s sound calls and about 20
+  `MAIN.BIN` table choices depend on it too (what those are: UNKNOWN).
+- Next: `DISC-002`, the same result from a rebuilt US image, after the
+  flag's other readers are known well enough to decide what clearing it
+  brings along.
   Still open in `END-001`: the other 13 endings, the stray glyph strip on the
   emblem card.
 
@@ -433,6 +439,7 @@ is not already on the base disc goes on disc).
 - **Progress 2026-11-14:** `EXP-0007` recorded one Morrigan session per release (sound, a state every second, screenshots); the bat-seat pose occurs in both releases; the user heard "some more dialogue" in the Japanese one. Next: replay states before each event with sound-command logging.
 - **Progress 2026-11-14 (`EXP-0008`, D-007):** the bat-seat pose line is CONFIRMED present on the US disc and not played (sample `MORRIGA.BIN` `0x1BAA0`); throw (`50C2C`), Vector Drain (`41220`) and hurt (`4F10C`) samples play only in the Japanese session (SUPPORTED, 1 s states). Remaining for `DONE`: locate US throws and replay them densely beside Japanese ones (matched evidence), then find what selects each sample.
 - **Progress 2026-11-14 (`EXP-0009`, D-008):** a waveform search of the `EXP-0007` recordings confirms the normal-throw voice is never played in the US release (an observed US throw is silent); Vector Drain and hurt voices are absent from the whole US recording (SUPPORTED). Live slot logging during play was abandoned: it made the game stutter (the user's report). Remaining for `DONE`: what selects each sample (the code to change for US Enhanced); a US Vector Drain, if wanted.
+- **Progress 2026-11-14 (`EXP-0014`, D-014):** the epilogue flag also gates Morrigan's voices: clearing it in US RAM after her winning KO makes the bat-seat line play at the same pose (control: no line). Her code (`PL05`) skips four voice calls when the flag is non-zero. Next: the throw and Vector Drain with the flag cleared (needs play), and what `PL14` (two guarded sound calls) is.
 
 ### END-001 - The per-character epilogue screens
 

@@ -630,3 +630,24 @@ Lead: the flag is read by `TITLE.O`, `SOBJ08.O3` and `PL05`/`PL10`/`PL14`,
 so clearing it from boot may change more than the epilogue (known unknowns).
 
 Next action: `DISC-002`, the epilogue from a patched US image.
+
+## 2026-11-14 — EXP-0014: the flag's other readers (DISC-002, AUD-001)
+
+User request: "Check other readers".
+
+Action: matched `PL05.O` to Morrigan's code (player-1 slot in her Victor
+fights, both releases). Listed every flag reader (`EXP-0014/readers.py`):
+four in `PL05` and two in `PL14` skip a sound call when the flag is
+non-zero; `PL10`, `TITLE.O`, `SOBJ08.O3` (tests 4) and about 20 `MAIN.BIN`
+readers (mostly a choice between two tables) not yet explained. Controlled
+run from US `f00011016`: flag 0 vs no write, WAV search for the bat-seat
+sample: present at 5.02 s (0.73) with the flag cleared, absent in the
+control; same pose in both (D-014).
+
+Commands: `ruff check`/`format` on `EXP-0014/` pass.
+
+Not explained: the portrait-frame colour and confetti differ between the two
+runs (not tested whether random).
+
+Next action: decide with the user whether to map the `MAIN.BIN` table
+readers before the one-byte patch, or patch first and compare screens.

@@ -198,3 +198,16 @@ either disc has another store to them. The Japanese release has no such
 code; both bytes stay at the 0 its clear leaves.
 
 Reproduce: `research/experiments/EXP-0013/README.md`, "Reproduction".
+
+## D-014: The same flag silences Morrigan's bat-seat win line in the US release (`AUD-001`, `EXP-0014`)
+
+Holds for: US image; Morrigan's win over Victor from state `f00011016`.
+
+Writing 0 to the US epilogue flag (`0x0608089A`, D-012, D-013) just after
+Morrigan's winning KO makes the US release play her bat-seat line (sample
+`56D60`, `MORRIGA.BIN` `0x1BAA0`, D-007) at the bat-seat pose; with no write,
+the same replay plays no such line. Morrigan's code (`PL05.O`, at
+`0x06001000` in her fights) has four places that call `0x0603A4D6` only
+when the flag is 0. The flag is therefore not only the epilogue switch.
+
+Reproduce: `research/experiments/EXP-0014/README.md`, "Procedure" step 3.
