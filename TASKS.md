@@ -69,6 +69,8 @@ task repeats a sibling task, the note names it for its method only.
   Japanese-only items (epilogue gate, Morrigan's four voice calls, two
   `PL14` sound calls) are separate branches that a patch can open alone.
 - Next: `DISC-002`, opening only those branches from a rebuilt US image.
+  Still open in `END-001`: the other 13 endings, the stray glyph strip on the
+  emblem card.
 
 ## Milestones
 
