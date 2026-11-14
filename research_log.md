@@ -298,3 +298,25 @@ starting "VAM" where the US shows `DARKSTALKERS`, refining `INT-01`.
 Conclusion: CONFIRMED for boot and attract (D-002). `ss.cart auto` kept.
 
 Next action: `EMU-005` (pad) and `EMU-006` (screenshots and states).
+
+## 2026-11-14 — SESSION-0005: pad bindings (EMU-005)
+
+Task: EMU-005
+
+User request: "Yes, start EMU-005".
+
+Action: copied the 13 port 1 gamepad bindings from Cyberbots' interactive
+config (equal to XvSF's) into both homes with `tools.mednafen.home
+--bindings-from`; second run `no change`; both configs now byte-identical to
+the siblings' (`docs/mednafen.md`). Opened Night Warriors (US) in the
+interactive home; the log found the bound controller (`0xecccd365…0000`,
+"PS4 Controller"). The user tried each button in the game's options.
+
+Result (the user, 2026-11-14): "Everything but L/R worked, but that's
+expected. You can anticipate the emulator is working just fine." L and R stay
+on Mednafen's keyboard default. The config was unchanged after the run.
+
+Conclusion: `EMU-005` done. The user's second sentence is recorded as a
+working preference in `local_agent_guidance.md` ("Emulator Trust").
+
+Next action: `EMU-006` (screenshots and save/load states).

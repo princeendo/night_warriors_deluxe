@@ -195,3 +195,44 @@ Unattended: the same with `MEDNAFEN_HOME="$PWD/local/mednafen_quiet"`, with
 stdout and stderr redirected to a file under the ignored `local/logs/`. Stock
 Mednafen has no log-directory setting. No disc has been loaded yet; the first
 boots are `EMU-003`, run with the user present.
+
+## Pad Mapping (`EMU-005`, 2026-11-14)
+
+The 13 port 1 gamepad bindings are identical in Cyberbots' and XvSF's
+interactive configurations (both files `cb1c2d3b…a1e9`), so they were copied
+from Cyberbots' into both homes:
+
+```bash
+./invenv.sh python -m tools.mednafen.home --bindings-from \
+  ../cyberbots_saturn_en_translation/local/mednafen/mednafen.cfg
+```
+
+The first run changed the 13 binding lines in each home; a second reported
+`no change`.
+
+| Saturn control | Binding (joystick `0xecccd365fc40db2f0006000c00010000`) |
+| --- | --- |
+| Up / Down | `abs_1-` / `abs_1+` |
+| Left / Right | `abs_0-` / `abs_0+` |
+| A / B / C | `button_0` / `button_1` / `button_10` |
+| X / Y / Z | `button_2` / `button_3` / `button_9` |
+| L / R | keyboard `0x0 19` (Mednafen's default) |
+| Start | `button_6` |
+
+Mednafen's log names the controller with that ID "PS4 Controller" (the
+name macOS reports; the siblings recorded the user's 8BitDo M30).
+
+The configurations are now byte-identical to Cyberbots' and XvSF's, so the
+hashes recorded under `EMU-002` above are superseded:
+
+| File | Size | SHA-256 |
+| --- | ---: | --- |
+| `local/mednafen/mednafen.cfg` | 653,154 | `cb1c2d3b8bf5bde19613fdd19d917350838114d9ce390df5db7e87872019a1e9` |
+| `local/mednafen_quiet/mednafen.cfg` | 653,152 | `aad9a7ef68d31d249fcb12383bf6e3323d04b0d3986d355ed8cf9faa303c57cf` |
+
+Observed: the user opened Night Warriors (US) in the interactive home and
+tried each button in the game's options. The user (2026-11-14): "Everything
+but L/R worked, but that's expected." L and R stay on the keyboard default;
+the game's six attack buttons are A, B, C, X, Y, Z. After the run,
+`tools.mednafen.home` reported `no change` and the interactive config still
+hashed `cb1c2d3b…a1e9`.

@@ -42,8 +42,9 @@ task repeats a sibling task, the note names it for its method only.
   `EXP-0001`, D-001), each on its own BIOS.
 - **2026-11-13: no extended-RAM cart needed for boot and attract**
   (`EMU-004`, `EXP-0002`, D-002).
-- Next unblocked tasks: `EMU-005` (pad), `EMU-006` (screenshots and
-  states), both with the user present, on the M0 chain both
+- **2026-11-14: pad confirmed by the user** (`EMU-005`).
+- Next unblocked tasks: `EMU-006` (screenshots and states, with the user
+  present), on the M0 chain both
   investigations need; offline
   meanwhile: `DIFF-001` (classify the 52 differing files), `ENV-007`
   (database check), `DOC-003` (reference catalog).
@@ -236,13 +237,14 @@ is not already on the base disc goes on disc).
 
 ### EMU-005 - Configure and document the pad
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Milestone:** M0
 - **Dependencies:** EMU-003.
 - **Blockers:** None; run with the user present.
 - **Objective:** The user's controller drives every button the game uses, and Start, in game.
 - **Acceptance criteria:** A mapping table is recorded and each button is observed in the game's button configuration or in play.
 - **Notes:** Start from the siblings' 8BitDo M30 mapping (six buttons, like this game).
+- **Done 2026-11-14** (`SESSION-0005`, `docs/mednafen.md`): sibling bindings copied into both homes; the user tried every button in the US release's options: "Everything but L/R worked, but that's expected." Configs equal Cyberbots' and XvSF's (`cb1c2d3b…a1e9`, `aad9a7ef…57cf`).
 
 ### EMU-006 - Verify screenshots and save states
 
