@@ -606,3 +606,27 @@ RAM change instead of preceding it, and `REF-004` was not done.
 
 Next action: write up the M2 tasks (`DISC-001`: where the epilogue flag and
 language byte are set; `DISC-002`: the same result from a rebuilt US image).
+
+## 2026-11-14 — EXP-0013: where the two bytes are set (DISC-001)
+
+Task: DISC-001
+
+User request: "Yes, trace them" (start M2 by tracing where the epilogue flag
+and language byte are set).
+
+Action: wrote up `DISC-001` and `DISC-002`. Static cross-reference
+(`EXP-0013/xref.py`) of every program file: the only stores are in the US
+`MAIN.BIN` start-up routine (`mov #2` / `mov #1` constants). Boot write
+watches (`EXP-0013/boot_watch.py`, 1,800 frames, exact one-byte ranges) on
+both releases: after `MAIN.BIN` clears its work area, US writes flag 2 and
+language 1 once (PC `0x06012128`, `0x0601212E`); Japanese writes neither.
+A first US run with 4-byte windows also caught a settings copy writing the
+neighbouring bytes; superseded by the exact runs (D-013).
+
+Commands: `ruff check` and `ruff format --check` on `EXP-0013/` pass;
+`xref.py` self-check passes.
+
+Lead: the flag is read by `TITLE.O`, `SOBJ08.O3` and `PL05`/`PL10`/`PL14`,
+so clearing it from boot may change more than the epilogue (known unknowns).
+
+Next action: `DISC-002`, the epilogue from a patched US image.

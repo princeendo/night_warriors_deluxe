@@ -7,6 +7,8 @@ belong in `docs/difference_register.md` instead.
 
 | Question | Current evidence | Smallest discriminating experiment | Task |
 | --- | --- | --- | --- |
+| What else does the US epilogue flag (`0x0608089A` = 2; Japanese 0) control? | Read by `TITLE.O`, `SOBJ08.O3`, `PL05`/`PL10`/`PL14` `.O`/`.O2` and MAIN code that also tests for 4 (`EXP-0013`). Could be a general export switch (Morrigan's voices, `AUD-001`?). | Disassemble each reader; then clear the flag at boot in US RAM and compare the title, attract and one fight of each of those characters with a no-write control. | `DISC-002`, `AUD-001` |
+| What does the US-only byte `0x060808A8` (= 1, set with the language byte) do? | Written once at US start-up; no other load in `MAIN.BIN` (`EXP-0013`). | Search the overlays for the literal; clear it at boot and compare. | `DISC-002` |
 | Are these images verified Redump dumps, and what do the Japanese labels 1M, 2M/4M and 3M distinguish? | The three Japanese track 1s are byte-identical; track 2 differs only by a 1-4 sample offset (`references/saturn_jp/README.md`). | Compare each track's size, CRC-32, MD5 and SHA-1 with the Redump entries for both titles. | `ENV-007` |
 | ~~Which cartridge setting does each release need?~~ Answered for boot and attract (D-002): none; the project keeps `ss.cart auto` (backup memory). Still open: does play or saving check for a cart? | `EXP-0002` | Note any cart message in later play sessions. | later, only if seen |
 | Does Mednafen boot each release with the BIOS of its region, and does the base-image choice depend on it? | JP area `JT`, US area `U`; both BIOS files are available from the siblings. | Boot each image and read the BIOS line in the log. | `EMU-002`, `EMU-003` |

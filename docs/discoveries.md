@@ -182,3 +182,19 @@ the US release loads `ST1USA.BIN`, which draws as rows of "A" (a
 placeholder).
 
 Reproduce: `research/experiments/EXP-0012/README.md`, "Reproduction".
+
+## D-013: The US start-up code sets the epilogue flag and language byte; the Japanese release never writes them (`DISC-001`, `EXP-0013`)
+
+Holds for: Japanese 1M image and US image, from power-on to the end of
+start-up (frame 1,800).
+
+The US `MAIN.BIN` start-up routine (`0x06012070`) writes the epilogue flag
+`0x0608089A` = 2 (`mov #2,r2` at file offset `0x11A`, stored at
+`0x06012128`) and the language byte `0x06080882` = 1 (`mov #1,r4` at
+`0x11E`, stored at `0x0601212E`; the same register also sets `0x060808A8` =
+1), once, right after `MAIN.BIN` clears its work area. A write watch from
+power-on shows no other writer after that clear, and no program file on
+either disc has another store to them. The Japanese release has no such
+code; both bytes stay at the 0 its clear leaves.
+
+Reproduce: `research/experiments/EXP-0013/README.md`, "Reproduction".

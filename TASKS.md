@@ -58,8 +58,11 @@ task repeats a sibling task, the note names it for its method only.
   epilogue after the English ending. The user (2026-11-14), asked "Count
   this as M1 reached, with your GO recorded now?": "Yes, record GO". M1 was
   reached inside `END-001` before the gate; the user accepted it as is.
-- Next (M2, tasks to write up first): where the two bytes are set
-  (`DISC-001`), then the same result from a rebuilt US image (`DISC-002`).
+- **2026-11-14: `DISC-001` done** (`EXP-0013`, D-013): the US start-up code
+  sets flag 2 and language 1 as two constants in `MAIN.BIN`; the Japanese
+  release never writes them. The flag is also read by the title, a sprite
+  overlay and three character overlays (what for: UNKNOWN).
+- Next: `DISC-002`, the same result from a rebuilt US image.
   Still open in `END-001`: the other 13 endings, the stray glyph strip on the
   emblem card.
 
@@ -454,6 +457,26 @@ is not already on the base disc goes on disc).
 - **Acceptance criteria:** Options with costs presented to the user as a multiple-choice question: where the choice is made (boot menu, options screen, a button held at boot), where it is stored, and how each edition gets its code and data (both regions' differing files on disc and loaded by name, or one region's files plus patches applied at load); whether "original" must be byte-for-byte that release's code; the disc-space route. The answer is recorded verbatim.
 - **Notes:** Static (`SESSION-0002`): track 1 has 150 free sectors (0.3 MiB) in both releases; one region's copy of the 52 differing files is about 2.1 MB; the header differs (`T-1202G` vs `T-1208H`, area `JT` vs `U`). Growing track 1 moves track 2 (a short warning or silence), changes the system area's sizes, and rules out SSP (`docs/lessons_from_cyberbots.md`, section 4). The system area also decides which BIOS region a real Saturn accepts: **UNKNOWN** how a merged image should be labelled. Cyberbots' options sub-menu and spare-save-byte pattern (D-055 to D-058) is the sibling precedent.
 
+## Phase G: M2, the Same Change From a Disc Image
+
+### DISC-001 - Where the epilogue flag and language byte are set
+
+- **Status:** `DONE` (2026-11-14)
+- **Milestone:** M2
+- **Dependencies:** GATE-M0.
+- **Objective:** Find the code that writes the epilogue flag and language byte (D-012) in each release, so a disc patch can set them.
+- **Acceptance criteria:** Every writer of both bytes from power-on through start-up identified by a write watch on both releases; a static search of every program file for other writers; the instruction and file offset that a patch would change named.
+- **Result:** the US `MAIN.BIN` start-up routine writes flag 2 and language 1 as constants (file offsets `0x11A`, `0x11E`), once; the Japanese release never writes them (`EXP-0013`, D-013). The flag is also read by `TITLE.O`, `SOBJ08.O3` and `PL05`/`PL10`/`PL14` (HYPOTHESIS: a broad export switch).
+
+### DISC-002 - The US Enhanced epilogue from a rebuilt US image
+
+- **Status:** `READY`
+- **Milestone:** M2
+- **Dependencies:** DISC-001.
+- **Objective:** Reproduce D-012 (English main ending, then the Japanese epilogue) from a patched copy of the US image with no RAM writes.
+- **Acceptance criteria:** A same-size, in-place patch (`tools/disc/patch_image.py`, EDC/ECC regenerated) written to `build/`, every changed byte recorded; a cold boot of the patched image; Morrigan's ending forced as in D-009 (stage byte only) shows the Japanese epilogue after the English main ending; the unpatched image under the same forcing shows none (control); what else the cleared flag changes is checked on the screens the flag's other readers serve, or listed as open.
+- **Notes:** Clearing the flag is one byte (`MAIN.BIN` `0x11B`, `02` → `00`). The ST1 name array's USA entry and the language switch after the main ending (D-012) are not one-byte constants: the language byte is read per line by the main-ending renderer, so the epilogue needs either its own language test changed or the USA name entry pointed at `ST1JPN` plus a renderer change. That design is this task's first experiment.
+
 ## Gates
 
 ### GATE-M0 - Confirm environment and checkpoint prerequisites
@@ -484,7 +507,7 @@ tasks" just in time). The method for each is in the three sibling documents.
 | ID | Milestone | Outline |
 | --- | --- | --- |
 | RE-001 | M1 | **Done** (`EXP-0012`, D-012; no-write control `EXP-0010` `us-ko-n9-b`): Morrigan's Japanese epilogue in US RAM. |
-| DISC-001 | M2 | Trace the RAM data to its disc file by a write breakpoint from a pre-load checkpoint; identify the format. |
+| DISC-001 | M2 | **Done** (`EXP-0013`, D-013): see the task above. |
 | DISC-002 | M2 | Reproduce the M1 change from a rebuilt image (same-size, in place, EDC/ECC regenerated with `tools/disc/patch_image.py`); cold-boot play check by the agent. |
 | RE-002 | M3 | Selection: what picks each instance (character, opponent, health, route), and forcing it from a checkpoint. |
 | RE-003 | M3 | Generator for one character; every instance verified live by forcing. |
