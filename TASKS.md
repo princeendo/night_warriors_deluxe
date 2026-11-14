@@ -45,8 +45,11 @@ task repeats a sibling task, the note names it for its method only.
 - **2026-11-14: pad confirmed by the user** (`EMU-005`).
 - **2026-11-14: hotkey screenshots and states work in both releases**
   (`EMU-006`, `EXP-0003`, D-003).
-- Next unblocked tasks: `EMU-007` (debugger dumps, with the user present),
-  then `EMU-020`/`EMU-021` (agent interface), on the M0 chain both
+- **2026-11-14: stock debugger dumps, writes and breakpoints work** (`EMU-007`,
+  `EXP-0004`, D-004).
+- Next unblocked tasks: `EMU-020` (ask about reusing the agent patch), then
+  `EMU-021`; `DBG-001` (validate the state extractor against `EXP-0004`'s
+  dumps, offline); on the M0 chain both
   investigations need; offline
   meanwhile: `DIFF-001` (classify the 52 differing files), `ENV-007`
   (database check), `DOC-003` (reference catalog).
@@ -260,20 +263,21 @@ is not already on the base disc goes on disc).
 
 ### EMU-007 - Verify debugger access and memory dumps
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Milestone:** M0
 - **Dependencies:** EMU-006.
 - **Blockers:** None; run with the user present.
 - **Objective:** Dump WRAM-L and WRAM-H at a paused instant with the stock debugger.
 - **Acceptance criteria:** Dumps of `0x00200000-0x002FFFFF` and `0x06000000-0x060FFFFF` are saved with sizes and hashes recorded; a memory write and a write breakpoint are each observed once.
 - **Notes:** Keep this minimal and move to `EMU-020`/`EMU-021` straight after: every sibling lost time to stock-debugger GUI automation (`docs/lessons_from_xvsf.md`, lesson 10; `docs/lessons_from_cyberbots.md`, section 3).
+- **Done 2026-11-14** (`EXP-0004`, D-004): repeatable 1 MiB dumps of both banks in both releases, a write and its revert, and a write breakpoint halting on a WRAM-H store. A first attempt was disturbed by use of the computer and rerun.
 
 ### EMU-020 - Record why stock Mednafen is insufficient
 
-- **Status:** `BLOCKED`
+- **Status:** `READY`
 - **Milestone:** M0
 - **Dependencies:** EMU-007.
-- **Blockers:** EMU-007.
+- **Blockers:** None; ask the user about reusing the patch.
 - **Objective:** Satisfy `AGENTS.md` rule 16 before using the patched build.
 - **Acceptance criteria:** A short record cites MSHvSF `EMU-012`/`EMU-020`, XvSF `EMU-020` and Cyberbots `EMU-020` and confirms the same limits apply here; the user is asked whether to reuse the patch (deferred here from `DOC-002`) and the answer is recorded verbatim.
 
@@ -289,10 +293,10 @@ is not already on the base disc goes on disc).
 
 ### DBG-001 - Validate the save-state extractor on Vampire Hunter
 
-- **Status:** `BLOCKED`
+- **Status:** `READY`
 - **Milestone:** M0
 - **Dependencies:** EMU-007.
-- **Blockers:** EMU-007.
+- **Blockers:** None. Use `EXP-0004`'s dumps and same-instant states.
 - **Objective:** Extract WRAM-L, WRAM-H, VDP1 and VDP2 VRAM from states, validated byte for byte against debugger dumps of the same instant on Vampire Hunter.
 - **Acceptance criteria:** Each region matches a stock debugger dump exactly; the result goes to `docs/discoveries.md`; cart RAM and sound RAM stay `HYPOTHESIS`.
 - **Notes:** Every sibling found each stored 16-bit element byte-swapped. Re-test, do not assume. `mcs_extract` expects a 4 MiB cart section (Cyberbots' gap); size it from the state if `EMU-004` picks another cart. Sound RAM (for `AUD-001`) is not yet supported by the extractor.

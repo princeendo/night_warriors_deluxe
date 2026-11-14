@@ -53,3 +53,17 @@ not change the state file. Keys are not fully reliable: one post-load F9 and
 one F12 were lost.
 
 Reproduce: `research/experiments/EXP-0003/README.md`, "Procedure".
+
+## D-004: The stock debugger dumps work RAM, writes memory and halts on writes in both releases (`EMU-007`, `EXP-0004`)
+
+Holds for: Japanese 1M image and US image.
+
+With emulation frozen on the title (`option+a`), the stock debugger's memory
+editor dumps WRAM-L (`0x00200000-0x002FFFFF`) and WRAM-H
+(`0x06000000-0x060FFFFF`) as 1 MiB files, identical when repeated; a 16-byte
+`l` load into WRAM-H reads back, and loading the saved original restores it;
+a WRAM-H write breakpoint (`shift+w`) halts the CPU on a store into that range.
+A state saved at the same frozen instant accompanies each release's dumps
+(Japanese `f945cb51…91a0`, US `2eb7dbd0…49db`).
+
+Reproduce: `research/experiments/EXP-0004/README.md`, "Procedure".

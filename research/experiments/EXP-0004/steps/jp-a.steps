@@ -1,0 +1,40 @@
+# EMU-007 run A (jp): run A with captures around the first WRAM-L dump prompt
+65 option+a
+65 F5
+65 option+d
+65 option+3
+65 period
+65 window=local/emu007/win/jp-a1-wraml.png
+65 d
+65 type=00000000 000fffff research/memory_dumps/emu007/jp/wraml-1.bin
+65 window=local/emu007/win/jp-a1b-wraml-prompt.png
+65 return
+65 window=local/emu007/win/jp-a1c-wraml-result.png
+65 d
+65 type=00000000 000fffff research/memory_dumps/emu007/jp/wraml-2.bin
+65 return
+65 period
+65 window=local/emu007/win/jp-a2-wramh.png
+65 d
+65 type=00000000 000fffff research/memory_dumps/emu007/jp/wramh-1.bin
+65 return
+65 d
+65 type=00000000 000fffff research/memory_dumps/emu007/jp/wramh-2.bin
+65 return
+65 d
+65 type=000f0000 000f000f research/memory_dumps/emu007/jp/w-before.bin
+65 return
+65 l
+65 type=000f0000 000f000f research/memory_dumps/emu007/jp/w-pattern.bin
+65 return
+65 d
+65 type=000f0000 000f000f research/memory_dumps/emu007/jp/w-after.bin
+65 return
+65 window=local/emu007/win/jp-a3-written.png
+65 l
+65 type=000f0000 000f000f research/memory_dumps/emu007/jp/w-before.bin
+65 return
+65 d
+65 type=000f0000 000f000f research/memory_dumps/emu007/jp/w-revert.bin
+65 return
+65 window=local/emu007/win/jp-a4-reverted.png

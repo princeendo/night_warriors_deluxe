@@ -345,3 +345,32 @@ known key losses.
 
 Next action: `EMU-007` (stock debugger dumps), kept minimal before
 `EMU-020`/`EMU-021`.
+
+## 2026-11-14 — EXP-0004: stock debugger (EMU-007)
+
+Task: EMU-007
+
+User request: "Yes, start EMU-007".
+
+Hypothesis: in each release the stock debugger dumps both work-RAM banks
+repeatably, writes and restores memory, and halts on a WRAM-H write.
+
+Action: Cyberbots' `EXP-0004` step files (same actions; freeze at 65 s) per
+release: run A (two dumps per bank, write test, state) and run F (write
+breakpoint over WRAM-H, window captures).
+
+First attempt (01:19): the user used the computer meanwhile ("I'm pretty sure
+I messed you up, sorry"); the Japanese run A wrote no dumps and its F12 timed
+out. Stopped all runs (no process left; settings and sources unchanged),
+moved the output to `local/emu007/disturbed/`. The user: "Yes, rerun now".
+
+Result (rerun, 01:22-01:29): all four runs exit 0; per release, identical
+1 MiB dump pairs for each bank, the write test reads back pattern then
+original, and the breakpoint halts on a stack store into WRAM-H (Japanese PC
+`0605186C`, US PC `06000864` in an `INT47` handler). Same-instant states kept
+for `DBG-001`.
+
+Conclusion: CONFIRMED (D-004). Hotkey runs need the user hands-off.
+
+Next action: `EMU-020` (put the agent-patch reuse question to the user);
+`DBG-001` can run offline meanwhile.
