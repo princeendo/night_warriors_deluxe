@@ -40,8 +40,10 @@ task repeats a sibling task, the note names it for its method only.
 - **2026-11-13: project-local homes and both BIOS files** (`EMU-002`).
 - **2026-11-13: both releases cold-boot to their titles** (`EMU-003`,
   `EXP-0001`, D-001), each on its own BIOS.
-- Next unblocked tasks: `EMU-004` (cart), `EMU-005` (pad), `EMU-006`
-  (screenshots and states), all with the user present, on the M0 chain both
+- **2026-11-13: no extended-RAM cart needed for boot and attract**
+  (`EMU-004`, `EXP-0002`, D-002).
+- Next unblocked tasks: `EMU-005` (pad), `EMU-006` (screenshots and
+  states), both with the user present, on the M0 chain both
   investigations need; offline
   meanwhile: `DIFF-001` (classify the 52 differing files), `ENV-007`
   (database check), `DOC-003` (reference catalog).
@@ -223,13 +225,14 @@ is not already on the base disc goes on disc).
 
 ### EMU-004 - Determine the cartridge requirement
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Milestone:** M0
 - **Dependencies:** EMU-003.
 - **Blockers:** None; run with the user present.
 - **Objective:** Find which cartridge setting each release needs, with controls.
 - **Acceptance criteria:** Boots with `ss.cart` set to `none`, `backup`, `extram1` and `extram4` are each recorded per release (log line, what the game shows, how far it gets); the project setting is chosen from that evidence.
-- **Notes:** `EXP-0001`: `ss.cart auto` gives both releases a backup-memory cart (no database entry). The peripheral field reads `J` in both headers. MSHvSF and XvSF needed the 4 MiB cart; Cyberbots needed none for boot and attract.
+- **Notes:** `EXP-0001`: `ss.cart auto` gives both releases a backup-memory cart (no database entry). The peripheral field reads `J` in both headers.
+- **Done 2026-11-13** (`EXP-0002`, D-002): `none`, `extram1` and `extram4` give identical boot and attract frames in both releases; the backup cart (`auto`, from `EXP-0001`) shifts timing by under a second; no warning. Project setting kept: `ss.cart auto`. Play was not tested. MSHvSF and XvSF needed the 4 MiB cart; Cyberbots needed none for boot and attract.
 
 ### EMU-005 - Configure and document the pad
 

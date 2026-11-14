@@ -46,7 +46,7 @@ difference**.
 | ANI-01 | Sasquatch victories | JP pose/sound differences (arcade lead); a US Saturn guide documents a hidden pose. | — | — | — | — | UNKNOWN | `AUD-001` |
 | BIO-01 | Manual biographies | US manual has character stories; JP/US booklet comparison outstanding. | — | — | — | — | UNKNOWN (off-disc) | `REF-003` |
 | SYS-01 | Appendix/settings | Present under both titles; not a JP-only feature (reported). | — | — | — | — | UNKNOWN | `REF-004` |
-| INT-01 | Intro | Found in `EXP-0001`, not in the web research. | Second 38 of a cold boot: a white screen with a dark mark (one sample) | Second 39: a red `DARKSTALKERS` logo card (second 38 black) | — | — | SUPPORTED as a difference (one-second sampling) | `REF-004` |
+| INT-01 | Intro logo card | Found in `EXP-0001`, not in the web research. | Second 38-39 of a cold boot: a red hand-drawn logo starting "VAM" being drawn on black (`EXP-0002` 038; `EXP-0001` 038 caught a white flash of it) | Second 39: a red `DARKSTALKERS` logo card | rewritten (HYPOTHESIS: the Japanese card spells the Japanese title) | — | SUPPORTED as a difference (one-second sampling) | `REF-004` |
 | OTHER-01 | Everything else | Opening/attract, menus, credits, blood, presentation, music, mechanics, loading/saves, hidden content: no comparison yet. | — | — | — | — | UNKNOWN | `REF-004`, `DIFF-001` |
 
 ## Static Differences Between The Data Tracks

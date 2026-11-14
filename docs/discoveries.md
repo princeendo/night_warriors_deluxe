@@ -28,3 +28,14 @@ frame 065 hashes `216118a8…58a3`, US `d6617a89…177a`. Source hashes were
 unchanged.
 
 Reproduce: `research/experiments/EXP-0001/README.md`, "Procedure".
+
+## D-002: Neither release needs an extended-RAM cart for boot and attract (`EMU-004`, `EXP-0002`)
+
+Holds for: Japanese 1M image and US image; boot and attract mode only.
+
+With `ss.cart` `none`, `extram1` or `extram4`, each release boots to the same
+screens as with the backup-memory cart of D-001, with no warning; the three
+settings give byte-identical frames, and the backup cart shifts timing by a
+fraction of a second. The project keeps `ss.cart auto` (backup memory).
+
+Reproduce: `research/experiments/EXP-0002/README.md`, "Procedure".

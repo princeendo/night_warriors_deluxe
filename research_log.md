@@ -277,3 +277,24 @@ Conclusion: CONFIRMED (D-001). `cold_boot.py` re-validated on Vampire Hunter.
 
 Next action: `EMU-004` (cart settings), `EMU-005` (pad), `EMU-006`
 (screenshots and states), with the user present.
+
+## 2026-11-13 — EXP-0002: cart settings on boot and attract (EMU-004)
+
+Task: EMU-004
+
+User request (2026-11-13): "Yes, start EMU-004".
+
+Hypothesis: neither release needs an extended-RAM cart for boot and attract.
+
+Action: one 120 s no-input boot per release with `ss.cart` `none`,
+`extram1`, `extram4` (`EXP-0001` stands for `backup`, which `auto` chose);
+pinned config restored after each; source manifests before and after.
+
+Result: the three settings give byte-identical frames within each release
+and differ from `EXP-0001` only by sub-second timing (agent-reviewed); no
+warning; sources unchanged. Bonus: Japanese frame 038 shows a red logo
+starting "VAM" where the US shows `DARKSTALKERS`, refining `INT-01`.
+
+Conclusion: CONFIRMED for boot and attract (D-002). `ss.cart auto` kept.
+
+Next action: `EMU-005` (pad) and `EMU-006` (screenshots and states).
