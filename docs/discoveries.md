@@ -39,3 +39,17 @@ settings give byte-identical frames, and the backup cart shifts timing by a
 fraction of a second. The project keeps `ss.cart auto` (backup memory).
 
 Reproduce: `research/experiments/EXP-0002/README.md`, "Procedure".
+
+## D-003: Hotkey screenshots and save/load states work in both releases (`EMU-006`, `EXP-0003`)
+
+Holds for: Japanese 1M image and US image.
+
+With stock Mednafen and the quiet home, F9 writes a 352x240 screenshot
+(330x240 during the BIOS phase) to `snaps/`, F5 saves a state of about 1.6 MB
+to `mcs/`, and F7 restores it in the same session and in a fresh cold boot. A
+reloaded title state reproduces the title screenshot byte for byte (Japanese
+`a166ccb4…f0fd`, same session; US `025b8fd8…2209`, fresh boot). Loading does
+not change the state file. Keys are not fully reliable: one post-load F9 and
+one F12 were lost.
+
+Reproduce: `research/experiments/EXP-0003/README.md`, "Procedure".

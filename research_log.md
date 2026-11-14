@@ -320,3 +320,28 @@ Conclusion: `EMU-005` done. The user's second sentence is recorded as a
 working preference in `local_agent_guidance.md` ("Emulator Trust").
 
 Next action: `EMU-006` (screenshots and save/load states).
+
+## 2026-11-14 — EXP-0003: screenshots and states by hotkey (EMU-006)
+
+Task: EMU-006
+
+User request: "Yes, start EMU-006".
+
+Hypothesis: F9, F5 and F7 work in both releases, and a reloaded title state
+reproduces the title screenshot.
+
+Action: per release, a cold boot with `--keep-focus` (F9 title, F5, F9
+attract, F7, F9, F9) and a fresh boot loading that state (F9, F7, F9, F9).
+
+Result: states of about 1.6 MB, unchanged by loading. Japanese post-load
+screenshot equals the title shot in the same session; US post-load
+screenshot in a fresh boot equals the US title shot. One post-load F9 in
+jp-b was lost; in us-b the F12 was not acted on within 30 s and the tool
+stopped Mednafen with SIGTERM (no leftover process, no timing record). The
+`NOW LOADING` screen after the title is byte-identical in both releases.
+
+Conclusion: CONFIRMED (D-003). `hotkeys.py` re-validated, with the siblings'
+known key losses.
+
+Next action: `EMU-007` (stock debugger dumps), kept minimal before
+`EMU-020`/`EMU-021`.

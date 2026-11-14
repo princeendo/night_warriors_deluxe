@@ -43,8 +43,10 @@ task repeats a sibling task, the note names it for its method only.
 - **2026-11-13: no extended-RAM cart needed for boot and attract**
   (`EMU-004`, `EXP-0002`, D-002).
 - **2026-11-14: pad confirmed by the user** (`EMU-005`).
-- Next unblocked tasks: `EMU-006` (screenshots and states, with the user
-  present), on the M0 chain both
+- **2026-11-14: hotkey screenshots and states work in both releases**
+  (`EMU-006`, `EXP-0003`, D-003).
+- Next unblocked tasks: `EMU-007` (debugger dumps, with the user present),
+  then `EMU-020`/`EMU-021` (agent interface), on the M0 chain both
   investigations need; offline
   meanwhile: `DIFF-001` (classify the 52 differing files), `ENV-007`
   (database check), `DOC-003` (reference catalog).
@@ -248,19 +250,20 @@ is not already on the base disc goes on disc).
 
 ### EMU-006 - Verify screenshots and save states
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Milestone:** M0
 - **Dependencies:** EMU-003.
 - **Blockers:** None; run with the user present.
 - **Objective:** Screenshots and save/load states work and are stored under ignored paths.
 - **Acceptance criteria:** A state saved and reloaded reproduces the same screen, in each release; files are ignored by git.
+- **Done 2026-11-14** (`EXP-0003`, D-003): F9/F5/F7 work in both releases; a reloaded title state reproduces the title screenshot byte for byte (Japanese same session, US fresh boot); states and screenshots are ignored. One post-load F9 and one F12 were lost.
 
 ### EMU-007 - Verify debugger access and memory dumps
 
-- **Status:** `BLOCKED`
+- **Status:** `READY`
 - **Milestone:** M0
 - **Dependencies:** EMU-006.
-- **Blockers:** EMU-006.
+- **Blockers:** None; run with the user present.
 - **Objective:** Dump WRAM-L and WRAM-H at a paused instant with the stock debugger.
 - **Acceptance criteria:** Dumps of `0x00200000-0x002FFFFF` and `0x06000000-0x060FFFFF` are saved with sizes and hashes recorded; a memory write and a write breakpoint are each observed once.
 - **Notes:** Keep this minimal and move to `EMU-020`/`EMU-021` straight after: every sibling lost time to stock-debugger GUI automation (`docs/lessons_from_xvsf.md`, lesson 10; `docs/lessons_from_cyberbots.md`, section 3).
