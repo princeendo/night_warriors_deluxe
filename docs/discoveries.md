@@ -67,3 +67,18 @@ A state saved at the same frozen instant accompanies each release's dumps
 (Japanese `f945cb51…91a0`, US `2eb7dbd0…49db`).
 
 Reproduce: `research/experiments/EXP-0004/README.md`, "Procedure".
+
+## D-005: The agent interface works on both releases (`EMU-021`, `EXP-0005`)
+
+Holds for: Japanese 1M image and US image.
+
+The sibling patch (`c30146ef…5244`) applies unchanged to Mednafen 1.32.1 and
+builds `vendor/mednafen/build-agent/src/mednafen` (`7826b9b9…f887`). Without
+`MEDNAFEN_AGENT_DIR` it gives the same 119 per-second boot frames as stock.
+With it: agent reads of WRAM-L, WRAM-H, VDP1 VRAM and VDP2 VRAM equal
+`mcs_extract` of a state saved in the same poll; writes round-trip; `pause`,
+`step`, `run` and `frames N` work, and `savestate` is refused while halted;
+write breakpoints log and continue (`bpmode log`) or halt (`bpmode halt`),
+with every register in `events.log`. Agent output may be used as evidence.
+
+Reproduce: `research/experiments/EXP-0005/README.md`, "Procedure".

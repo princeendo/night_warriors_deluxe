@@ -55,6 +55,13 @@ commit `b9a6593`; identical in XvSF and Cyberbots). Frontend only
 (`src/drivers/agent.inc`, `debugger.cpp`, `debugger.h`, `main.cpp`); active
 only when `MEDNAFEN_AGENT_DIR` is set; GPL-2.0, like Mednafen.
 
+### Result (`EMU-021`, `EXP-0005`)
+
+Built in `vendor/mednafen/build-agent/` (binary `7826b9b9…f887`); the stock
+binary is unchanged. V1-V4 pass on both releases (`docs/discoveries.md`
+D-005). Use `tools/mednafen/agent.py`; build and run commands are in
+`vendor/mednafen/README.md`.
+
 ---
 
 ## MSHvSF Protocol Reference (copy)

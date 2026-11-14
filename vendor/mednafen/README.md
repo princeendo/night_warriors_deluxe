@@ -31,3 +31,16 @@ PKG_CONFIG=/opt/homebrew/bin/pkg-config CC=/usr/bin/clang CXX=/usr/bin/clang++ \
   ../src-agent/configure --prefix="$PWD/install" --enable-debugger --enable-ss
 make -j12
 ```
+
+Run, from the repository root:
+
+```bash
+MEDNAFEN_HOME="$PWD/local/mednafen_quiet" MEDNAFEN_AGENT_DIR="$PWD/local/RUN/agent" \
+  vendor/mednafen/build-agent/src/mednafen "<image .cue>"
+```
+
+The client is `tools/mednafen/agent.py`. Validation on Vampire Hunter: V1-V4
+pass on both releases (`EMU-021`, `research/experiments/EXP-0005/README.md`,
+D-005). Patched binary SHA-256
+`7826b9b953ab80cdd6571f0a90829bb953d571ca215d00f9e2bdb50afdd0f887` (21,369,448
+bytes, macOS 26.7.3 arm64).

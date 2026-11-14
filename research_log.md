@@ -394,3 +394,27 @@ Conclusion: `EMU-020` done.
 
 Next action: `EMU-021`: build the patch on a copy of the stock source and
 run V1-V4 on both releases.
+
+## 2026-11-14 — EXP-0005: agent interface built and validated (EMU-021)
+
+Task: EMU-021
+
+User request: "Yes, start EMU-021".
+
+Action: patched a copy of the stock source (`src-agent/`), built it in
+`build-agent/` (31 s + 2 min 17 s, exit 0, no warnings from patched files);
+V1 equivalence boots without the agent directory; `EXP-0005/validate.py`
+(adapted from Cyberbots `EXP-0006`) per release; `mcs_extract` of each V2
+state.
+
+Result: binary `7826b9b9…f887`. Both releases: 119/119 boot frames equal
+stock; four agent reads equal the extractor's output of the same-poll state;
+write round trip exact; halt control as designed; log mode 462/517 hits;
+halt mode stops with registers. Both WRAM-L reads also equal `EXP-0004`'s
+stock WRAM-L dumps. The V4 code addresses differ between releases by a
+constant `0x70` (HYPOTHESIS: shifted code, for `DIFF-001`).
+
+Conclusion: CONFIRMED (D-005). Agent output may be used as evidence.
+
+Next action: `DBG-001` (extractor against stock dumps of the same instant,
+offline).

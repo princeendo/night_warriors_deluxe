@@ -35,26 +35,21 @@ task repeats a sibling task, the note names it for its method only.
   `ENDDATA.BIN`, while `ENDING.O` differs. Track 1 has only 150 free sectors
   (0.3 MiB) against about 2.1 MB for one region's copy of the 52 differing
   files: switching editions will need a larger track 1 or smaller patches.
+- **2026-11-13/14: the emulator chain works on both releases** (`EMU-001` to
+  `EMU-007`, `EMU-020`, `EMU-021`; `EXP-0001` to `EXP-0005`; D-001 to
+  D-005): stock Mednafen 1.32.1 and the patched agent build, each release on
+  its own BIOS, no extended-RAM cart needed for boot and attract, the user's
+  pad, hotkey screenshots and states, stock debugger dumps, and the agent
+  interface (V1-V4).
+- A new regional difference turned up in the intro (`INT-01`).
 - Reverse-engineering experiments in progress: none.
-- **2026-11-13: stock Mednafen 1.32.1 built** (`EMU-001`, `docs/mednafen.md`).
-- **2026-11-13: project-local homes and both BIOS files** (`EMU-002`).
-- **2026-11-13: both releases cold-boot to their titles** (`EMU-003`,
-  `EXP-0001`, D-001), each on its own BIOS.
-- **2026-11-13: no extended-RAM cart needed for boot and attract**
-  (`EMU-004`, `EXP-0002`, D-002).
-- **2026-11-14: pad confirmed by the user** (`EMU-005`).
-- **2026-11-14: hotkey screenshots and states work in both releases**
-  (`EMU-006`, `EXP-0003`, D-003).
-- **2026-11-14: stock debugger dumps, writes and breakpoints work** (`EMU-007`,
-  `EXP-0004`, D-004).
-- **2026-11-14: agent-interface patch reuse approved** (`EMU-020`).
-- Next unblocked tasks: `EMU-021` (build the patched Mednafen and run V1-V4
-  on both releases); `DBG-001` (validate the state extractor against `EXP-0004`'s
-  dumps, offline); on the M0 chain both
-  investigations need; offline
-  meanwhile: `DIFF-001` (classify the 52 differing files), `ENV-007`
-  (database check), `DOC-003` (reference catalog).
-- Nothing about Vampire Hunter's internals is confirmed yet.
+- Next unblocked tasks: `DBG-001` (validate the state extractor against
+  `EXP-0004`'s stock dumps; offline), the last M0 tool check before
+  `AUD-001` and `END-001`. Offline meanwhile: `DIFF-001` (classify the 52
+  differing files), `ENV-007` (database check), `DOC-003` (reference
+  catalog).
+- Confirmed about Vampire Hunter so far: only how it boots and runs in the
+  emulator (D-001 to D-005); nothing about its internals.
 
 ## Milestones
 
@@ -285,13 +280,14 @@ is not already on the base disc goes on disc).
 
 ### EMU-021 - Build and validate the agent interface
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Milestone:** M0
 - **Dependencies:** EMU-020.
 - **Blockers:** None; boots run with the user present (no key presses, so hands-off is not needed).
 - **Objective:** Drive Mednafen from Python so the user only plays.
 - **Acceptance criteria:** `vendor/mednafen/patches/0001-agent-interface.patch` (`c30146ef…5244`) applies to the pinned version and builds; validations V1-V4 (`docs/mednafen_agent_interface.md`) pass on Vampire Hunter states of both releases; `tools/mednafen/agent.py` tests pass.
 - **Notes:** Cyberbots' agent quirks (no save while halted; one Mednafen per home unless `MEDNAFEN_ALLOWMULTI=1`; RAM-written pad input is not seen through the SH-2 cache) are in `docs/lessons_from_cyberbots.md`, section 3.
+- **Done 2026-11-14** (`EXP-0005`, D-005): patch applied without fuzz; binary `7826b9b9…f887`; V1 equivalence 119/119 frames and V1-V4 pass on both releases. Agent output may now be used as evidence.
 
 ### DBG-001 - Validate the save-state extractor on Vampire Hunter
 
