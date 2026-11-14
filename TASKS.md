@@ -1,0 +1,414 @@
+# Dependency-Controlled Research Plan
+
+This is an evidence gate, not a generic backlog. `AGENTS.md` is authoritative.
+Statuses are `BACKLOG`, `BLOCKED`, `READY`, `IN_PROGRESS`, `DONE`, and `REJECTED`.
+At most one reverse-engineering experiment may be `IN_PROGRESS`.
+
+The task order follows the "Verify on X" checklist in
+`docs/playbook_from_mshvsf.md`, corrected by `docs/lessons_from_xvsf.md` and
+`docs/lessons_from_cyberbots.md`. Task IDs are this project's own; where a
+task repeats a sibling task, the note names it for its method only.
+
+## Current State
+
+- **2026-11-13: repository set up** (`SESSION-0001`). Phase A is done except
+  the database check (`ENV-007`): Python project, rules, ignore list, the
+  game-independent sibling tools with provenance, the three sibling method
+  documents, and the identity of all four supplied images
+  (`references/saturn_jp/README.md`, `references/saturn_us/README.md`).
+- A first static comparison of the two data tracks is in those READMEs and
+  in `docs/difference_register.md` (rows `FILE-01` to `FILE-10`). The most
+  important observations: the three Japanese pressings share one
+  byte-identical data track; both regions have the same 415 files, 363 of
+  them byte-identical, **including every sound file**; 52 files differ,
+  mostly program overlays (`MAIN.BIN`, `ENDING.O`, `PL01`-`PL14`,
+  `SOBJ01`-`SOBJ12`). What any difference does is **UNKNOWN**.
+- Reverse-engineering experiments in progress: none.
+- Next unblocked tasks: `DOC-002` (user decisions, including which release is
+  the base), `EMU-001` (stock Mednafen 1.32.1, reusing the sibling archive),
+  `ENV-007` (database check), `DIFF-001` (classify the 52 differing files
+  offline), `DOC-003` (reference catalog).
+- Nothing about Vampire Hunter's internals is confirmed yet.
+
+## Milestones
+
+This project merges two releases rather than translating one, so the sibling
+milestones are re-anchored on **regional differences**: the rows of
+`docs/difference_register.md`. A "difference class" is one kind of row
+(epilogue text, victory quotes, voice samples, names, ...). The first class and
+item are chosen by `DIFF-003` from evidence and the user's priorities.
+
+| ID | Required outcome |
+| --- | --- |
+| M0 | Mednafen runs both releases; pad, screenshots, save states, debugger, agent interface, validated extraction, documentation, and Python tooling work. |
+| M1 | One regional difference (the `DIFF-003` item) is switched in live RAM of the base release: the base game shows the other release's content for that item. |
+| M2 | The same change is reproduced from an untouched base image. |
+| M3 | That difference is handled programmatically for every instance of one character (or the item's natural unit). |
+| M4 | A second character works through the same generalized mechanism. |
+| M5 | The whole roster is handled for that difference class. |
+| M6 | The next difference class, in the user's order, repeats M1-M5 under its own tasks; one class at a time (`AGENTS.md` rule 23). |
+| M7 | Selectable variants (names, region-specific content) as options, if the user wants them (`LOC-001`). |
+| M8 | Combined image: every register row resolved; coverage register closed. |
+| M9 | Special cases (unused assets, hidden content, debug features), each with an explicit task. |
+
+Two gates control the work (`docs/lessons_from_xvsf.md`, lesson 11):
+`GATE-M0` (technical prerequisites for the first live RAM mutation) and
+`GATE-TRANSLATION` (English sources and policy before any English text that
+is not already on the base disc goes on disc).
+
+## Phase A: Repository And Environment
+
+### ENV-001 - Create Python uv project
+
+- **Status:** `DONE`
+- **Milestone:** M0
+- **Dependencies:** None.
+- **Blockers:** None.
+- **Objective:** Define an installable Python 3.12+ project managed by uv.
+- **Acceptance criteria:** `pyproject.toml` declares the project, Python floor, build backend, and development dependency group; `uv.lock` is committed after synchronization.
+- **Notes:** Done 2026-11-13, adapted from the Cyberbots `pyproject.toml` (`bac6fde`, renamed). uv 0.11.7; zero runtime dependencies.
+
+### ENV-002 - Implement setup_venv.sh and invenv.sh
+
+- **Status:** `DONE`
+- **Milestone:** M0
+- **Dependencies:** ENV-001.
+- **Blockers:** None.
+- **Objective:** One command creates the environment; one wrapper runs tools in it.
+- **Acceptance criteria:** `./setup_venv.sh` syncs all groups; `./invenv.sh CMD` runs `CMD` in the project environment without an activated shell.
+- **Notes:** Copied unchanged from Cyberbots (`bac6fde`). Both worked on 2026-11-13 (the build needs `README.md` to exist).
+
+### ENV-003 - Add linting, formatting, typing, tests, and the game-independent tools
+
+- **Status:** `DONE`
+- **Milestone:** M0
+- **Dependencies:** ENV-002.
+- **Blockers:** None.
+- **Objective:** Make `pytest`, `ruff check`, `ruff format --check`, and strict `mypy` pass from the first commit, with the sibling tools that hold no game facts.
+- **Acceptance criteria:** All four commands pass through `./invenv.sh`; every copied file carries a provenance note (source repository, path, commit).
+- **Notes:** 2026-11-13: copied from Cyberbots `bac6fde` (unchanged there since its own copy from XvSF `a1c82ba`): `tools/disc/{hash_source,iso9660,sector,patch_image}`, `tools/mednafen/{agent,session_recorder,replay_state,home,hotkeys,cold_boot,frame_capture,backup_ram}`, `tools/memory/{mcs_extract,diff,vdp1_sprites,vdp2_plane}`, `tools/sh2/{asm,disasm}`, `tools/text/{search,pattern_search,code_search}`, `tools/reference/{mame_audit,listxml_match,*.lua}`, and their tests. Left for later: the release tools Cyberbots improved (`make_patch`, `make_ssp`, `add_files`, `make_zips`, `check_zips`; `REL-001`) and the experiment scripts worth promoting (`docs/lessons_from_cyberbots.md`, section 5). 119 tests passed; ruff and mypy clean. **Copied is not validated:** each tool is re-validated on Vampire Hunter by the first task that uses its output as evidence (`AGENTS.md` rule 26).
+
+### ENV-004 - Create repository documentation skeleton
+
+- **Status:** `DONE`
+- **Milestone:** M0
+- **Dependencies:** None.
+- **Blockers:** None.
+- **Objective:** Rules, protocol, task list, log, discoveries, unknowns, difference register, and experiment template exist.
+- **Acceptance criteria:** `AGENTS.md`, `README.md`, `TASKS.md`, `research_log.md`, `docs/research_protocol.md`, `docs/discoveries.md`, `docs/known_unknowns.md`, `docs/difference_register.md`, `research/README.md`, and `research/experiments/README.md` exist and are non-empty.
+
+### ENV-005 - Create .gitignore and local guidance
+
+- **Status:** `DONE`
+- **Milestone:** M0
+- **Dependencies:** None.
+- **Blockers:** None.
+- **Objective:** Keep game data, evidence, and machine-local guidance out of git.
+- **Acceptance criteria:** `git check-ignore` reports `local/`, disc formats, archives, states, and `local_agent_guidance.md` as ignored.
+- **Notes:** The ignore list is Cyberbots'. `local_agent_guidance.md` carries the user preferences from all three siblings (Cyberbots' file, retargeted), each still to be confirmed for this project in `DOC-002`.
+
+### ENV-006 - Record immutable source identity
+
+- **Status:** `DONE`
+- **Milestone:** M0
+- **Dependencies:** ENV-002.
+- **Blockers:** None.
+- **Objective:** Record filename, size, SHA-256, and release description of every Saturn source component, for both regions.
+- **Acceptance criteria:** Every component is hashed with `tools/disc/hash_source.py` and recorded with a release description.
+- **Notes:** 2026-11-13: three Japanese images (T-1202G V1.000 19960128, labelled 1M, 2M/4M and 3M) in `references/saturn_jp/README.md`; one US image (T-1208H V1.001 19960228) in `references/saturn_us/README.md`. The supplied archives are hashed too. Identity is **SUPPORTED**, not database-verified (`ENV-007`).
+
+### ENV-007 - Verify the source images against a database
+
+- **Status:** `READY`
+- **Milestone:** M0 (do early; XvSF did this the day before release)
+- **Dependencies:** ENV-006.
+- **Blockers:** None. Cyberbots' first try (`WebFetch` of redump.org) was refused; it succeeded later in the built-in browser.
+- **Objective:** Raise each image's identity from **SUPPORTED** to **CONFIRMED**, and learn what the Japanese labels (1M, 2M/4M, 3M) distinguish.
+- **Acceptance criteria:** Each image's track hashes match a named database entry (size, CRC-32, MD5, SHA-1 per track), or a mismatch is recorded with its consequence; every Redump entry for both titles is listed.
+- **Notes:** Static evidence so far: the Japanese track 1 is identical in all three; their track 2 differs only by a 1-4 sample offset (`references/saturn_jp/README.md`). A release must name the exact image(s) it applies to either way (`AGENTS.md` rule 31).
+
+## Phase B: Documentation And Decisions
+
+### DOC-001 - Carry over the sibling playbooks
+
+- **Status:** `DONE`
+- **Milestone:** M0
+- **Dependencies:** None.
+- **Blockers:** None.
+- **Objective:** Give every session the sibling method, pitfalls, and tools list without treating any of it as Vampire Hunter fact.
+- **Acceptance criteria:** `docs/playbook_from_mshvsf.md` is a copy of the current MSHvSF `docs/playbook_cross_game.md` with its source commit; `docs/lessons_from_xvsf.md` and `docs/lessons_from_cyberbots.md` digest what did and did not transfer to the second and third games.
+- **Notes:** 2026-11-13: playbook from MSHvSF `447e573` (unchanged since; byte-equal below its header note); `lessons_from_xvsf.md` copied from Cyberbots `bac6fde` with a header note; `lessons_from_cyberbots.md` written new from Cyberbots `bac6fde` by a read-only subagent. The user's web research is copied unchanged to `references/web_research/` (SHA-256 `36f7b565…f5c2`). Re-copy when a source changes; record the new commit.
+
+### DOC-002 - Put the project decisions to the user
+
+- **Status:** `READY`
+- **Milestone:** GATE-TRANSLATION (base-release question: before `DIFF-003`)
+- **Dependencies:** DOC-001.
+- **Blockers:** None.
+- **Objective:** Ask the user to decide, confirm, or defer the decisions this project needs, including those carried from the siblings (`docs/playbook_from_mshvsf.md` "The User's MSHvSF Localization Decisions", `docs/lessons_from_xvsf.md` "User Decisions Worth Re-asking", `docs/lessons_from_cyberbots.md` section 6).
+- **Acceptance criteria:** Each decision has a recorded answer (verbatim, dated) or an explicit deferral to the task that produces its evidence, in `research_log.md` and `docs/localization_policy.md` (created by this task, on the Cyberbots file's structure: answered / deferred / per-gate tables).
+- **Notes:** Multiple-choice questions with a "(Recommended)" option. Project-specific: **which release is the base** (the US image with Japanese content restored, or the Japanese image with the US English brought in); which Japanese pressing a release names; which difference classes are in scope and in what order (epilogues, main-ending rewrites, victory quotes, voices and poses, names, other); English sources and their order (US Saturn wording kept; PSP *Darkstalkers Chronicle*; arcade *Night Warriors*; new translation marked as such; fan transcripts as locators only); names policy (US, JP, or a toggle; Amanda/Anita); whether regional variants become options. Carried: reuse of the patched Mednafen (`AGENTS.md` rule 16); release formats and timing (rule 21); push and hardware-check policy; the preferences in `local_agent_guidance.md`.
+
+### DOC-003 - Build the reference catalog
+
+- **Status:** `READY`
+- **Milestone:** M0 (do early)
+- **Dependencies:** DOC-001.
+- **Blockers:** None.
+- **Objective:** Reuse the sibling platform references and list Vampire Hunter-specific prior art.
+- **Acceptance criteria:** `docs/references.md` lists the platform references (Saturn, SH-2, CD/ISO 9660, Mednafen, CPS-II, MAME) with their sibling source, and separately the Vampire Hunter sources: the 23 sources of the web research (with what each may and may not be used for), translation or restoration projects, text dumps, official English releases, and guides/manuals.
+- **Notes:** Start from the web research's source register (section 12). Its notable leads: the Arcade Patches CPS-2 restoration (unofficial, arcade-only), the PSP *Chronicle* gallery (official, unverified coverage), the Video Game Museum arcade ending gallery, and two conflicting fan epilogue transcripts.
+
+### DOC-004 - Start the README in its final layout
+
+- **Status:** `BACKLOG`
+- **Milestone:** before REL-001
+- **Dependencies:** DOC-002.
+- **Blockers:** None.
+- **Objective:** Avoid XvSF's post-release README reorganization.
+- **Acceptance criteria:** `README.md` follows the MSHvSF/Cyberbots README section layout, with placeholders for what is not done.
+
+## Phase C: Emulator
+
+### EMU-001 - Pin and build stock Mednafen
+
+- **Status:** `READY`
+- **Milestone:** M0
+- **Dependencies:** ENV-002.
+- **Blockers:** Ask before downloading source or installing build dependencies.
+- **Objective:** Have a stock Mednafen build under ignored `vendor/` with its exact version, source URL, hash, and build commands recorded.
+- **Acceptance criteria:** `docs/mednafen.md` records the version, source hash, configure and build commands, and the binary's `-help` banner.
+- **Notes:** All three siblings used stock 1.32.1 (`de7eb94a…3832`), so the agent patch applies unchanged. The archive is in Cyberbots' and XvSF's `local/downloads/mednafen-1.32.1/`; copy it after checking its hash instead of downloading again. Homebrew's `mednafen` is not the pinned build.
+
+### EMU-002 - Create the project-local Mednafen configuration
+
+- **Status:** `BLOCKED`
+- **Milestone:** M0
+- **Dependencies:** EMU-001.
+- **Blockers:** EMU-001.
+- **Objective:** Run Mednafen with a configuration and BIOS path local to this checkout, never the user's global configuration.
+- **Acceptance criteria:** The launch command, base directory, BIOS identities (filename, size, SHA-256) for **both** regions, and forced settings are recorded; `tools/mednafen/home.py` pins the interactive and quiet homes.
+- **Notes:** This project needs the Japanese BIOS `sega_101.bin` (`dcfef4b9…`) and the North American `mpr-17933.bin` (`96e106f7…`); both are in Cyberbots' `local/mednafen/firmware/`. Copy them and record their hashes. Check that Mednafen picks the BIOS by the disc's area code (`JT` vs `U`) and record which it used for each boot.
+
+### EMU-003 - Boot both releases
+
+- **Status:** `BLOCKED`
+- **Milestone:** M0
+- **Dependencies:** EMU-002, ENV-006.
+- **Blockers:** EMU-002.
+- **Objective:** Reach the title screen from a cold boot of each untouched image.
+- **Acceptance criteria:** Three cold boots of the Japanese 1M image and three of the US image reach a stable title screen; each boot log shows `T-1202G` or `T-1208H`; source hashes match before and after; screenshots kept locally.
+- **Notes:** Use `tools/mednafen/cold_boot.py` and the quiet home. With the user present (`local_agent_guidance.md`, "Emulator Consent").
+
+### EMU-004 - Determine the cartridge requirement
+
+- **Status:** `BLOCKED`
+- **Milestone:** M0
+- **Dependencies:** EMU-003.
+- **Blockers:** EMU-003.
+- **Objective:** Find which cartridge setting each release needs, with controls.
+- **Acceptance criteria:** Boots with `ss.cart` set to `none`, `backup`, `extram1` and `extram4` are each recorded per release (log line, what the game shows, how far it gets); the project setting is chosen from that evidence.
+- **Notes:** **UNKNOWN**: the peripheral field reads `J` in both headers. MSHvSF and XvSF needed the 4 MiB cart; Cyberbots needed none for boot and attract.
+
+### EMU-005 - Configure and document the pad
+
+- **Status:** `BLOCKED`
+- **Milestone:** M0
+- **Dependencies:** EMU-003.
+- **Blockers:** EMU-003.
+- **Objective:** The user's controller drives every button the game uses, and Start, in game.
+- **Acceptance criteria:** A mapping table is recorded and each button is observed in the game's button configuration or in play.
+- **Notes:** Start from the siblings' 8BitDo M30 mapping (six buttons, like this game).
+
+### EMU-006 - Verify screenshots and save states
+
+- **Status:** `BLOCKED`
+- **Milestone:** M0
+- **Dependencies:** EMU-003.
+- **Blockers:** EMU-003.
+- **Objective:** Screenshots and save/load states work and are stored under ignored paths.
+- **Acceptance criteria:** A state saved and reloaded reproduces the same screen, in each release; files are ignored by git.
+
+### EMU-007 - Verify debugger access and memory dumps
+
+- **Status:** `BLOCKED`
+- **Milestone:** M0
+- **Dependencies:** EMU-006.
+- **Blockers:** EMU-006.
+- **Objective:** Dump WRAM-L and WRAM-H at a paused instant with the stock debugger.
+- **Acceptance criteria:** Dumps of `0x00200000-0x002FFFFF` and `0x06000000-0x060FFFFF` are saved with sizes and hashes recorded; a memory write and a write breakpoint are each observed once.
+- **Notes:** Keep this minimal and move to `EMU-020`/`EMU-021` straight after: every sibling lost time to stock-debugger GUI automation (`docs/lessons_from_xvsf.md`, lesson 10; `docs/lessons_from_cyberbots.md`, section 3).
+
+### EMU-020 - Record why stock Mednafen is insufficient
+
+- **Status:** `BLOCKED`
+- **Milestone:** M0
+- **Dependencies:** EMU-007, DOC-002.
+- **Blockers:** EMU-007.
+- **Objective:** Satisfy `AGENTS.md` rule 16 before using the patched build.
+- **Acceptance criteria:** A short record cites MSHvSF `EMU-012`/`EMU-020`, XvSF `EMU-020` and Cyberbots `EMU-020` and confirms the same limits apply here; the user's `DOC-002` answer on reusing the patch is cited.
+
+### EMU-021 - Build and validate the agent interface
+
+- **Status:** `BLOCKED`
+- **Milestone:** M0
+- **Dependencies:** EMU-020.
+- **Blockers:** EMU-020.
+- **Objective:** Drive Mednafen from Python so the user only plays.
+- **Acceptance criteria:** `vendor/mednafen/patches/0001-agent-interface.patch` (`c30146ef…5244`) applies to the pinned version and builds; validations V1-V4 (`docs/mednafen_agent_interface.md`) pass on Vampire Hunter states of both releases; `tools/mednafen/agent.py` tests pass.
+- **Notes:** Cyberbots' agent quirks (no save while halted; one Mednafen per home unless `MEDNAFEN_ALLOWMULTI=1`; RAM-written pad input is not seen through the SH-2 cache) are in `docs/lessons_from_cyberbots.md`, section 3. Copy `docs/mednafen_agent_interface.md` from Cyberbots with a header note in this task.
+
+### DBG-001 - Validate the save-state extractor on Vampire Hunter
+
+- **Status:** `BLOCKED`
+- **Milestone:** M0
+- **Dependencies:** EMU-007.
+- **Blockers:** EMU-007.
+- **Objective:** Extract WRAM-L, WRAM-H, VDP1 and VDP2 VRAM from states, validated byte for byte against debugger dumps of the same instant on Vampire Hunter.
+- **Acceptance criteria:** Each region matches a stock debugger dump exactly; the result goes to `docs/discoveries.md`; cart RAM and sound RAM stay `HYPOTHESIS`.
+- **Notes:** Every sibling found each stored 16-bit element byte-swapped. Re-test, do not assume. `mcs_extract` expects a 4 MiB cart section (Cyberbots' gap); size it from the state if `EMU-004` picks another cart. Sound RAM (for `AUD-001`) is not yet supported by the extractor.
+
+## Phase D: References
+
+### REF-001 - Decide and intake the arcade sets (optional)
+
+- **Status:** `BACKLOG`
+- **Milestone:** GATE-TRANSLATION
+- **Dependencies:** DOC-002.
+- **Blockers:** No arcade sets supplied. Ask the user (`DOC-002`).
+- **Objective:** Decide whether the CPS-II *Vampire Hunter* / *Night Warriors* sets are wanted as a reference (regional branches, English ending text, quote selection), and if so hash and verify them.
+- **Acceptance criteria:** Either each zip is hashed and matched to a MAME set with a pinned MAME version, or the task is `REJECTED` with the user's reason.
+- **Notes:** Cyberbots found the US arcade kept both regions' assets and chose by a region byte (`docs/lessons_from_cyberbots.md`, section 7). The web research's audio and pose leads (AUD-04, ANI-01) are arcade leads.
+
+### REF-002 - Decide and intake the PSP Darkstalkers Chronicle (optional)
+
+- **Status:** `BACKLOG`
+- **Milestone:** GATE-TRANSLATION
+- **Dependencies:** DOC-002.
+- **Blockers:** No PSP image supplied. Ask the user (`DOC-002`).
+- **Objective:** Decide whether the English PSP *Darkstalkers Chronicle: The Chaos Tower* is a reference for official English epilogues and revised endings, and if so record its identity.
+- **Acceptance criteria:** Either every component is hashed with an identity status, or the task is `REJECTED` with the user's reason.
+- **Notes:** The web research names it the most promising official English source (its sources 6 and 7) but its coverage and alignment with the Saturn text are unverified.
+
+### REF-003 - Paired manuals (off-disc, optional)
+
+- **Status:** `BACKLOG`
+- **Milestone:** M9 or out of scope
+- **Dependencies:** DOC-002.
+- **Blockers:** No scans supplied; whether printed material is in scope is a `DOC-002` question.
+- **Objective:** Resolve `BIO-01` or reject it as outside a disc image.
+- **Acceptance criteria:** A page-level JP/US comparison with provenance, or `REJECTED` with the user's reason.
+
+### REF-004 - Inventory the text, audio and presentation surfaces of both releases
+
+- **Status:** `BLOCKED`
+- **Milestone:** M1
+- **Dependencies:** EMU-021.
+- **Blockers:** EMU-021.
+- **Objective:** List every place either release shows text or plays a voice, and capture each in both releases under matched settings, so the register's rows can be compared.
+- **Acceptance criteria:** `docs/text_surfaces.md` holds a table of surfaces (screen, when shown, sample screenshot path and hash per release, same/different) from screenshots the agent reviewed, built from several captures of each release: a cold boot left on the attract loop, title and menus (Appendix included), one arcade run through at least two fights with a continue, a win screen, one ending with its credits. Every register row it touches is updated with both regions' evidence.
+- **Notes:** XvSF's single session missed five surfaces (`docs/lessons_from_xvsf.md`, lesson 6); Cyberbots' kept every state and still missed endings and versus mode (`docs/lessons_from_cyberbots.md`, lesson 3). Keep every state (`--keep-states 0`). Match the settings named by the web research before comparing (animation options, Appendix).
+
+## Phase E: Differences, Checkpoints And Memory Analysis
+
+### DIFF-001 - Classify the 52 differing files offline
+
+- **Status:** `READY`
+- **Milestone:** M1 (static analysis only; no image change)
+- **Dependencies:** ENV-003.
+- **Blockers:** None.
+- **Objective:** For each `FILE-nn` row, describe how the two regions' bytes differ without assuming what the difference does.
+- **Acceptance criteria:** A script (`tools/disc/`) lists, per differing file, the runs of differing bytes (offset, length) and classifies each as a likely pointer/relocation change (consistent 32-bit deltas into a load range) or a content change; the SH-2 code files are identified by disassembly of their entry points; same-size files (`ENDING.O`, `PL*`, `SOBJ*`, `P00.BIN`, `ST?USA.BIN`) are summarized first; `PL*.O` vs `PL*.O2` is explained or listed as open. Committed output: offsets, lengths, hashes and counts only, no game text or code bytes (`AGENTS.md` rule 21). Register rows updated.
+- **Notes:** Which file is loaded when, and where, are runtime questions for `DBG-004`. A content change in a program overlay is a lead, not an explanation.
+
+### DIFF-002 - Locate where each release keeps its text
+
+- **Status:** `READY`
+- **Milestone:** M1 (static analysis only)
+- **Dependencies:** ENV-003.
+- **Blockers:** None.
+- **Objective:** Find the storage and encoding of in-game text in both releases.
+- **Acceptance criteria:** Candidate containers are tested (`ST?JPN`/`ST?USA`/`ST?HIS.BIN` and their offset tables; `MOJI.CHR`/`MOJI.TBL` as a font; graphics files for text drawn as art); for each, the evidence for or against is recorded; relative search (the method that found Cyberbots' arcade English, `EXP-0008`) is run on the US files for a few English strings known from the US release.
+- **Notes:** A kana-run scan found no plain Shift-JIS in the program files (`references/saturn_us/README.md`). That only excludes plain Shift-JIS in those files. Confirmation needs a RAM search at runtime (`DBG-004`).
+
+### DIFF-003 - Choose the first difference and its milestone unit
+
+- **Status:** `BLOCKED`
+- **Milestone:** M1
+- **Dependencies:** DOC-002, REF-004, DIFF-001.
+- **Blockers:** REF-004.
+- **Objective:** Pick one register row (and one character, where it applies) as the M1 target, and fix the milestone unit for its class.
+- **Acceptance criteria:** The choice and reason are recorded; the difference is captured in both releases under the same action and settings; a checkpoint shortly before it exists in the base release.
+- **Notes:** Candidates by the web research's weight: one character's epilogue (END-01), one Morrigan voice event (AUD-01 to AUD-03, whose sound files are identical on both discs), one renamed character (NAM-02). The user's order from `DOC-002` decides.
+
+### DBG-002 - Observe how the chosen difference is selected
+
+- **Status:** `BLOCKED`
+- **Milestone:** M1
+- **Dependencies:** EMU-021, DIFF-003.
+- **Blockers:** EMU-021.
+- **Objective:** Learn whether the chosen item is fixed or varies from one checkpoint, in both releases, before planning checkpoints.
+- **Acceptance criteria:** Several replays of one checkpoint per release, with what is shown or played recorded.
+
+### DBG-003 - Capture checkpoints
+
+- **Status:** `BLOCKED`
+- **Milestone:** M1
+- **Dependencies:** DBG-002.
+- **Blockers:** DBG-002.
+- **Objective:** States and evidence before the item, during it, and after it, in both releases.
+- **Acceptance criteria:** Each checkpoint is reproducible from its state and named in an experiment record.
+
+### DBG-004 - Find the code and data behind the chosen difference
+
+- **Status:** `BLOCKED`
+- **Milestone:** M1
+- **Dependencies:** DBG-001, DBG-003, DIFF-001.
+- **Blockers:** DBG-003.
+- **Objective:** Find what each release runs or reads at the item, and where they diverge.
+- **Acceptance criteria:** The renderer or sound call is identified by a controlled change; the data in RAM is located; the divergence is tied to a `FILE-nn` row (or shown to be elsewhere); whether the other release's content is already on the base disc is recorded as tested or open.
+
+## Gates
+
+### GATE-M0 - Confirm environment and checkpoint prerequisites
+
+- **Status:** `BLOCKED`
+- **Milestone:** M0
+- **Dependencies:** ENV-001 to ENV-006, EMU-001 to EMU-007, EMU-020, EMU-021, DBG-001 to DBG-004, DIFF-003.
+- **Blockers:** Dependencies not done.
+- **Objective:** Make an explicit go/no-go decision before the first live RAM mutation.
+- **Acceptance criteria:** Every dependency is `DONE`; no unresolved workflow blocker can invalidate M1 evidence; the user's GO is recorded verbatim.
+
+### GATE-TRANSLATION - Confirm English sources and policy
+
+- **Status:** `BLOCKED`
+- **Milestone:** before any English not already on the base disc goes on disc
+- **Dependencies:** DOC-002, DOC-003, and whichever of REF-001/REF-002 the user keeps.
+- **Blockers:** Dependencies not done.
+- **Objective:** No new or donor English text goes on disc before its sources, the pairing method, and the user's policy are settled.
+- **Acceptance criteria:** Every dependency is `DONE`; the user gives a recorded GO. Each later scope extension (new class, new donor source, names) is its own dated block under this gate.
+
+## Later Milestones (outline only)
+
+Placeholders so the order is visible. Each becomes a full task, with its own
+acceptance criteria, only when its prerequisites are done ("Write up the Mx
+tasks" just in time). The method for each is in the three sibling documents.
+
+| ID | Milestone | Outline |
+| --- | --- | --- |
+| RE-001 | M1 | Switch the chosen item in live RAM of the base release, with a no-write control. |
+| DISC-001 | M2 | Trace the RAM data to its disc file by a write breakpoint from a pre-load checkpoint; identify the format. |
+| DISC-002 | M2 | Reproduce the M1 change from a rebuilt image (same-size, in place, EDC/ECC regenerated with `tools/disc/patch_image.py`); cold-boot play check by the agent. |
+| RE-002 | M3 | Selection: what picks each instance (character, opponent, health, route), and forcing it from a checkpoint. |
+| RE-003 | M3 | Generator for one character; every instance verified live by forcing. |
+| RE-004 | M4 | A second character through the same mechanism. |
+| RE-005 | M5 | Whole roster for the class; capacity; regression references. |
+| END-001 | M1-M5 for END-01/02/03 | Epilogue and ending text: reach, renderer, RAM, disc source, English donor (PSP or new), timing against the art scroll. |
+| QUO-001 | M1-M5 for QUO-01 | Victory quotes: inventory per release, selection conditions, donor English. |
+| AUD-001 | M1-M5 for AUD/ANI | Voices and poses: which sample or animation each release selects, from the identical sound files; sample-level comparison (`EXP-0088` method). |
+| LOC-001 | M7 | Names policy and variants (NAM-02/03); whether both releases' name art is on both discs; toggle decided early (`docs/lessons_from_xvsf.md`, lesson 9). |
+| OPT-001 | M7 | An options sub-menu for regional variants, if wanted (Cyberbots D-055 to D-058 pattern). |
+| UI-001 | M8 | Title, attract, menus, credits, boot warnings: each surface the register marks different. |
+| COV-001 | M8 | Coverage register: every row resolved (`docs/coverage_exceptions.md`). |
+| SPECIAL-001 | M9, user approval | Unused or unreachable assets, debug features, hidden content. |
+| REL-001 | after M5 | Copy Cyberbots `make_patch` (with the RetroAchievements header guard), `make_zips`/`check_zips` (and `add_files`/`make_ssp` only if needed); parameterize the source folder, manifest and author; decide formats early, since adding files rules out SSP (`docs/lessons_from_cyberbots.md`, section 4). Patches are Release assets only, never committed. |
