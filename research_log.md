@@ -845,3 +845,14 @@ from the build; closed without an experiment, cause UNKNOWN.
 
 Next action: review `END-001` against its acceptance criteria (`END-02`,
 `END-03` rows).
+
+## 2026-11-15 — GATE-TRANSLATION: the user's decisions for the epilogue English
+
+User request: "Discuss the PSP GO". Four questions asked; answers (all the
+recommended option): the PSP English for all 14 epilogues; spelling and
+missing-word slips fixed and logged; names as the US Saturn spells them;
+line breaks free, any cut or rewording asked first. Recorded in
+`docs/localization_policy.md` and the `GATE-TRANSLATION` block. The gate
+stays `BLOCKED` on `DOC-003` alone.
+
+Next action: `DOC-003` (reference catalogue).

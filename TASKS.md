@@ -95,9 +95,12 @@ task repeats a sibling task, the note names it for its method only.
   branch is the Japanese 416-frame text introduction on black, not part of
   the card; the glyph strip is a by-product of clearing the flag in RAM,
   absent from both releases and the build (closed).
-- Next: close `END-001` against its acceptance criteria (rows `END-02` and
-  `END-03` are still UNKNOWN), before any generalisation or a second
-  difference class (rule 23). English epilogues on disc wait for
+- **2026-11-15: epilogue English decided** (`GATE-TRANSLATION` block): the
+  PSP text for all 14, spelling fixes logged, US Saturn names, rewrap then
+  ask. The gate opens once `DOC-003` is done.
+- Next: `DOC-003` (the gate's last dependency); then `END-002` (English
+  epilogues for US Enhanced). `END-001` closure still needs rows `END-02` and
+  `END-03`. No generalisation or second difference class before (rule 23). English epilogues on disc wait for
   `GATE-TRANSLATION` (the user's GO on the PSP text and its policy).
 
 ## Milestones
@@ -535,9 +538,10 @@ is not already on the base disc goes on disc).
 - **Status:** `BLOCKED`
 - **Milestone:** before any English not already on the base disc goes on disc
 - **Dependencies:** DOC-002, DOC-003, and whichever of REF-001/REF-002 the user keeps.
-- **Blockers:** Dependencies not done.
+- **Blockers:** `DOC-003` not done (`DOC-002` and `REF-002` are; the user kept `REF-002` as the epilogue source, `REF-001` is not needed for this scope).
 - **Objective:** No new or donor English text goes on disc before its sources, the pairing method, and the user's policy are settled.
 - **Acceptance criteria:** Every dependency is `DONE`; the user gives a recorded GO. Each later scope extension (new class, new donor source, names) is its own dated block under this gate.
+- **2026-11-15, `END-01` epilogues (user decisions, `docs/localization_policy.md`):** source PSP *Chronicle* `HmovieNN_2` English for all 14 (`EXP-0020`); spelling and missing-word slips fixed, each logged; names spelled as the US Saturn has them (Raptor); line breaks free, any cut or rewording asked first. This is the user's GO for this scope; the gate opens when `DOC-003` is `DONE`.
 
 ## Later Milestones (outline only)
 

@@ -13,12 +13,15 @@ on these discs is found by experiment.
 | First investigations | "I definitely want to check the US disc for whether the Morrigan info is present." and "Apparently, there are individual character story epilogue screens in the JP version that don't exist in the US version. We should investigate. Each character has a post-ending artwork accompanied by scrolling Japanese text." | The Morrigan voice leads (`AUD-01` to `AUD-03`, task `AUD-001`) and the epilogue screens (`END-01`, task `END-001`) are the user's first priorities. They set the order for `DIFF-003`. |
 | M1 and `GATE-M0` (2026-11-14) | "Count this as M1 reached, with your GO recorded now?" → "Yes, record GO" | `GATE-M0` is passed with Morrigan's epilogue (`END-01`) as the M1 item, though the GO came after the RAM change (`EXP-0012`) and `REF-004` was not done. M2 work may begin. |
 | Patched Mednafen (2026-11-14, `EMU-020`) | "Reuse the siblings' Mednafen agent-interface patch here (EMU-020)?" → "Yes, reuse it" | The sibling agent-interface patch is built unchanged on a separate copy of the stock source (`EMU-021`), and validations V1-V4 are re-run on both releases before its output is evidence (`AGENTS.md` rule 16). |
+| Epilogue English source (2026-11-15, `GATE-TRANSLATION`, `EXP-0020`) | Asked which English goes into US Enhanced, given that two PSP epilogues change the Japanese meaning (Lord Raptor, Sasquatch) → "PSP for all 14 (Recommended)" | US Enhanced uses the PSP *Chronicle* English epilogue for all 14 characters, provenance "PSP *Chronicle* (official, 2005)". The meanings changed against the Japanese (Lord Raptor, Sasquatch; details in Bishamon and Rikuo) are recorded as known differences, not corrected. |
+| Epilogue typos (2026-11-15) | Asked how PSP typos go on disc ("new without speakig", "exaulted", "kindom's", "nothing more a", "lie dormant") → "Fix spelling, log each (Recommended)" | Only spelling and missing-word slips are corrected; each edit is recorded beside the PSP original. Wording is otherwise unchanged. |
+| Epilogue names (2026-11-15) | Asked whether to keep the PSP spellings ("Rapter", "Le marta") → "Match the US Saturn (Recommended)" | Where the US Saturn release has a name, the epilogue uses its spelling (Raptor); names the US Saturn lacks stay as the PSP has them. The wider names question in the Enhanced editions stays with `LOC-001`. |
+| Epilogue fit (2026-11-15) | Asked what may change if a paragraph does not fit the Saturn layout → "Rewrap, then ask (Recommended)" | Line breaks may change freely; any cut or rewording to fit goes back to the user first. |
 
 ## Deferred To Evidence
 
 | Topic | Deferred to | Why |
 | --- | --- | --- |
-| English source for the Japanese epilogue text in US Enhanced (PSP *Chronicle*, arcade, new translation) | `END-001`, then `GATE-TRANSLATION` | First learn what text exists and whether the US disc still holds it. |
 | Release formats and timing; patches as GitHub Release assets only (rule 21) | `REL-001` | Adding files or growing track 1 may rule out SSP (`docs/lessons_from_cyberbots.md`, section 4). |
 | Names in each edition (Gallon/Jon Talbain etc., Amanda/Anita) | `LOC-001` | Probably "as that release" for the originals; to ask for the Enhanced editions. |
 | Arcade sets and PSP image as references | `REF-001`, `REF-002` | Asked when an investigation needs them. |
@@ -26,5 +29,9 @@ on these discs is found by experiment.
 
 ## Translation Gates
 
-None yet. Any English that is not already on the US disc goes on disc only
-after `GATE-TRANSLATION` (`TASKS.md`).
+Any English that is not already on the US disc goes on disc only after
+`GATE-TRANSLATION` (`TASKS.md`).
+
+- **2026-11-15, `END-01` epilogues:** the user's decisions above (PSP for all
+  14, spelling fixes logged, US Saturn names, rewrap then ask). The gate
+  itself stays closed until `DOC-003` is done (its remaining dependency).
