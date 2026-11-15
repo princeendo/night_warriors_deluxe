@@ -779,3 +779,27 @@ Not checked: the other 13 endings; what the `ENDING.O` card branch
 by the other two `ST1` load sites.
 
 Next action: the other 13 endings under `END-01`.
+
+## 2026-11-14 — EXP-0019: every character's ending (END-001)
+
+User request: "Yes, do the endings" (the other 13 endings on version 2).
+
+Found: the ending reads its character from `0x0608096E`, copied from
+`0x06080980` (player 1's character) at `0x0601DC7A` after the KO (write logs;
+`force.py --log-write` added). Writing `0x06080980` = N with the stage byte
+at Morrigan's won-KO state plays character N's ending.
+
+Result: `all_endings.sh` ran 26 runs (version 2 and the unpatched control for
+N = 1-14 but 5, 420 steps each). Every version 2 run shows N's English
+ending, N's Japanese epilogue over N's art, and the US cast roll; every
+control shows the art without text. CONFIRMED (D-018).
+
+DISPROVEN: the roster order I assumed (11 Hsien-Ko, 13 Huitzil); the endings
+and the control win screens give 11 Huitzil, 13 Hsien-Ko.
+
+Not checked: endings after a real fight as each character; the Japanese text
+line by line against the Japanese release (only Morrigan's was); the card
+branch `0x0600CFCC`.
+
+Next action: decide what remains of `END-001` before a second difference
+class (rule 23).

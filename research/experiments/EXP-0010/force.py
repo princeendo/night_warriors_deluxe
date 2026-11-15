@@ -5,6 +5,7 @@ Run from the repository root:
     ./invenv.sh python research/experiments/EXP-0010/force.py {jp,us} STATE OUT_DIR \
         [--write 0608097B=09 ...] [--steps 120] [--step-frames 30] [--wav]
         [--onhit 0601D4A2:06076ABE=00 ...] [--log-pc 0601D4EC ...]
+        [--log-write 060915A1-060915A1 ...]
         [--setting ss.input.port1=none ...] [--image build/.../x.cue]
 
 Launches the patched Mednafen (D-005) in the quiet home, loads STATE, pauses,
@@ -13,7 +14,9 @@ applies each ``--write ADDRESS=HEXBYTES`` to WRAM-H (address 0x06000000-
 ``--steps`` steps, plus a state every 10 steps (kept as checkpoints).
 ``--wav`` also records the sound. ``--onhit PC:ADDRESS=HEXBYTES`` (EXP-0016)
 arms a PC breakpoint in log mode and applies the write each time PC has
-executed; ``--log-pc`` logs hits (registers) at PC; ``--setting NAME=VALUE``
+executed; ``--log-pc`` logs hits (registers) at PC; ``--log-write RANGE``
+(EXP-0019) logs writes to RANGE instead (not combined with the PC options);
+``--setting NAME=VALUE``
 passes ``-NAME VALUE`` to Mednafen. No input is sent. Outputs stay under the
 ignored OUT_DIR.
 """
@@ -68,6 +71,7 @@ def main() -> int:
     )
     parser.add_argument("--onhit", action="append", default=[])
     parser.add_argument("--log-pc", action="append", default=[])
+    parser.add_argument("--log-write", action="append", default=[])
     parser.add_argument("--setting", action="append", default=[])
     parser.add_argument("--image", type=Path, help="a .cue instead of the release's")
     args = parser.parse_args()
@@ -99,6 +103,7 @@ def main() -> int:
         "writes": [[hex(0x06000000 + o), d.hex()] for o, d in args.write],
         "onhit": args.onhit,
         "log_pc": args.log_pc,
+        "log_write": args.log_write,
         "settings": args.setting,
     }
     with (out / "mednafen.log").open("wb") as log:
@@ -125,6 +130,9 @@ def main() -> int:
             if args.halt_pc:
                 agent.bpmode("halt")
                 agent.breakpoints("pc", [args.halt_pc])
+            elif args.log_write:
+                agent.bpmode("log")
+                agent.breakpoints("write", args.log_write)
             elif args.onhit or args.log_pc:
                 agent.bpmode("log")
                 pcs = [spec.split(":")[0] for spec in args.onhit] + args.log_pc

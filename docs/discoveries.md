@@ -263,3 +263,21 @@ unchanged: the win screens load `ST1USA.BIN` through it (changing its US
 entry turned the win quote Japanese).
 
 Reproduce: `research/experiments/EXP-0018/README.md`, steps 6-9.
+
+## D-018: The US ending's character is `0x06080980`; the D-017 patch shows all 14 Japanese epilogues (`END-001`, `EXP-0019`)
+
+Holds for: the US image (Track 1 `d0960087…70da`) and the D-017 image (Track
+1 `93ca264c…39ab`).
+
+`0x06080980` is player 1's character, 1-based: 1 Demitri, 2 Jon Talbain,
+3 Victor, 4 Lord Raptor, 5 Morrigan, 6 Anakaris, 7 Felicia, 8 Bishamon,
+9 Rikuo, 10 Sasquatch, 11 Huitzil, 12 Pyron, 13 Hsien-Ko, 14 Donovan. After
+a won KO it is copied to `0x0608096E` (at `0x0601DC7A`), from which the
+ending builds its script struct at `0x0609159C` (character at +5). Writing
+N there together with the stage byte (`0x0608092B` = 9, D-009) at a
+Morrigan won-KO state plays character N's ending. On the D-017 image every
+character's English ending is followed by that character's Japanese
+epilogue and the US cast roll; the unpatched image shows the art without
+text for all 14.
+
+Reproduce: `research/experiments/EXP-0019/README.md` (`all_endings.sh`).
