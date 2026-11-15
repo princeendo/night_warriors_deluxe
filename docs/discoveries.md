@@ -312,3 +312,19 @@ the art scroll starts after it. With the flag 2 the US release jumps to
 version 2, `0x0600D008` x416 on frames 6,140-6,555; unpatched, 0.
 
 Reproduce: `research/experiments/EXP-0021/README.md`.
+
+## D-021: In English mode the epilogue renderer draws the win-quote Latin codes (`END-002`, `EXP-0022`)
+
+Holds for: the D-017 image with `ST1JPN.BIN` lines rewritten
+(`research/experiments/EXP-0022/build_en_test.py`).
+
+Epilogue lines are records of x, y, `0001`, then 16-bit codes, ended by
+`FFFF` (next line) or `0000`. With the language byte at 1, Latin codes in
+those records draw in the US win-quote font: capitals and most punctuation
+are ASCII + `0x80` (`A` = `00C1`, `'` = `00A7`, `!` = `00A1`, `?` = `00BF`),
+lowercase `a`-`z` are `0201`-`021A`, space is `0020`, and comma and period
+are `00AE` and `00AC` (the reverse of ASCII + `0x80`). They mix with `MOJI`
+codes in one paragraph. Advance about 12 pixels; about 26 characters fit a
+line starting at x = `0x2C`.
+
+Reproduce: `research/experiments/EXP-0022/README.md`.

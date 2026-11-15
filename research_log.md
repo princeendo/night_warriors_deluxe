@@ -869,3 +869,27 @@ kind. No source was re-read or downloaded. With `DOC-003` done,
 
 Next action: `END-002` (the US English-mode epilogue text format, then one
 character's PSP English).
+
+## 2026-11-15 — END-001 closed, END-002 started; EXP-0022 Latin text in the epilogue
+
+User request: "Yes, start END-002". `END-002` needed `END-001` done; asked,
+the user chose "Split END-02/03 out": `END-001` closed for the epilogues,
+rows `END-02`/`END-03` moved to a new `END-003` after `END-01` reaches M5.
+`END-002` written as a full task.
+
+Static: `ST1USA.BIN` holds English win quotes in a Latin set (capitals ASCII
++ `0x80`, lowercase `0201`-`021A`) that `MOJI.TBL` partly lacks; the
+epilogue records are x, y, `0001`, codes, `FFFF`/`0000`.
+
+EXP-0022: three lines of Morrigan's record replaced in place by PSP English
+on the version 2 image. They show in English, in the win-quote font, over
+her art (CONFIRMED, D-021). First run had comma and period swapped: the
+right codes are comma `00AE`, period `00AC` (checked in `ST1USA.BIN`);
+script fixed and rerun.
+
+Tried and rejected: assuming ASCII + `0x80` for every mark (comma and period
+differ). Not found: how the game picks a character's record (the table at
+`0x0C` does not point at line starts).
+
+Next action: a read trace of the record lookup; then Morrigan's whole
+paragraph.

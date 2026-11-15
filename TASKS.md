@@ -100,11 +100,12 @@ task repeats a sibling task, the note names it for its method only.
   ask. The gate opens once `DOC-003` is done.
 - **2026-11-15: `GATE-TRANSLATION` open for the `END-01` epilogues**
   (`DOC-003` done, `docs/references.md`).
-- Next: `END-002` for the epilogues (how the US English-mode renderer draws
-  an `ST1` text, then the PSP English for one character). `END-001` closure
-  still needs rows `END-02` and `END-03`. No generalisation or second
-  difference class before (rule 23). English epilogues on disc wait for
-  `GATE-TRANSLATION` (the user's GO on the PSP text and its policy).
+- **2026-11-15: English in the epilogue** (`END-002`, `EXP-0022`, D-021):
+  three PSP lines drawn in Morrigan's epilogue in the US win-quote font; the
+  encoding is known. `END-001` closed; `END-02`/`END-03` moved to `END-003`.
+- Next: in `END-002`, a read trace for how a character's record is found,
+  then Morrigan's whole PSP paragraph re-wrapped (about 26 characters a
+  line). No generalisation or second difference class before (rule 23).
 
 ## Milestones
 
@@ -479,7 +480,7 @@ is not already on the base disc goes on disc).
 
 ### END-001 - The per-character epilogue screens
 
-- **Status:** `IN_PROGRESS`
+- **Status:** `DONE`
 - **Milestone:** M1 (investigation; no image change)
 - **Dependencies:** EMU-021, DBG-001.
 - **Blockers:** None.
@@ -489,6 +490,18 @@ is not already on the base disc goes on disc).
 - **Progress 2026-11-14 (`EXP-0010`, D-009, D-010):** endings are forced by writing 9 to the stage byte (`0x0608097B` JP, `0x0608092B` US) right after a won KO. Morrigan's ending: the Japanese release shows an epilogue paragraph over her scrolling art; the US release scrolls the same art with no text. Next: where the Japanese text comes from (RAM, then file) and whether the US disc holds it; then the other 13 characters (each needs a won-KO state for that character).
 - **Progress 2026-11-14 (`EXP-0011`, D-011):** the Japanese epilogue text is `ST1JPN.BIN` (16-bit `MOJI.TBL` codes, drawn as VDP1 sprites from `MOJI.CHR`); all three files are identical on the US disc, which loads the font but no `ST1` file at the ending. Next: the other 13 endings (a won-KO state per character), then the code that picks `ST1JPN`/`ST2JPN` vs `ST2USA` (what US Enhanced must change).
 - **Progress 2026-11-14 (`EXP-0012`, D-012):** the switch is data, not code: an epilogue flag (`0x060808EA` JP 0 / `0x0608089A` US 2) gates loading an `ST1` file, and the language byte (`0x060808D2` JP 0 / `0x06080882` US 1) picks the file and how text is drawn. In US RAM, the English main ending followed by the Japanese epilogue was shown (the M1 outcome, reached here before the formal `GATE-M0` GO). `ST1USA.BIN` is a placeholder (rows of "A"). Next: where the two bytes are set; the other 13 endings; an English epilogue format (`GATE-TRANSLATION`).
+- **Done 2026-11-15 (user decision):** closed for `END-01` (the epilogues), whose criteria are met: captured in both releases (`EXP-0010`), tied to `ST1JPN.BIN`/`MOJI` and RAM (D-011, D-012), the US shows the art without text (D-010), the text is on the US disc (D-011), and every character is reached by forcing (D-009, D-018). Rows `END-02` and `END-03` moved to `END-003` (user: "Split END-02/03 out"), which waits for `END-01` to reach M5 (rule 23).
+
+### END-002 - English epilogues for US Enhanced (`END-01`, M3-M5)
+
+- **Status:** `IN_PROGRESS`
+- **Milestone:** M3-M5 for `END-01`
+- **Dependencies:** END-001, DISC-002, GATE-TRANSLATION (epilogue scope, 2026-11-15).
+- **Blockers:** None.
+- **Objective:** Show each character's epilogue in English (the PSP *Chronicle* text under the user's 2026-11-15 decisions) after the English ending on a patched US image, where the Japanese epilogue shows now.
+- **Acceptance criteria:** (1) The format the epilogue renderer reads (file header, records, character codes, line and length limits) is recorded with evidence. (2) One character's English epilogue shows on a patched image, with before/after screenshots, a control, and every line's provenance and each logged edit (M3). (3) A second character through the same tool (M4). (4) All 14, each forced and reviewed, with the edits log and any fit question put to the user (M5).
+- **Notes:** Known: the epilogue renderer draws `MOJI` codes from the file in the slot it reads (D-011, D-017); `ST1USA.BIN` holds the US win quotes and placeholder epilogue records drawn as rows of "A" (`EXP-0012`, `EXP-0018`). Whether the font (`MOJI.CHR`) has Latin glyphs, and in what codes, is UNKNOWN.
+- **Progress 2026-11-15 (`EXP-0022`, D-021):** in English mode the epilogue renderer draws the win-quote Latin codes (ASCII + `0x80` capitals and punctuation, `0201`-`021A` lowercase, `0020` space, comma `00AE`, period `00AC`) in the US win-quote font, about 12 px per character (about 26 per line). Three PSP lines in Morrigan's record showed in English over her art. Open for criterion 1: how a character's record is found (the offset table at `0x0C`), how many lines fit, and the line spacing.
 
 ### EDITION-001 - Design the edition switch
 
@@ -562,7 +575,8 @@ tasks" just in time). The method for each is in the three sibling documents.
 | RE-003 | M3 | Generator for one character; every instance verified live by forcing. |
 | RE-004 | M4 | A second character through the same mechanism. |
 | RE-005 | M5 | Whole roster for the class; capacity; regression references. |
-| END-002 | M1-M5 for END-01/02/03 | Epilogue and ending text for US Enhanced, after `END-001`: English donor (PSP or new), timing against the art scroll, roster. |
+| END-002 | M3-M5 for END-01 | Now a full task (above). |
+| END-003 | M1-M5 for END-02/03 | Main endings (`END-02`) and Pyron's ending (`END-03`), split out of `END-001` on 2026-11-15; starts after `END-01` reaches M5 (rule 23). |
 | AUD-002 | M1-M5 for AUD/ANI | Voices and poses for US Enhanced, after `AUD-001`: the rest of the roster (Donovan, Sasquatch first). |
 | QUO-001 | M1-M5 for QUO-01 | Victory quotes: inventory per release, selection conditions, donor English. |
 | LOC-001 | M7 | Names in each edition (NAM-02/03; deferred from `DOC-002`); whether both releases' name art is on both discs; toggle decided early (`docs/lessons_from_xvsf.md`, lesson 9). |
