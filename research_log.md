@@ -803,3 +803,28 @@ branch `0x0600CFCC`.
 
 Next action: decide what remains of `END-001` before a second difference
 class (rule 23).
+
+## 2026-11-14 — EXP-0020: the PSP Chronicle's English epilogues (REF-002)
+
+User request: try the PSP *Chronicle* image before a new translation. The
+ISO was not in `~/Downloads/vh_nw_saturn` but in the repository root
+(ignored); moved unchanged into `local/disc_images/psp_chronicle_us/`
+(SHA-256 `c465f42d…` before and after), identity SUPPORTED (ULUS-10005).
+
+Tried and failed: a search for character names in plain and shifted 8/16-bit
+encodings over every file found only the menu text in `mess00.bin`; the
+epilogue text is not character data.
+
+Result: `movie/hunend/HmovieNN_2.pmf` shows an English epilogue drawn into
+the video for all 14 characters (D-019). Read against the Saturn Japanese
+epilogues (EXP-0019 frames), each tells the same story, mostly shortened;
+Lord Raptor's and Sasquatch's change the meaning, Bishamon's and Rikuo's
+change details (SUPPORTED, a reading by meaning). Agent transcription kept
+locally (`local/ref002/psp_epilogues/transcript.md`, not committed).
+
+Not checked: the `_1` movies (main endings) and `hun2end`; whether the PSP
+English was made from the Saturn or the arcade Japanese; a second reading of
+the transcription.
+
+Next action: `GATE-TRANSLATION` needs the user's GO on the PSP text and its
+policy (typos, changed meanings); meanwhile the `END-001` leftovers.

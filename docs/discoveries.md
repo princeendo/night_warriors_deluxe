@@ -281,3 +281,20 @@ epilogue and the US cast roll; the unpatched image shows the art without
 text for all 14.
 
 Reproduce: `research/experiments/EXP-0019/README.md` (`all_endings.sh`).
+
+## D-019: The US PSP *Chronicle* holds an English epilogue for each of the 14 characters, drawn into its ending movies (`REF-002`, `EXP-0020`)
+
+Holds for: `Darkstalkers Chronicle - The Chaos Tower (USA).iso` (ULUS-10005,
+SHA-256 `c465f42d…49ac`).
+
+`PSP_GAME/USRDIR/movie/hunend/HmovieNN_2.pmf` (NN = 01-14; a 2,048-byte PSMF
+header, then an MPEG program stream, H.264 480x272) shows an English
+paragraph over the character's art; frame 300 holds the whole paragraph. No
+epilogue text exists as character data on the disc (the only English text
+files, `mess00.bin`, hold menu labels). Order: 01 Hsien-Ko, 02 Donovan,
+03 Demitri, 04 Morrigan, 05 Anakaris, 06 Victor, 07 Lord Raptor, 08 Jon
+Talbain, 09 Felicia, 10 Rikuo, 11 Sasquatch, 12 Bishamon, 13 Huitzil,
+14 Pyron. That each renders the Saturn Japanese epilogue of the same
+character is SUPPORTED (a reading by meaning), not part of this finding.
+
+Reproduce: `research/experiments/EXP-0020/README.md` (`frames.sh`).

@@ -86,9 +86,15 @@ task repeats a sibling task, the note names it for its method only.
   is `0x06080980`; forced with it, every character's Japanese epilogue shows
   on the version 2 image after the English ending, and none on the unpatched
   image.
+- **2026-11-14: PSP intake** (`REF-002` done, `EXP-0020`, D-019): the US
+  *Chronicle* image holds an English epilogue for all 14 characters, drawn
+  into its ending movies; each tells the same story as the Saturn Japanese
+  epilogue, mostly shortened (Lord Raptor's and Sasquatch's change the
+  meaning).
 - Next: decide what remains of `END-001` (the stray glyph strip on the emblem
   card; the `0x0600CFCC` card branch) before any generalisation or a second
-  difference class (rule 23).
+  difference class (rule 23). English epilogues on disc wait for
+  `GATE-TRANSLATION` (the user's GO on the PSP text and its policy).
 
 ## Milestones
 
@@ -353,13 +359,14 @@ is not already on the base disc goes on disc).
 
 ### REF-002 - Decide and intake the PSP Darkstalkers Chronicle (optional)
 
-- **Status:** `BACKLOG`
+- **Status:** `DONE`
 - **Milestone:** GATE-TRANSLATION
 - **Dependencies:** DOC-002.
-- **Blockers:** No PSP image supplied. Ask the user when `END-001` reaches the English source question (deferred from `DOC-002`).
+- **Blockers:** None.
 - **Objective:** Decide whether the English PSP *Darkstalkers Chronicle: The Chaos Tower* is a reference for official English epilogues and revised endings, and if so record its identity.
 - **Acceptance criteria:** Either every component is hashed with an identity status, or the task is `REJECTED` with the user's reason.
 - **Notes:** The web research names it the most promising official English source (its sources 6 and 7) but its coverage and alignment with the Saturn text are unverified.
+- **Done 2026-11-14 (`EXP-0020`, D-019):** the user supplied the US ISO and asked to try it before a new translation (kept as a reference). Hashed with identity SUPPORTED (`references/psp_chronicle_us/README.md`). English epilogues for all 14 characters are text drawn into `movie/hunend/HmovieNN_2.pmf`; frames, hashes and the per-character comparison with the Saturn Japanese are in `EXP-0020`. Whether to use this text, and how to treat its typos and changed meanings, is `GATE-TRANSLATION`.
 
 ### REF-003 - Paired manuals (off-disc, optional)
 
