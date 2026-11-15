@@ -1,8 +1,8 @@
 """EXP-0023: build a US image whose epilogue for given characters is English.
 
     ./invenv.sh python research/experiments/EXP-0023/build_en_epilogue.py \
-        [--out build/us_en_epilogue] [--y0 0x10] [--step 13] [--move-list] \
-        CHAR [CHAR ...]
+        [--out build/us_en_epilogue] [--y0 0x10] [--step 13] \
+        [--move-list | --late-array1] CHAR [CHAR ...]
 
 CHAR is the Saturn roster number (D-018: 5 = Morrigan). Starts from the
 DISC-002 version 2 patches (EXP-0018 ``PATCHES``). For each character it
@@ -90,15 +90,35 @@ def paragraph(roster: int) -> tuple[list[str], list[str]]:
 # the art, so it is not used. The list's entries 64-81 are the player sprite
 # slots (0x06083944-0x060839D3), rewritten every frame; a hidden line of
 # filler glyphs, placed off screen, takes them so no text lands there.
-LIST_LITERAL = ("MAIN.BIN", 0x25A98, "060839D4", "06083744", 0x06037A98)
-HOLE = (64, 18)  # first entry index, length
-SLOTS = 320  # 0x06083744 to the end of array 3 (0x06084144), 8 bytes each
+LIST_LITERAL = ("MAIN.BIN", 0x25A98, "060839D4")  # + new value, 0x06037A98
+# name: (list start, HOLE (first entry, length), SLOTS to the end of array 3)
+LAYOUTS = {
+    "array2": (0x06083744, (64, 18), 320),  # EXP-0024
+    "late": (0x060833CC, (175, 18), 431),  # EXP-0025: array 1 slot 17 on
+}
+# --late-array1 (EXP-0025): ENDING.O calls r12 = 0x06020766 each frame, which
+# ends by drawing arrays 2-3 after the art. A routine placed in ST1JPN.BIN
+# (loaded at 0x060CB408) calls it, then draws array 1 slots 17-127 again, last,
+# so text there is on top. ENDING.O's r12 literal (0x0600D0B0) points at the
+# routine through the cache-through mirror (0x2...).
+ST1_RAM = 0x060CB408  # where the ending loads ST1JPN.BIN (EXP-0023 read trace)
+R12_LITERAL = ("ENDING.O", 0xC0B0, "06020766", 0x0600D0B0)
+LATE_ROUTINE = (
+    "4F22 D305 430B 0009"  # sts.l pr,@-r15; mov.l main,r3; jsr @r3; nop
+    "D404 D305 430B E56F"  # mov.l base,r4; mov.l reader,r3; jsr @r3; mov #111,r5
+    "4F26 000B 0009 0009"  # lds.l @r15+,pr; rts; nop; (pad)
+    "06020766 060833CC 060188D4"  # main, base (array 1 slot 17), reader
+)
 FILLER = 0x00AC  # any non-space code; drawn off screen or overwritten
 HIDDEN = (0x170, 0x00E0)  # x right of the screen, y at the bottom
 
 
 def record(
-    paras: list[str], y0: int, step: int, hole: tuple[int, int] | None = None
+    paras: list[str],
+    y0: int,
+    step: int,
+    hole: tuple[int, int] | None = None,
+    slots: int = 0,
 ) -> tuple[bytes, list[str]]:
     lines = [line for p in paras for line in textwrap.wrap(p, WIDTH)]
     words: list[int] = []
@@ -114,13 +134,13 @@ def record(
             words.append(0xFFFF)
         words += [X, y0 + i * step, 0x0001, *codes]
         glyphs += n
-    if hole and glyphs > SLOTS:
-        raise ValueError(f"{glyphs} glyph entries > {SLOTS} slots")
+    if hole and glyphs > slots:
+        raise ValueError(f"{glyphs} glyph entries > {slots} slots")
     words.append(0x0000)
     return struct.pack(f">{len(words)}H", *words), lines
 
 
-def patches(chars: list[int], y0: int, step: int, move: bool = False) -> list[tuple]:
+def patches(chars: list[int], y0: int, step: int, layout: str = "") -> list[tuple]:
     data = ST1JPN.read_bytes()
 
     def entry(i: int) -> int:
@@ -133,13 +153,17 @@ def patches(chars: list[int], y0: int, step: int, move: bool = False) -> list[tu
     ]
     last_epilogue = max(target[:EPILOGUES])
     free = min(t for t in target if t > last_epilogue)  # first non-epilogue record
-    out, pos = (
-        ([(*LIST_LITERAL, "epilogue glyph list -> array 2 slot 0")] if move else []),
-        free,
-    )
+    out, pos = [], free
+    hole, slots = None, 0
+    if layout:
+        start, hole, slots = LAYOUTS[layout]
+        f, off, old = LIST_LITERAL
+        out.append(
+            (f, off, old, f"{start:08X}", 0x06037A98, f"glyph list -> {start:#x}")
+        )
     for roster in chars:
         paras, applied = paragraph(roster)
-        rec, lines = record(paras, y0, step, HOLE if move else None)
+        rec, lines = record(paras, y0, step, hole, slots)
         if pos + len(rec) > len(data):
             raise ValueError("records do not fit in ST1JPN.BIN")
         out.append(
@@ -164,6 +188,23 @@ def patches(chars: list[int], y0: int, step: int, move: bool = False) -> list[tu
             )
         )
         pos += len(rec)
+    if layout == "late":
+        pos = (pos + 3) & ~3
+        code = bytes.fromhex(LATE_ROUTINE)
+        old = data[pos : pos + len(code)].hex().upper()
+        out.append(
+            (
+                "ST1JPN.BIN",
+                pos,
+                old,
+                code.hex().upper(),
+                ST1_RAM + pos,
+                "late array-1 draw routine",
+            )
+        )
+        f, off, old_r12, ram = R12_LITERAL
+        new_r12 = f"{0x20000000 | (ST1_RAM + pos):08X}"  # cache-through mirror
+        out.append((f, off, old_r12, new_r12, ram, "r12 -> late routine"))
     return out
 
 
@@ -173,9 +214,11 @@ def main() -> int:
     ap.add_argument("--out", default="build/us_en_epilogue")
     ap.add_argument("--y0", type=lambda v: int(v, 0), default=0x10)
     ap.add_argument("--step", type=int, default=13)
-    ap.add_argument("--move-list", action="store_true")
+    ap.add_argument("--move-list", action="store_true")  # EXP-0024
+    ap.add_argument("--late-array1", action="store_true")  # EXP-0025
     args = ap.parse_args()
-    extra = patches(args.chars, args.y0, args.step, args.move_list)
+    layout = "late" if args.late_array1 else "array2" if args.move_list else ""
+    extra = patches(args.chars, args.y0, args.step, layout)
     for p in extra:
         print(f"{p[0]} {p[1]:#06x} {len(p[3]) // 2} bytes: {p[5]}")
     be.PATCHES = be.PATCHES + extra
@@ -186,7 +229,7 @@ def main() -> int:
 if __name__ == "__main__":
     assert encode("Ma'a, I.") == [0xCD, 0x201, 0xA7, 0x201, 0xAE, 0x20, 0xC9, 0xAC]
     assert record(["ab"], 0x10, 13)[0] == bytes.fromhex("002C0010000102010202" + "0000")
-    _r = record(["ab cd"], 0x10, 13, (1, 2))[0]  # hole after the first glyph
+    _r = record(["ab cd"], 0x10, 13, (1, 2), 9)[0]  # hole after the first glyph
     assert _r == bytes.fromhex(
         "0170 00E0 0001 00AC 00AC 00AC FFFF "
         "002C 0010 0001 0201 0202 0020 0203 0204 0000"

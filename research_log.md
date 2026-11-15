@@ -934,3 +934,21 @@ player slots: Morrigan's whole English epilogue on top of her art (D-023).
 
 Next action: more room (draw order, or the player slots) before asking for
 any trims; cold boot of Morrigan's build with the user present.
+
+## 2026-11-15 — EXP-0025: array 1 redrawn on top; room for all 14
+
+User request: "Yes, find more room". A PC log showed the per-frame order in
+the ending: array 1 (general routine, before the art), then arrays 2-3
+through `ENDING.O`'s `r12` (`0x06020766`). No dead space in `ENDING.O`, so a
+36-byte routine goes in `ST1JPN.BIN`'s unread tail (loaded at `0x060CB408`):
+it calls `0x06020766`, then the reader for array 1 slots 17-127. `r12`'s
+literal points at it through the cache-through mirror.
+
+Result: Morrigan unchanged and whole; Anakaris (345 characters, 18 lines at
+12 px) whole on top of the art; both runs continue through the cast roll
+(CONFIRMED, forced, D-024). Room: 413 characters.
+
+Not checked: a cold boot; the routine's area after the cast roll; spacing
+13 vs 12 per character.
+
+Next action: all 14 in one image (criterion 4 of `END-002`).

@@ -108,9 +108,10 @@ task repeats a sibling task, the note names it for its method only.
   characters; every English epilogue is longer (263-345).
 - **2026-11-15: Morrigan's whole English epilogue** (`EXP-0024`, D-023),
   forced, on top of the art; 302 characters of room, enough for 4 of 14.
-- Next: in `END-002`, more room for the other ten (draw array 1 after the
-  art, or move the player sprite slots), else trims for the user to approve;
-  a cold boot of Morrigan's build with the user. No generalisation or second
+- **2026-11-15: room for all 14** (`EXP-0025`, D-024): array 1 redrawn on
+  top in the ending; Anakaris's 345-character English epilogue shows whole.
+- Next: in `END-002`, all 14 English epilogues in one image, each forced and
+  reviewed; then a cold boot with the user. No generalisation or second
   difference class before (rule 23).
 
 ## Milestones
@@ -510,6 +511,7 @@ is not already on the base disc goes on disc).
 - **Progress 2026-11-15 (`EXP-0022`, D-021):** in English mode the epilogue renderer draws the win-quote Latin codes (ASCII + `0x80` capitals and punctuation, `0201`-`021A` lowercase, `0020` space, comma `00AE`, period `00AC`) in the US win-quote font, about 12 px per character (about 26 per line). Three PSP lines in Morrigan's record showed in English over her art. Open for criterion 1: how a character's record is found (the offset table at `0x0C`), how many lines fit, and the line spacing.
 - **Progress 2026-11-15 (`EXP-0023`, D-022):** records are found through a self-relative table at `0x0C` (index = roster − 1), and the ending reads nothing else in the file, so English records can sit anywhere in it. Morrigan's whole PSP paragraph (16 lines) showed in English but was cut at its 238th character: the glyph list at `0x060839D4` has room for 238 entries. All 14 English epilogues need 263-345. Next: find RAM unused during the ending and move the list there (no text cut), then test 14-18 lines.
 - **Progress 2026-11-15 (`EXP-0024`, D-023):** the glyph list moved to sprite array 2 (one literal, `0x06037A98`) with an off-screen filler line over the player sprite slots: Morrigan's whole English epilogue shows on top of her art (forced; cold boot pending). Room: 302 characters; Morrigan, Bishamon, Pyron and Donovan fit, the other ten are 5-43 over. Array 1 is drawn under the art.
+- **Progress 2026-11-15 (`EXP-0025`, D-024):** array 1 is drawn again after the art by a 36-byte routine in `ST1JPN.BIN` reached through `ENDING.O`'s `r12`; with the list from array 1 slot 17 there is room for 413 characters. Morrigan (16 lines) and Anakaris (345 characters, 18 lines at 12 px, the longest) show whole on top of their art (forced). Criteria 2-3 met except the cold boot. Next: all 14 in one image (criterion 4), then a cold boot with the user.
 
 ### EDITION-001 - Design the edition switch
 

@@ -360,3 +360,22 @@ the art; Morrigan's whole English epilogue (278) shows. Text placed in array
 1 is drawn under the art.
 
 Reproduce: `research/experiments/EXP-0024/README.md`.
+
+## D-024: Redrawing sprite array 1 after the art gives an epilogue 413 characters (`END-002`, `EXP-0025`)
+
+Holds for: the D-017 image plus `EXP-0023/build_en_epilogue.py --late-array1`
+(Morrigan and Anakaris, forced from a state with the `MAIN.BIN` literal
+written in RAM).
+
+Each ending frame draws array 1 (through the general per-frame routine,
+before the art), then arrays 2-3 (through `ENDING.O`'s `r12` =
+`0x06020766`). A 36-byte routine placed in `ST1JPN.BIN` (in RAM at
+`0x060CB408` + offset) calls `0x06020766` and then the reader
+`0x060188D4(0x060833CC, 111)`; pointing `ENDING.O`'s `r12` literal
+(`0x0600D0B0`) at it through the cache-through mirror draws array 1 slots
+17-127 again, on top. With the epilogue list starting at array 1 slot 17
+(`0x06037A98` = `0x060833CC`) and the player slots covered, 413 characters
+fit; Anakaris's 345-character, 18-line English epilogue shows whole at
+12-pixel spacing.
+
+Reproduce: `research/experiments/EXP-0025/README.md`.
