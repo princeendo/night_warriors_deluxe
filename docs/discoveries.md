@@ -298,3 +298,17 @@ Talbain, 09 Felicia, 10 Rikuo, 11 Sasquatch, 12 Bishamon, 13 Huitzil,
 character is SUPPORTED (a reading by meaning), not part of this finding.
 
 Reproduce: `research/experiments/EXP-0020/README.md` (`frames.sh`).
+
+## D-020: The `ENDING.O` flag-0 path at `0x0600CFCE` is the epilogue's 416-frame text introduction (`END-001`, `EXP-0021`)
+
+Holds for: the US `ENDING.O` (loaded at `0x06001000`) on the US image and the
+D-017 image; the Japanese release shows the same sequence.
+
+With the region flag 0 (or the branch at `0x0600CFCC` made a `nop`, D-017),
+`ENDING.O` runs a loop at `0x0600D008` once per frame for 416 frames
+(`0x1A0`), during which the epilogue paragraph rises onto a black screen;
+the art scroll starts after it. With the flag 2 the US release jumps to
+`0x0600D02E` and starts the art straight after the emblem card. Logged:
+version 2, `0x0600D008` x416 on frames 6,140-6,555; unpatched, 0.
+
+Reproduce: `research/experiments/EXP-0021/README.md`.

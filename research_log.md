@@ -828,3 +828,20 @@ the transcription.
 
 Next action: `GATE-TRANSLATION` needs the user's GO on the PSP text and its
 policy (typos, changed meanings); meanwhile the `END-001` leftovers.
+
+## 2026-11-14 — EXP-0021: the `0x0600CFCC` branch and the glyph strip (END-001)
+
+Static reading of the US `ENDING.O` flag-0 path (`0x0600CFCE`-`0x0600D02C`):
+a scroll set-up, a per-character call (`0x06037D46`) and a 416-pass loop.
+Logged PCs, version 2 vs. unpatched under the `EXP-0018` forcing: version 2
+runs the loop 416 times on consecutive frames (6,140-6,555); unpatched never
+enters it. On screen, version 2 and the Japanese release (`EXP-0010`) show
+the paragraph rising onto black before the art; unpatched starts the art
+straight after the card. CONFIRMED (D-020). The "card sequence" label in
+`EXP-0018` was wrong and is corrected (the patch bytes are unchanged).
+
+The emblem-card glyph strip from `EXP-0012` is absent from both releases and
+from the build; closed without an experiment, cause UNKNOWN.
+
+Next action: review `END-001` against its acceptance criteria (`END-02`,
+`END-03` rows).

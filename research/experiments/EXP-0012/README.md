@@ -95,7 +95,7 @@ Japanese epilogue: the first US Enhanced behaviour, in live RAM (D-012).
   `0x00C1`. An English epilogue in the US format would replace it, which
   needs the format of `ST1USA.BIN` records and the English renderer's
   character codes (`GATE-TRANSLATION`).
-- The strip of filler glyphs over the emblem card with the flag cleared is
+- The strip of filler glyphs over the emblem card with the flag cleared is (closed in `EXP-0021`: absent from both releases and from the build)
   unexplained; it appears whether `ST1USA` or `ST1JPN` is loaded.
 - Where the two bytes are set (boot, region, a setting) is not traced; that
   decides how an edition switch would set them.

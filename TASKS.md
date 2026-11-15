@@ -91,8 +91,12 @@ task repeats a sibling task, the note names it for its method only.
   into its ending movies; each tells the same story as the Saturn Japanese
   epilogue, mostly shortened (Lord Raptor's and Sasquatch's change the
   meaning).
-- Next: decide what remains of `END-001` (the stray glyph strip on the emblem
-  card; the `0x0600CFCC` card branch) before any generalisation or a second
+- **2026-11-14: `END-001` leftovers** (`EXP-0021`, D-020): the `0x0600CFCC`
+  branch is the Japanese 416-frame text introduction on black, not part of
+  the card; the glyph strip is a by-product of clearing the flag in RAM,
+  absent from both releases and the build (closed).
+- Next: close `END-001` against its acceptance criteria (rows `END-02` and
+  `END-03` are still UNKNOWN), before any generalisation or a second
   difference class (rule 23). English epilogues on disc wait for
   `GATE-TRANSLATION` (the user's GO on the PSP text and its policy).
 
@@ -512,6 +516,7 @@ is not already on the base disc goes on disc).
 - **Progress 2026-11-14 (`EXP-0018`, cold boot 1):** the cold boot of version 1 failed: the user's won match showed Morrigan's win quote in **Japanese**. The `ST1` name array also serves the win screens (`ST1USA.BIN` is the US win-quote file). Version 2 leaves the array alone and makes only the ending's call load `ST1JPN.BIN` (15 bytes in all; Track 1 `93ca264c…`). Rehearsed: English win quote; forced ending shows the English ending, then the Japanese epilogue, then CAST. Remaining: a cold boot of version 2 with a won match (needs the user), then the forcing, the unpatched control and the cast-roll names.
 - **Done 2026-11-14 (`EXP-0018`, D-017):** cold boot of version 2, Morrigan won 2-0 vs. Victor: English win quote; the ending forced with the stage byte only shows the English main ending, the Japanese epilogue, then the cast roll with US names (JON TALBAIN, HSIEN-KO, LORD RAPTOR); the unpatched control shows the art with no text. The flag stays 2, so nothing else it selects changes. Listed as open: the other 13 endings, the JP punctuation spacing (`0x06037AE4`, stays off), the ending script tables (`0x060367A4`, stay US), what the `0x0600CFCC` card branch adds, and the screens served by the other `ST1` load sites (`0x06014208`, `0x0601E16C`).
 - **Progress 2026-11-14 (`EXP-0019`, D-018):** the ending's character is `0x06080980` (1-based: 1 Demitri, 2 Jon Talbain, 3 Victor, 4 Lord Raptor, 5 Morrigan, 6 Anakaris, 7 Felicia, 8 Bishamon, 9 Rikuo, 10 Sasquatch, 11 Huitzil, 12 Pyron, 13 Hsien-Ko, 14 Donovan); written with the stage byte at Morrigan's won-KO state it plays that character's ending. All 14 show their Japanese epilogue on the version 2 image; the unpatched controls show the art without text. Forced only: each preceding fight was Morrigan vs. Victor.
+- **Progress 2026-11-14 (`EXP-0021`, D-020):** the version 2 patch at `0x0600CFCC` runs the Japanese text introduction: 416 frames in which the paragraph rises onto black before the art scroll, as in the Japanese release; the US release skips it. The emblem-card glyph strip (`EXP-0012`) is absent from both releases and the build; closed as a by-product of clearing the flag in RAM.
 
 ## Gates
 

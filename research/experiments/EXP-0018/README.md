@@ -46,7 +46,7 @@ before it is changed). **Version 2** (current; version 1 failed, see below):
 | `MAIN.BIN` | `0x299E4` | `0608089A` | `0605B850` | `0x0603B9E4` | literal (used only at `0x0603B902`): flag address → the `ST1JPN.BIN` name |
 | `MAIN.BIN` | `0x299E8` | `0603790E` | `06013DF8` | `0x0603B9E8` | literal (used only at `0x0603B90A`): the language-indexed `ST1` loader → the file loader it ends in |
 | `ST1JPN.BIN` | `0x3` | `BA` | `BC` | (file header) | the file's text goes to the US slot, which the English-mode renderer reads |
-| `ENDING.O` | `0xBFCC` | `8B2F` (`bf`) | `0009` | `0x0600CFCC` | the Japanese card sequence before the text |
+| `ENDING.O` | `0xBFCC` | `8B2F` (`bf`) | `0009` | `0x0600CFCC` | the Japanese text introduction: the paragraph rises onto black for 416 frames before the art scroll (`EXP-0021`; first written as "card sequence") |
 | `ENDING.O` | `0xC0D0` | `8B02` (`bf`) | `0009` | `0x0600D0D0` | the Japanese epilogue length (`0x564` frames) |
 
 So the ending's own call loads `ST1JPN.BIN` by name; the shared `ST1` name
@@ -198,7 +198,7 @@ auto-pause, D-016), and the `EXP-0016` Japanese "pad" control in fact had port
 - Morrigan only; the other 13 epilogues are expected to work the same way
   (one `ST1JPN.BIN`), not tested.
 - The emblem card ("1ST A") appears in the control too, so what the
-  `0x0600CFCC` branch adds to the card sequence is not isolated; the patched
+  `0x0600CFCC` branch adds to the card sequence is not isolated (answered in `EXP-0021`: a 416-frame text intro); the patched
   run's sequence was not compared frame by frame with the Japanese release.
 - The other two `ST1` load sites (`0x06014208`, `0x0601E16C`) were seen only
   through the win screen; which screens each serves is UNKNOWN.

@@ -82,7 +82,7 @@ PATCHES = [
         "8B2F",
         "0009",
         0x0600CFCC,
-        "epilogue: take the Japanese (flag 0) branch: card sequence before the text",
+        "epilogue: Japanese (flag 0) branch: 416-frame text intro (EXP-0021)",
     ),
     (
         "ENDING.O",
