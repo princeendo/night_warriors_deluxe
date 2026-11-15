@@ -98,9 +98,12 @@ task repeats a sibling task, the note names it for its method only.
 - **2026-11-15: epilogue English decided** (`GATE-TRANSLATION` block): the
   PSP text for all 14, spelling fixes logged, US Saturn names, rewrap then
   ask. The gate opens once `DOC-003` is done.
-- Next: `DOC-003` (the gate's last dependency); then `END-002` (English
-  epilogues for US Enhanced). `END-001` closure still needs rows `END-02` and
-  `END-03`. No generalisation or second difference class before (rule 23). English epilogues on disc wait for
+- **2026-11-15: `GATE-TRANSLATION` open for the `END-01` epilogues**
+  (`DOC-003` done, `docs/references.md`).
+- Next: `END-002` for the epilogues (how the US English-mode renderer draws
+  an `ST1` text, then the PSP English for one character). `END-001` closure
+  still needs rows `END-02` and `END-03`. No generalisation or second
+  difference class before (rule 23). English epilogues on disc wait for
   `GATE-TRANSLATION` (the user's GO on the PSP text and its policy).
 
 ## Milestones
@@ -225,13 +228,14 @@ is not already on the base disc goes on disc).
 
 ### DOC-003 - Build the reference catalog
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Milestone:** M0 (do early)
 - **Dependencies:** DOC-001.
 - **Blockers:** None.
 - **Objective:** Reuse the sibling platform references and list Vampire Hunter-specific prior art.
 - **Acceptance criteria:** `docs/references.md` lists the platform references (Saturn, SH-2, CD/ISO 9660, Mednafen, CPS-II, MAME) with their sibling source, and separately the Vampire Hunter sources: the 23 sources of the web research (with what each may and may not be used for), translation or restoration projects, text dumps, official English releases, and guides/manuals.
 - **Notes:** Start from the web research's source register (section 12). Its notable leads: the Arcade Patches CPS-2 restoration (unofficial, arcade-only), the PSP *Chronicle* gallery (official, unverified coverage), the Video Game Museum arcade ending gallery, and two conflicting fan epilogue transcripts.
+- **Done 2026-11-15:** `docs/references.md`: the platform sections copied unchanged from Cyberbots (`cf9f6d0`; byte-identical, checked with `diff`); the CPS-II sets of this game in MAME 0.289 `cps2.cpp` (SHA-256 `a8c09ef8…`, matching the MSHvSF pin); the web research's 23 sources with what each may and may not be used for; official English releases, restoration projects, text dumps and guides by kind; this project's evidence records. Sources were not re-read; nothing was downloaded.
 
 ### DOC-004 - Start the README in its final layout
 
@@ -535,13 +539,13 @@ is not already on the base disc goes on disc).
 
 ### GATE-TRANSLATION - Confirm English sources and policy
 
-- **Status:** `BLOCKED`
+- **Status:** `DONE`
 - **Milestone:** before any English not already on the base disc goes on disc
 - **Dependencies:** DOC-002, DOC-003, and whichever of REF-001/REF-002 the user keeps.
-- **Blockers:** `DOC-003` not done (`DOC-002` and `REF-002` are; the user kept `REF-002` as the epilogue source, `REF-001` is not needed for this scope).
+- **Blockers:** None. (`DOC-002`, `DOC-003` and `REF-002` are done; the user kept `REF-002` as the epilogue source; `REF-001` is not needed for this scope.)
 - **Objective:** No new or donor English text goes on disc before its sources, the pairing method, and the user's policy are settled.
 - **Acceptance criteria:** Every dependency is `DONE`; the user gives a recorded GO. Each later scope extension (new class, new donor source, names) is its own dated block under this gate.
-- **2026-11-15, `END-01` epilogues (user decisions, `docs/localization_policy.md`):** source PSP *Chronicle* `HmovieNN_2` English for all 14 (`EXP-0020`); spelling and missing-word slips fixed, each logged; names spelled as the US Saturn has them (Raptor); line breaks free, any cut or rewording asked first. This is the user's GO for this scope; the gate opens when `DOC-003` is `DONE`.
+- **2026-11-15, `END-01` epilogues (user decisions, `docs/localization_policy.md`):** source PSP *Chronicle* `HmovieNN_2` English for all 14 (`EXP-0020`); spelling and missing-word slips fixed, each logged; names spelled as the US Saturn has them (Raptor); line breaks free, any cut or rewording asked first. This is the user's GO for this scope. Opened 2026-11-15 when `DOC-003` was done; any other scope (main endings, names, a new donor) needs its own dated block.
 
 ## Later Milestones (outline only)
 

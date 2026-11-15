@@ -856,3 +856,16 @@ line breaks free, any cut or rewording asked first. Recorded in
 stays `BLOCKED` on `DOC-003` alone.
 
 Next action: `DOC-003` (reference catalogue).
+
+## 2026-11-15 — DOC-003 done; GATE-TRANSLATION open for the epilogues
+
+User request: "Yes, do DOC-003". Wrote `docs/references.md`: platform
+sections copied from Cyberbots `cf9f6d0` (`diff` shows them identical), the
+MAME 0.289 CPS-II sets of this game (read from the sibling's pinned
+`cps2.cpp`, SHA-256 `a8c09ef8…`, which matches the MSHvSF record), the web
+research's 23 sources with permitted and forbidden uses, and the sources by
+kind. No source was re-read or downloaded. With `DOC-003` done,
+`GATE-TRANSLATION` is open for the `END-01` epilogue scope only.
+
+Next action: `END-002` (the US English-mode epilogue text format, then one
+character's PSP English).

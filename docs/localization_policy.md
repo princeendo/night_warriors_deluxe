@@ -34,4 +34,4 @@ Any English that is not already on the US disc goes on disc only after
 
 - **2026-11-15, `END-01` epilogues:** the user's decisions above (PSP for all
   14, spelling fixes logged, US Saturn names, rewrap then ask). The gate
-  itself stays closed until `DOC-003` is done (its remaining dependency).
+  opened on 2026-11-15 with `DOC-003` done; this scope only.
