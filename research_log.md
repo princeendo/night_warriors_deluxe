@@ -914,3 +914,23 @@ the rebuild is byte-identical. The pushed history keeps those three lines.
 
 Next action: find RAM unused during the ending (write log over a candidate
 area) and move the list there; no text cut without the user.
+
+## 2026-11-15 — EXP-0024: room for an English epilogue
+
+User request: "Yes, move the list". The 238 limit is the slot count of
+fixed sprite arrays drawn each frame (`0x06083344` × 128, `0x06083744` ×
+128, `0x06083B44` × 192); the epilogue list started at array 2 slot 82.
+Logs and a WRAM-H dump showed arrays 1-2 empty during the epilogue except 18
+player sprite slots (blank, off screen, rewritten every frame).
+
+Tried and failed: (1) a forced test without writing the code change into RAM
+(`MAIN.BIN` is loaded at boot; a state keeps the old literal); (2) starting
+the list in array 1: the whole paragraph drew, but the first 111 characters
+under the art (array 1 is drawn before it).
+
+Result: list at array 2 slot 0 with an off-screen filler line over the
+player slots: Morrigan's whole English epilogue on top of her art (D-023).
+302 characters of room: 4 of 14 English epilogues fit.
+
+Next action: more room (draw order, or the player slots) before asking for
+any trims; cold boot of Morrigan's build with the user present.

@@ -344,3 +344,19 @@ check; only the first 238 are drawn (an English paragraph was cut at its
 epilogue's length.
 
 Reproduce: `research/experiments/EXP-0023/README.md`.
+
+## D-023: Moving the epilogue glyph list to sprite array 2 gives 302 characters on top of the art (`END-002`, `EXP-0024`)
+
+Holds for: the D-017 image plus `EXP-0023/build_en_epilogue.py --move-list`
+(Morrigan, forced from a state with the same literal written in RAM).
+
+Three stubs draw fixed sprite arrays each frame through `0x060188D4(base,
+count)`: `0x06083344` × 128, `0x06083744` × 128, `0x06083B44` × 192; the
+art is drawn after array 1 and before arrays 2-3. Changing the epilogue
+builder's literal at `0x06037A98` from `0x060839D4` to `0x06083744`, and
+filling list entries 64-81 (the player sprite slots, rewritten every frame)
+with an off-screen line, lets an epilogue use 302 characters drawn on top of
+the art; Morrigan's whole English epilogue (278) shows. Text placed in array
+1 is drawn under the art.
+
+Reproduce: `research/experiments/EXP-0024/README.md`.

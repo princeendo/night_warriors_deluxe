@@ -1,7 +1,8 @@
 """EXP-0023: build a US image whose epilogue for given characters is English.
 
     ./invenv.sh python research/experiments/EXP-0023/build_en_epilogue.py \
-        [--out build/us_en_epilogue] [--y0 0x10] [--step 13] CHAR [CHAR ...]
+        [--out build/us_en_epilogue] [--y0 0x10] [--step 13] [--move-list] \
+        CHAR [CHAR ...]
 
 CHAR is the Saturn roster number (D-018: 5 = Morrigan). Starts from the
 DISC-002 version 2 patches (EXP-0018 ``PATCHES``). For each character it
@@ -84,18 +85,42 @@ def paragraph(roster: int) -> tuple[list[str], list[str]]:
     return paras, applied
 
 
-def record(paras: list[str], y0: int, step: int) -> tuple[bytes, list[str]]:
+# --move-list (EXP-0024): the epilogue's glyph list starts at sprite array 2
+# slot 0 (0x06083744) instead of slot 82 (0x060839D4). Array 1 is drawn under
+# the art, so it is not used. The list's entries 64-81 are the player sprite
+# slots (0x06083944-0x060839D3), rewritten every frame; a hidden line of
+# filler glyphs, placed off screen, takes them so no text lands there.
+LIST_LITERAL = ("MAIN.BIN", 0x25A98, "060839D4", "06083744", 0x06037A98)
+HOLE = (64, 18)  # first entry index, length
+SLOTS = 320  # 0x06083744 to the end of array 3 (0x06084144), 8 bytes each
+FILLER = 0x00AC  # any non-space code; drawn off screen or overwritten
+HIDDEN = (0x170, 0x00E0)  # x right of the screen, y at the bottom
+
+
+def record(
+    paras: list[str], y0: int, step: int, hole: tuple[int, int] | None = None
+) -> tuple[bytes, list[str]]:
     lines = [line for p in paras for line in textwrap.wrap(p, WIDTH)]
     words: list[int] = []
+    glyphs = 0
     for i, line in enumerate(lines):
-        if i:
+        codes = encode(line)
+        n = sum(c != 0x0020 for c in codes)
+        if hole and glyphs <= hole[0] < glyphs + n:
+            pad = hole[0] - glyphs + hole[1]
+            words += [*([0xFFFF] if words else []), *HIDDEN, 0x0001, *[FILLER] * pad]
+            glyphs += pad
+        if words:
             words.append(0xFFFF)
-        words += [X, y0 + i * step, 0x0001, *encode(line)]
+        words += [X, y0 + i * step, 0x0001, *codes]
+        glyphs += n
+    if hole and glyphs > SLOTS:
+        raise ValueError(f"{glyphs} glyph entries > {SLOTS} slots")
     words.append(0x0000)
     return struct.pack(f">{len(words)}H", *words), lines
 
 
-def patches(chars: list[int], y0: int, step: int) -> list[tuple]:
+def patches(chars: list[int], y0: int, step: int, move: bool = False) -> list[tuple]:
     data = ST1JPN.read_bytes()
 
     def entry(i: int) -> int:
@@ -108,10 +133,13 @@ def patches(chars: list[int], y0: int, step: int) -> list[tuple]:
     ]
     last_epilogue = max(target[:EPILOGUES])
     free = min(t for t in target if t > last_epilogue)  # first non-epilogue record
-    out, pos = [], free
+    out, pos = (
+        ([(*LIST_LITERAL, "epilogue glyph list -> array 2 slot 0")] if move else []),
+        free,
+    )
     for roster in chars:
         paras, applied = paragraph(roster)
-        rec, lines = record(paras, y0, step)
+        rec, lines = record(paras, y0, step, HOLE if move else None)
         if pos + len(rec) > len(data):
             raise ValueError("records do not fit in ST1JPN.BIN")
         out.append(
@@ -145,8 +173,9 @@ def main() -> int:
     ap.add_argument("--out", default="build/us_en_epilogue")
     ap.add_argument("--y0", type=lambda v: int(v, 0), default=0x10)
     ap.add_argument("--step", type=int, default=13)
+    ap.add_argument("--move-list", action="store_true")
     args = ap.parse_args()
-    extra = patches(args.chars, args.y0, args.step)
+    extra = patches(args.chars, args.y0, args.step, args.move_list)
     for p in extra:
         print(f"{p[0]} {p[1]:#06x} {len(p[3]) // 2} bytes: {p[5]}")
     be.PATCHES = be.PATCHES + extra
@@ -157,4 +186,9 @@ def main() -> int:
 if __name__ == "__main__":
     assert encode("Ma'a, I.") == [0xCD, 0x201, 0xA7, 0x201, 0xAE, 0x20, 0xC9, 0xAC]
     assert record(["ab"], 0x10, 13)[0] == bytes.fromhex("002C0010000102010202" + "0000")
+    _r = record(["ab cd"], 0x10, 13, (1, 2))[0]  # hole after the first glyph
+    assert _r == bytes.fromhex(
+        "0170 00E0 0001 00AC 00AC 00AC FFFF "
+        "002C 0010 0001 0201 0202 0020 0203 0204 0000"
+    ), _r.hex()
     raise SystemExit(main())
