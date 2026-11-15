@@ -28,8 +28,9 @@ _spec.loader.exec_module(be)
 
 ST1JPN = Path("local/extracted/saturn_us/ST1JPN.BIN")
 FIRST_LINE = 0xE1A  # Morrigan's first line header (x, y, 1), EXP-0011/EXP-0022
-# PSP Chronicle Hmovie04_2 (EXP-0020), re-wrapped (user decision 2026-11-15)
-LINES = ["Fatigued from battle,", "Ma'am, I am afraid the", "master has... passed on."]
+# Three re-wrapped lines of PSP Chronicle Hmovie04_2 (EXP-0020), one per line,
+# kept out of git (game text, AGENTS.md rule 21).
+LINES_FILE = Path("local/end002/exp0022_lines.txt")
 
 
 SWAPPED = {",": 0x00AE, ".": 0x00AC}  # not ASCII + 0x80 (EXP-0022, ST1USA.BIN)
@@ -64,9 +65,10 @@ def line_spans(data: bytes, start: int, count: int) -> list[tuple[int, int]]:
 
 def patches() -> list[tuple]:
     data = ST1JPN.read_bytes()
+    lines = LINES_FILE.read_text().splitlines()
     out = []
-    spans = line_spans(data, FIRST_LINE, len(LINES))
-    for (off, n), text in zip(spans, LINES, strict=True):
+    spans = line_spans(data, FIRST_LINE, len(lines))
+    for (off, n), text in zip(spans, lines, strict=True):
         codes = encode(text)
         if len(codes) > n:
             raise ValueError(f"{text!r}: {len(codes)} codes > {n}")

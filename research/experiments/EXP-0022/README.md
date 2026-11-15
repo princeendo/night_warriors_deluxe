@@ -88,3 +88,10 @@ no new font or renderer, only records in this encoding.
   32 characters, so every paragraph must be re-wrapped (allowed), and some
   may need more lines than the Japanese.
 - Digits and other marks in this set (`&`, `0`-`9`) were not drawn here.
+
+## Correction (2026-11-15, `EXP-0023`)
+
+The script first hard-coded the three PSP lines, against `AGENTS.md` rule
+21 (game text is never committed; commit `e5f37e0`). It now reads them from
+the ignored `local/end002/exp0022_lines.txt`; the rebuild has the same Track
+1 hash (`32ecfc22…`).

@@ -328,3 +328,19 @@ codes in one paragraph. Advance about 12 pixels; about 26 characters fit a
 line starting at x = `0x2C`.
 
 Reproduce: `research/experiments/EXP-0022/README.md`.
+
+## D-022: Epilogue records are found through a self-relative table, and at most 238 characters are drawn (`END-002`, `EXP-0023`)
+
+Holds for: the US `MAIN.BIN` (unchanged in the D-017 image) reading an `ST1`
+file in English mode.
+
+The table at file offset `0x0C` holds one 32-bit word per character, indexed
+by roster number − 1 (D-018); the record starts at the word's own address
+plus its value (`0x060379B2`-`0x060379C2`). The ending reads only the file
+header, that word and the record. Each non-space character adds an 8-byte
+entry to a list at `0x060839D4` (literal at `0x06037A98`) with no length
+check; only the first 238 are drawn (an English paragraph was cut at its
+238th non-space character), which is exactly the longest Japanese
+epilogue's length.
+
+Reproduce: `research/experiments/EXP-0023/README.md`.

@@ -893,3 +893,24 @@ differ). Not found: how the game picks a character's record (the table at
 
 Next action: a read trace of the record lookup; then Morrigan's whole
 paragraph.
+
+## 2026-11-15 — EXP-0023: record lookup and the 238-glyph limit (END-002)
+
+`force.py --log-read` added. Read trace: the epilogue record is found
+through a self-relative table at `ST1JPN.BIN` `0x0C` (index = roster − 1);
+the ending reads only the header, that entry and the record (D-022).
+
+Built Morrigan's whole PSP paragraph as a new record in the unread part of
+`ST1JPN.BIN` (`EXP-0023/build_en_epilogue.py`, text read from the local
+transcript). It shows in English but stops at the 238th non-space
+character, the length of the longest Japanese epilogue. The glyph list at
+`0x060839D4` (8 bytes a glyph, no bound) runs into an area that a VDP1
+command builder rewrites every frame (write log). All 14 English epilogues
+are 263-345 glyphs.
+
+Correction: the `EXP-0022` script had three PSP lines hard-coded, against
+rule 21 (pushed in `e5f37e0`); they now live in an ignored local file and
+the rebuild is byte-identical. The pushed history keeps those three lines.
+
+Next action: find RAM unused during the ending (write log over a candidate
+area) and move the list there; no text cut without the user.

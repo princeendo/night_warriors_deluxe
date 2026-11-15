@@ -103,9 +103,12 @@ task repeats a sibling task, the note names it for its method only.
 - **2026-11-15: English in the epilogue** (`END-002`, `EXP-0022`, D-021):
   three PSP lines drawn in Morrigan's epilogue in the US win-quote font; the
   encoding is known. `END-001` closed; `END-02`/`END-03` moved to `END-003`.
-- Next: in `END-002`, a read trace for how a character's record is found,
-  then Morrigan's whole PSP paragraph re-wrapped (about 26 characters a
-  line). No generalisation or second difference class before (rule 23).
+- **2026-11-15: record lookup and the 238-glyph limit** (`EXP-0023`,
+  D-022): Morrigan's whole English paragraph shows but stops at 238
+  characters; every English epilogue is longer (263-345).
+- Next: in `END-002`, move the glyph list (`0x060839D4`) to RAM unused during
+  the ending, so no text is cut; then the line count (14-18 lines). No
+  generalisation or second difference class before (rule 23).
 
 ## Milestones
 
@@ -502,6 +505,7 @@ is not already on the base disc goes on disc).
 - **Acceptance criteria:** (1) The format the epilogue renderer reads (file header, records, character codes, line and length limits) is recorded with evidence. (2) One character's English epilogue shows on a patched image, with before/after screenshots, a control, and every line's provenance and each logged edit (M3). (3) A second character through the same tool (M4). (4) All 14, each forced and reviewed, with the edits log and any fit question put to the user (M5).
 - **Notes:** Known: the epilogue renderer draws `MOJI` codes from the file in the slot it reads (D-011, D-017); `ST1USA.BIN` holds the US win quotes and placeholder epilogue records drawn as rows of "A" (`EXP-0012`, `EXP-0018`). Whether the font (`MOJI.CHR`) has Latin glyphs, and in what codes, is UNKNOWN.
 - **Progress 2026-11-15 (`EXP-0022`, D-021):** in English mode the epilogue renderer draws the win-quote Latin codes (ASCII + `0x80` capitals and punctuation, `0201`-`021A` lowercase, `0020` space, comma `00AE`, period `00AC`) in the US win-quote font, about 12 px per character (about 26 per line). Three PSP lines in Morrigan's record showed in English over her art. Open for criterion 1: how a character's record is found (the offset table at `0x0C`), how many lines fit, and the line spacing.
+- **Progress 2026-11-15 (`EXP-0023`, D-022):** records are found through a self-relative table at `0x0C` (index = roster − 1), and the ending reads nothing else in the file, so English records can sit anywhere in it. Morrigan's whole PSP paragraph (16 lines) showed in English but was cut at its 238th character: the glyph list at `0x060839D4` has room for 238 entries. All 14 English epilogues need 263-345. Next: find RAM unused during the ending and move the list there (no text cut), then test 14-18 lines.
 
 ### EDITION-001 - Design the edition switch
 

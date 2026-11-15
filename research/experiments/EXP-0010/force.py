@@ -15,7 +15,8 @@ applies each ``--write ADDRESS=HEXBYTES`` to WRAM-H (address 0x06000000-
 ``--wav`` also records the sound. ``--onhit PC:ADDRESS=HEXBYTES`` (EXP-0016)
 arms a PC breakpoint in log mode and applies the write each time PC has
 executed; ``--log-pc`` logs hits (registers) at PC; ``--log-write RANGE``
-(EXP-0019) logs writes to RANGE instead (not combined with the PC options);
+(EXP-0019) and ``--log-read RANGE`` (EXP-0023) log writes or reads in RANGE
+instead (not combined with the PC options or each other);
 ``--setting NAME=VALUE``
 passes ``-NAME VALUE`` to Mednafen. No input is sent. Outputs stay under the
 ignored OUT_DIR.
@@ -72,6 +73,7 @@ def main() -> int:
     parser.add_argument("--onhit", action="append", default=[])
     parser.add_argument("--log-pc", action="append", default=[])
     parser.add_argument("--log-write", action="append", default=[])
+    parser.add_argument("--log-read", action="append", default=[])
     parser.add_argument("--setting", action="append", default=[])
     parser.add_argument("--image", type=Path, help="a .cue instead of the release's")
     args = parser.parse_args()
@@ -104,6 +106,7 @@ def main() -> int:
         "onhit": args.onhit,
         "log_pc": args.log_pc,
         "log_write": args.log_write,
+        "log_read": args.log_read,
         "settings": args.setting,
     }
     with (out / "mednafen.log").open("wb") as log:
@@ -133,6 +136,9 @@ def main() -> int:
             elif args.log_write:
                 agent.bpmode("log")
                 agent.breakpoints("write", args.log_write)
+            elif args.log_read:
+                agent.bpmode("log")
+                agent.breakpoints("read", args.log_read)
             elif args.onhit or args.log_pc:
                 agent.bpmode("log")
                 pcs = [spec.split(":")[0] for spec in args.onhit] + args.log_pc
