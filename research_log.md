@@ -1224,3 +1224,16 @@ endings' added lines and pages (`EXP-0030`), the pause on a missing pad
 added (BACKLOG; needs a `GATE-TRANSLATION` decision for new Japanese text).
 
 Next action: the user chooses (`EDITION-002`, or `END-005`).
+
+## 2026-11-16 — EDITION-002 started (EXP-0036): settings block
+
+User request: "Yes, start EDITION-002". The save (`N_WARRIORS_`, 512 bytes)
+is the 0x104-byte block at `0x060830B4` plus stack leftovers; load, unpack,
+pack and save routines read from `MAIN.BIN`. Bytes `0x11`-`0x17` are not
+used by unpack or pack; replays from power-on, a fight and a win show only
+boot clears and the block copy there. Plan for the run-time edition in
+`EXP-0036`. Slip: two `force.py` runs printed "no such file" because
+`events.log` is only written on a hit (no hits = no access).
+
+Next action: a session where the user opens the options screen and changes
+one setting (write watch on `0x0608089F`), to find the screen's code.
