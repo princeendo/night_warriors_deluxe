@@ -1319,3 +1319,15 @@ Slips: `force.py` keeps no states to read RAM from, so RAM checks use a
 small agent script; replays without input never reach the title.
 
 Next action: write the apply routine and wrapper; test by holding Start.
+
+## 2026-11-16 — EXP-0038: the apply routine works
+
+`title_code.py` builds the wrapper and apply routine (568 bytes) into a
+relocated `TITLE.O`. A replay holding or pulsing Start never reaches the
+title menu (attract demo), so the test wrote the code and the task slot
+pointer into RAM over the user's title-menu state `0026`: each edition
+byte gives the expected flag, language, C, slot `0x1BE` and `MAIN.BIN`
+patches. Slip: the "ST2HIS.BIN" string is at `0x0605B780` (fixed).
+
+Next action: the EDITION line and its input, then the overlay and ending
+changes and the English file.

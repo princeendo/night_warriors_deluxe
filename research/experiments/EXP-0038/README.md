@@ -1,7 +1,7 @@
 # EXP-0038: The Edition Switch Build (design)
 
 Task: EDITION-002 (criteria 2-3)
-Status: IN_PROGRESS (design; patcher can grow files; hook point found)
+Status: IN_PROGRESS (apply routine works in RAM; menu line, overlays, ending and English file not built)
 Confidence: each element below is SUPPORTED by the cited reading; the whole
 is a HYPOTHESIS until built and played
 
@@ -11,7 +11,7 @@ is a HYPOTHESIS until built and played
 | --- | --- | --- |
 | `PL05`/`PL10`/`PL14` (`.O`, `.O2`) guards made `nop` (D-031-D-033) | US original would get the Japanese content | Restore the guards; their literal `0x0608089A` (every flag reader in these files is a guard) points at a new byte **C** = block byte `0x12` (`0x060830C6`) instead |
 | English epilogues and the late routine written over `ST1JPN.BIN` (D-027) | The Japanese editions need it intact | Restore `ST1JPN.BIN`. The English file goes in place of **`ST2HIS.BIN`** (12,572 bytes plus 1,764 of room): language 2 ("HIS") is never selected, and its slots `0x1BE`/`0x1BF` are declared by no other file. New file: header (`0x1BC`, table), (`0x1BE`, `0x20000000` + routine), table of 14, records (12,884 bytes), routine; about 13,000 bytes (directory size updated) |
-| `MAIN.BIN` `ST1` call loads `ST1JPN.BIN` by name, no flag gate (D-017) | US original must load none, Japanese the language's file | Original bytes on disc; in US Enhanced the title code writes the five changed words in RAM, the name literal pointing at `MAIN.BIN`'s own "ST2HIS.BIN" string (`0x0605B784`) |
+| `MAIN.BIN` `ST1` call loads `ST1JPN.BIN` by name, no flag gate (D-017) | US original must load none, Japanese the language's file | Original bytes on disc; in US Enhanced the title code writes the five changed words in RAM, the name literal pointing at `MAIN.BIN`'s own "ST2HIS.BIN" string (`0x0605B780`) |
 | `MAIN.BIN` Morrigan US Enhanced script over her Japanese one, US table entry 4 repointed (D-030) | The Japanese editions need her Japanese script | Original on disc; the title code writes the Enhanced script and entry in US Enhanced, and the Japanese script and the original entry otherwise (both carried by the title code) |
 | `ENDING.O`: the Japanese-branch tests made `nop`; r12 = slot `0x1BC` + delta | US original must take its own branches; the delta trick needs the English file loaded | Both tests read **C** (literal `0x0600D0B8`). The two consecutive one-frame waits (`0x0600CF86`, `0x0600CF8C`, each `0x06007BBC(1)`, a loop of `0x0601F6B0`) become one two-frame wait, freeing 6 bytes; `0x0600CF92`-`0x0600CFC1` move up 6 bytes (literal displacements re-encoded); r12 = `@0x06091E50` (slot `0x1BE`), the C test and the branch fit in `0x0600CFBC`-`0x0600CFCD` |
 | `ST2USA.BIN` Morrigan records (unused entries `0xB1`, `0xB2`) | none (the US original script never shows them) | Keep |
@@ -76,6 +76,25 @@ size (both-endian) rewritten too.
   `0x06080864` (2 title menu `0x06005108`, 3 options `0x060052A4`); `MAIN.BIN`'s
   task runner reads its address from the slot (`0x06045C24` loads
   `0x06092AB4`) every frame. The wrapper goes there.
+
+- **Apply routine** (`research/experiments/EXP-0038/title_code.py`, 568
+  bytes at `0x06009568`, `TITLE.O` 34,076 → 34,720 bytes, relocated; task
+  slot `0x4D7` header entry → the wrapper). Held or pulsed Start does not
+  reach the title menu in a replay (it drifts into the attract demo), so it
+  was checked on `options-session3` state `0026` (the title menu, task
+  running) with the code and the slot pointer (`0x06092AB4` =
+  `0x06009568`) written into RAM, then the edition byte written, 6 frames
+  each:
+
+  | E | flag | language | C | slot `0x1BE` | `ST1` call | Morrigan script / entry 4 |
+  | --- | --- | --- | --- | --- | --- | --- |
+  | 0 US Enhanced | 2 | 1 | 0 | `26020766` | `D4380009`, `0009`, `0605B780 06013DF8` | Enhanced / `0605ADBC` |
+  | 1 US original | 2 | 1 | 2 | `26020766` | original | original / `0605B344` |
+  | 2 JP original | 0 | 0 | 0 | `26020766` | original | original / `0605B344` |
+  | 3 JP Enhanced | 0 | 0 | 0 | `26020766` | original | original / `0605B344` |
+
+  CONFIRMED in RAM. (`ST2HIS.BIN` is at `0x0605B780` in `MAIN.BIN`, not
+  `0x0605B784` as first written.)
 
 ## Open Risks
 
