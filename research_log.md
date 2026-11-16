@@ -1146,3 +1146,13 @@ folder); run them one after the other.
 
 Next action: a cold boot of `build/us_en_donovan` with the user, playing
 Donovan to a win; then Sasquatch (`PL10`).
+
+## 2026-11-16 — EXP-0034: Sasquatch's win-pose chooser (static)
+
+User choice: "Sasquatch first" (before Donovan's cold boot). The six `PL10`
+flag readers are one state machine (`0x060044FC`) choosing a win pose: in
+US, poses 0 and 4 skip spawning effect objects and pose 1 becomes pose 5.
+Pose 4 needs the pad word `0x0708` at the choice; the button table
+`0x0606792C` reads it as Up + A + B + C (bit order HYPOTHESIS). Not run.
+
+Next action: Sasquatch sessions with the user, Japanese 1M and US original.
