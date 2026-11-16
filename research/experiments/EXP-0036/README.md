@@ -1,8 +1,8 @@
 # EXP-0036: The Settings Block and Its Spare Bytes (EDITION-002, criterion 1)
 
 Task: EDITION-002
-Status: IN_PROGRESS (save block and spare bytes found; the options screen
-not yet located)
+Status: IN_PROGRESS (save block, spare bytes and the options screen found;
+the menu entry not yet designed)
 Confidence: CONFIRMED (save layout, load and save routines, from code);
 SUPPORTED (spare bytes: static reading plus three replays; the save path
 itself was not run)
@@ -77,10 +77,34 @@ set both in the unpack, and again when the options screen changes it.
 - **Morrigan's main-ending script** now overwrites her Japanese script.
   Her US Enhanced script (134 bytes) and a table to reach it need memory
   that no edition uses: UNKNOWN where.
-- **Options screen.** Not located: the settings variables are referenced
-  only in `MAIN.BIN` (and `0x0608089E` in `TITLE.O`). A session in which
-  the user changes one option, with a write watch on `0x0608089F`, finds
-  the screen's code.
+- **Options screen.** Found (below); the new entry's drawing and input
+  are the next step.
+
+## Options Screen (two sessions with the user)
+
+`research/experiments/EXP-0036/options_watch.py` starts the stock US image
+in the interactive home with log-mode write watches (and PC logs), and
+waits for the user to close the window.
+
+1. `local/edition002/options-session` (watch on `0x0608089F`, `0x0608089E`,
+   `0x06080881`, `0x06080886`): only the boot clears and the unpack, which
+   ran twice (frames 1,153 and 1,694). The setting changed was not one of
+   these four.
+2. `local/edition002/options-session2` (plus block bytes `0x04`-`0x10` and
+   PC logs of load-and-unpack `0x06014718` and pack `0x060148C4`): load and
+   unpack at frame 1,154 (called from `0x06013A76`), unpack again at 1,533
+   (from `MAIN.BIN` `0x0603612E`, entering the menu), pack at 2,013 (from
+   `TITLE.O` `0x060052B4`). The saved file afterwards differs from the
+   earlier one in **block byte `0x08` only, 1 → 3**: the pack fills it from
+   `0x060809C6`, so that is the setting changed.
+
+`0x060809C6` is edited in `TITLE.O` (`0x06001000`) at `0x0600547C` (one
+direction decrements it, `0x06005488`). The menu's cursor is
+`0x0608086C`; `0x060052B8` sends each value (0, 2, 4, 6, 8, 9) to its line's
+handler; Start (pad bit `0x0800`, `0x060052A4`) calls the pack
+`0x060148C4` (`0x060052AE`) and leaves. So **the options screen is in
+`TITLE.O`**, it edits the live variables directly, and Start saves them
+through the pack. Which label the user changed is not recorded.
 
 ## Uncertainty
 

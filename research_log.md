@@ -1237,3 +1237,15 @@ boot clears and the block copy there. Plan for the run-time edition in
 
 Next action: a session where the user opens the options screen and changes
 one setting (write watch on `0x0608089F`), to find the screen's code.
+
+## 2026-11-16 — EXP-0036: the options screen found
+
+Two sessions with the user (`options_watch.py`, write watches in the live
+game). First: the watched four variables never changed outside the unpack
+(the change was elsewhere). Second, with the block and the routines logged:
+unpack on entering the menu (`0x0603612E`), pack on Start from `TITLE.O`
+(`0x060052B4`); the save differed only in block byte `0x08` (1 → 3), filled
+from `0x060809C6`, which `TITLE.O` edits at `0x0600547C`. The options
+screen is in `TITLE.O`, cursor `0x0608086C`, handlers from `0x060052B8`.
+
+Next action: how the menu draws its lines (to add an EDITION line).
