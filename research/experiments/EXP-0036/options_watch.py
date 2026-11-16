@@ -6,7 +6,8 @@ Starts the agent Mednafen in the interactive home (the user's pad) on CUE
 (default: the stock US image), sets a log-mode write watch on the first
 settings variables the unpack routine fills and on the settings block's
 option bytes, logs the load-and-unpack and pack routines (EXP-0036), and
-waits for the user to close the window. Every write is logged with its PC in
+takes a screenshot and a save state each second, and waits for the user to
+close the window. Every write is logged with its PC in
 ``OUT_DIR/agent/events.log``. Nothing is pressed for the user.
 """
 
@@ -59,7 +60,17 @@ def main() -> int:
         agent.breakpoints("write", WATCH)
         agent.breakpoints("pc", PCS)
         print(time.strftime("%H:%M:%S"), "watching", WATCH, flush=True)
-        proc.wait()
+        for d in ("shots", "states"):
+            (out / d).mkdir()
+        n = 0
+        while proc.poll() is None:  # a screenshot and a state each second
+            try:
+                agent.screenshot((out / "shots" / f"{n:04d}.png").resolve())
+                agent.savestate((out / "states" / f"{n:04d}.mcs").resolve())
+            except AgentError:
+                pass
+            n += 1
+            time.sleep(1)
     print(time.strftime("%H:%M:%S"), "closed")
     return 0
 

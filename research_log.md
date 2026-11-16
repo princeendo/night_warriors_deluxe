@@ -1249,3 +1249,14 @@ from `0x060809C6`, which `TITLE.O` edits at `0x0600547C`. The options
 screen is in `TITLE.O`, cursor `0x0608086C`, handlers from `0x060052B8`.
 
 Next action: how the menu draws its lines (to add an EDITION line).
+
+## 2026-11-16 — EXP-0036: how the options lines are drawn
+
+Third session (screenshots and states each second). Labels are ASCII in
+`TITLE.O`, drawn by `0x06018A1A` (x, y, colour, string). OPTION MODE lines
+16 px apart from y 40; APPENDIX (cursor 9, y `0xB8`) is drawn only when
+`0x06080A2B` (saved, block `0x5D`) is non-zero: an unlock, 0 here, which is
+why the user saw no APPENDIX. A new EDITION line fits only by moving the
+exit line down, or on the hidden APPENDIX screen.
+
+Next action: the user chooses where the EDITION line goes.

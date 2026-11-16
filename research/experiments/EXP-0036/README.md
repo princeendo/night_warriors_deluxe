@@ -106,6 +106,27 @@ handler; Start (pad bit `0x0800`, `0x060052A4`) calls the pack
 `TITLE.O`**, it edits the live variables directly, and Start saves them
 through the pack. Which label the user changed is not recorded.
 
+## How the Menu Draws Its Lines (third session)
+
+`options_watch.py` now also takes a screenshot and a state each second.
+Session `local/edition002/options-session3` (the user opened OPTION, then
+CONFIGURATION, and left; the user reported "There was no appendix").
+
+- The labels are ASCII strings in `TITLE.O` (file `0xB06`-`0xC90`, the
+  title menu, OPTION MODE and APPENDIX screens). One routine,
+  `0x06018A1A` (in `MAIN.BIN`), draws each: x in r4, y in r5, colour in r6
+  (3 when the cursor is on the line, else 1), string in r7.
+- OPTION MODE (`0x060048C0` on): title at y 8; nine lines from y 40, 16
+  apart, to CONFIGURATION at y `0xA8` (cursor 8); APPENDIX at y `0xB8`
+  (cursor 9) **only when `0x06080A2B` is non-zero** (`0x06004B82`); PRESS
+  START TO EXIT at y `0xD0`. `0x06080A2B` is saved (block byte `0x5D`); it
+  is 0 here, so the user's menu has a blank slot where APPENDIX goes. What
+  sets it is UNKNOWN (an unlock).
+- Room: one 16-pixel slot below APPENDIX (y `0xC8`) collides with the exit
+  line at `0xD0`; a new line there means moving the exit line down (to
+  `0xD8`, still on screen in a 240-line capture) or using the APPENDIX
+  screen (hidden until unlocked).
+
 ## Uncertainty
 
 - The spare bytes were not watched while saving or in the options screen.
