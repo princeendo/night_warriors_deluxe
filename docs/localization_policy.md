@@ -17,6 +17,7 @@ on these discs is found by experiment.
 | Epilogue typos (2026-11-15) | Asked how PSP typos go on disc ("new without speakig", "exaulted", "kindom's", "nothing more a", "lie dormant") → "Fix spelling, log each (Recommended)" | Only spelling and missing-word slips are corrected; each edit is recorded beside the PSP original. Wording is otherwise unchanged. |
 | Epilogue names (2026-11-15) | Asked whether to keep the PSP spellings ("Rapter", "Le marta") → "Match the US Saturn (Recommended)" | Where the US Saturn release has a name, the epilogue uses its spelling (Raptor); names the US Saturn lacks stay as the PSP has them. The wider names question in the Enhanced editions stays with `LOC-001`. |
 | Epilogue fit (2026-11-15) | Asked what may change if a paragraph does not fit the Saturn layout → "Rewrap, then ask (Recommended)" | Line breaks may change freely; any cut or rewording to fit goes back to the user first. |
+| Main endings in US Enhanced (2026-11-16, `END-003`) | Asked which main-ending differences US Enhanced should change → "Morrigan's missing lines (Recommended)"; source → "Check PSP movies first (Recommended)"; extent → "Minimal (Recommended)" | US Enhanced restores only Morrigan's two missing lines and pause page (D-029); all other US main-ending text stays as shipped (rule 30), including the four meaning changes and the renames. English from the PSP *Chronicle* main-ending movie if it has these lines; any new translation is asked first. Only the missing pages change. |
 
 ## Deferred To Evidence
 
@@ -35,3 +36,6 @@ Any English that is not already on the US disc goes on disc only after
 - **2026-11-15, `END-01` epilogues:** the user's decisions above (PSP for all
   14, spelling fixes logged, US Saturn names, rewrap then ask). The gate
   opened on 2026-11-15 with `DOC-003` done; this scope only.
+- **2026-11-16, `END-02` Morrigan's main ending:** a second scope (decisions
+  above): restore her two missing lines and pause page in US Enhanced, from
+  the PSP if it has them; a new translation needs the user's yes.

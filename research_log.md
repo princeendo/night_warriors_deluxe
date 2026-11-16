@@ -1041,3 +1041,11 @@ Not checked: pictures asset by asset; the PSP main-ending movies
 (`HmovieNN_1`) as an English donor; the code path of the page-id offset.
 
 Next action: the user decides what, if anything, US Enhanced restores here.
+
+## 2026-11-16 — User decisions on the main endings
+
+User request: "Discuss restoring some". Three questions; answers (all the
+recommended option): restore only Morrigan's missing lines; English from the
+PSP main-ending movies first; minimal change. Recorded in
+`docs/localization_policy.md`, the `GATE-TRANSLATION` block, and a new task
+`END-004`.

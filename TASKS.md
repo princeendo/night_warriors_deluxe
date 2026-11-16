@@ -124,9 +124,10 @@ task repeats a sibling task, the note names it for its method only.
 - **2026-11-16: main endings compared** (`END-003` done, `EXP-0030`,
   D-029): the US main endings are a free rewrite; only Morrigan's loses
   Japanese text; four change in meaning.
-- Next: a user decision on what, if anything, US Enhanced restores from the
-  Japanese main endings (rule 30 keeps US wording by default); otherwise
-  `EDITION-001` or `AUD-002`.
+- **2026-11-16: main-ending scope decided:** US Enhanced restores only
+  Morrigan's missing lines (`END-004`), English from the PSP first, all else
+  as shipped.
+- Next: `END-004` (read the PSP `Hmovie04_1` for Morrigan's lines first).
 
 ## Milestones
 
@@ -542,6 +543,16 @@ is not already on the base disc goes on disc).
 - **Progress 2026-11-16 (`EXP-0029`, D-028):** the Japanese ending character is `0x060809D0`; all 14 Japanese endings captured (`local/end003/jp-NN`), the US ones are `EXP-0019`'s controls. The two regions' per-character ending scripts are decoded: page counts differ for 12 of 14 (details in D-028); Pyron's closing line differs in meaning (`END-03`, SUPPORTED). Open: what each page says (the page-id-to-record mapping is UNKNOWN; text can be read from `ST2USA.BIN` and drawn from `ST2JPN.BIN`), so which extra pages are new content.
 - **Done 2026-11-16 (`EXP-0030`, D-029):** all 14 main endings compared page by page from the files (US decoded, Japanese drawn from `MOJI`), through the two scripts; the Japanese forced runs checked for the right character. Result: a free rewrite re-paginated for English; Japanese text missing from the US only in Morrigan's (two lines and a pause page); meaning changes in Felicia, Bishamon, Huitzil, Pyron (and Victor's resolution); added US lines in Bishamon, Rikuo, Huitzil; renames in Hsien-Ko's and Donovan's. Readings are SUPPORTED. Whether any of this goes into US Enhanced is a user decision (rule 30 keeps the US wording by default) and a later task.
 
+### END-004 - Restore Morrigan's missing main-ending lines (US Enhanced)
+
+- **Status:** `READY`
+- **Milestone:** M3 for `END-02` (Morrigan only, user decision 2026-11-16)
+- **Dependencies:** END-003, END-002 (the build it extends), GATE-TRANSLATION (`END-02` Morrigan block, 2026-11-16).
+- **Blockers:** None.
+- **Objective:** In US Enhanced, Morrigan's main ending shows the Japanese-only pages the US drops (her request for bed, the butler's reply, the pause page; Japanese `ST2JPN` `36`, `37`, `B1`), in English, with every other US line unchanged.
+- **Acceptance criteria:** (1) The PSP *Chronicle* Morrigan main-ending movie (`Hmovie04_1`) read for these lines, with frames and hashes; a new translation only after the user's yes. (2) The US script (`0x0605B730` entry 4) and `ST2USA.BIN` changed to show the restored pages in the Japanese order, from a cold boot, with before/after screenshots and the unpatched control. (3) The other 13 main endings and the win quotes unchanged (checked).
+- **Notes:** The scripts live in `MAIN.BIN` (loaded at boot; the US table is read only by the ending, but check every screen that shares code, `EXP-0027`). Page timing and order: Japanese `34`-`B2` (D-028).
+
 ### EDITION-001 - Design the edition switch
 
 - **Status:** `BACKLOG`
@@ -598,6 +609,7 @@ is not already on the base disc goes on disc).
 - **Objective:** No new or donor English text goes on disc before its sources, the pairing method, and the user's policy are settled.
 - **Acceptance criteria:** Every dependency is `DONE`; the user gives a recorded GO. Each later scope extension (new class, new donor source, names) is its own dated block under this gate.
 - **2026-11-15, `END-01` epilogues (user decisions, `docs/localization_policy.md`):** source PSP *Chronicle* `HmovieNN_2` English for all 14 (`EXP-0020`); spelling and missing-word slips fixed, each logged; names spelled as the US Saturn has them (Raptor); line breaks free, any cut or rewording asked first. This is the user's GO for this scope. Opened 2026-11-15 when `DOC-003` was done; any other scope (main endings, names, a new donor) needs its own dated block.
+- **2026-11-16, `END-02` Morrigan's main ending (user decisions):** restore only Morrigan's two missing lines and pause page in US Enhanced (`END-004`); English from the PSP *Chronicle* main-ending movie if present, a new translation only with the user's yes; every other US main-ending line unchanged.
 
 ## Later Milestones (outline only)
 
