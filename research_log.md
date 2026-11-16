@@ -1076,3 +1076,15 @@ English win quote. From the bonus-screen state `f00007111`, her ending
 rest as shipped; Pyron's epilogue unchanged. `END-004` DONE.
 
 Next action: the user chooses `EDITION-001` or `AUD-002`.
+
+## 2026-11-16 — EXP-0032: Morrigan's voices (AUD-002)
+
+User request: "Morrigan's voices". `AUD-002` written as a full task. The
+four guards in `PL05.O` (and `PL05.O2`, same offsets): `bf` at `0x1490`,
+`0x1A1E`, `0x3342`, `0x5280`. With all four made `nop` in RAM and the flag
+left at 2, the bat-seat line plays at her win (5.021 s, score 0.734, as
+`EXP-0014`); one at a time, only `0x06002490` does it. Built the image
+(`EXP-0032/build_voices.py`). US/JP `PL05.O` differ only in address
+literals.
+
+Next action: cold-boot play session (throws, Vector Drain, hurt, win).

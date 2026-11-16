@@ -129,10 +129,12 @@ task repeats a sibling task, the note names it for its method only.
   as shipped.
 - **2026-11-16: Morrigan's main-ending lines restored** (`END-004` done,
   `EXP-0031`, D-030), confirmed from a cold boot.
-- Next (the user chooses): `EDITION-001` (the edition switch; its debts:
-  `ST1JPN.BIN` holds the English epilogues, Morrigan's Japanese script slot
-  holds her new US script, `ENDING.O` and `ST2USA.BIN` patched), or `AUD-002`
-  (voices).
+- **2026-11-16: Morrigan's voices** (`AUD-002`, user choice; `EXP-0032`):
+  the four region-flag guards in her code opened; the win line plays (forced).
+- Next: a cold-boot play session for the throw, Vector Drain and hurt
+  voices. Still open: `EDITION-001` (its debts: `ST1JPN.BIN` holds the
+  English epilogues, Morrigan's Japanese script slot holds her new US
+  script, `ENDING.O`, `ST2USA.BIN` and `PL05` patched).
 
 ## Milestones
 
@@ -560,6 +562,17 @@ is not already on the base disc goes on disc).
 - **Progress 2026-11-16 (`EXP-0031`, D-030):** the PSP has no English for the lines (its main ending reuses the US text); the user approved a new translation ("I'm a little tired. / Prepare my bed.", "Certainly, mistress."). New records in `ST2USA.BIN`'s unused tail, a new 11-page script over her Japanese script, pages 33-36 shortened so both lines sit in the butler scene. Forced: in step, card clean; win quote, Pyron and Anakaris unchanged. Next: cold boot with the user.
 - **Done 2026-11-16 (`EXP-0031`):** cold boot with the user (Morrigan beat Victor): English win quote; her ending forced from that session's state shows both restored lines in the butler scene and the rest as shipped; Pyron's epilogue unchanged. Debt for `EDITION-001`: her Japanese script slot now holds the new US script.
 
+### AUD-002 - Morrigan's Japanese-only voices in US Enhanced
+
+- **Status:** `IN_PROGRESS`
+- **Milestone:** M2-M3 for `AUD-01`, `AUD-02`, `AUD-03`, `AUD-05` (user choice 2026-11-16: "Morrigan's voices")
+- **Dependencies:** AUD-001 (D-007, D-008, D-014), END-004 (the build it extends).
+- **Blockers:** None.
+- **Objective:** US Enhanced plays Morrigan's four Japanese-only voices (normal throw, Vector Drain, bat-seat win line, hurt) with the region flag kept at 2, by opening the four flag-guarded calls in her code (`PL05.O` and its player-2 copy `PL05.O2`).
+- **Acceptance criteria:** (1) Each of the four guards tied to its event. (2) A patched image plays each voice where the Japanese release does, shown by recorded sound (sample search) from a cold boot and play, with an unpatched control. (3) Nothing else about her or the opponent changes (no other `PL05` difference; win quotes and endings unchanged).
+- **Notes:** Guards (US `PL05.O`, base `0x06001000`, same offsets in `PL05.O2`): `bf` at file `0x1490` (codes `0x137`/`0x136`), `0x1A1E` (`0x134`/`0x136`, through `0x0603A76E`), `0x3342` (`0x139`), `0x5280` (`0x135`). The US and Japanese `PL05.O` differ only in 465 address bytes (relocation, `MAIN.BIN` addresses). Sound is identical on both discs (`AUD-001`).
+- **Progress 2026-11-16 (`EXP-0032`):** with the four guards made `nop` in RAM (flag 2), the bat-seat line plays at her win; one at a time, only the guard at `0x06002490` does it. Image built (`build_voices.py`, Track 1 `2985ff73…`). Next: a cold-boot play session (throws, Vector Drain, hurt, a win).
+
 ### EDITION-001 - Design the edition switch
 
 - **Status:** `BACKLOG`
@@ -635,7 +648,7 @@ tasks" just in time). The method for each is in the three sibling documents.
 | RE-005 | M5 | Whole roster for the class; capacity; regression references. |
 | END-002 | M3-M5 for END-01 | Now a full task (above). |
 | END-003 | M1 for END-02/03 | Now a full task (above). |
-| AUD-002 | M1-M5 for AUD/ANI | Voices and poses for US Enhanced, after `AUD-001`: the rest of the roster (Donovan, Sasquatch first). |
+| AUD-002 | M2-M3 for AUD-01/02/03/05 | Now a full task (above): Morrigan's voices. The rest of the roster (Donovan, Sasquatch) is later. |
 | QUO-001 | M1-M5 for QUO-01 | Victory quotes: inventory per release, selection conditions, donor English. |
 | LOC-001 | M7 | Names in each edition (NAM-02/03; deferred from `DOC-002`); whether both releases' name art is on both discs; toggle decided early (`docs/lessons_from_xvsf.md`, lesson 9). |
 | UI-001 | M8 | Title, attract, menus, credits, boot warnings: each surface the register marks different. |
