@@ -1273,3 +1273,13 @@ edition and patches `MAIN.BIN`'s RAM. Not proven free yet.
 
 Next action: a write/read watch on that range across boot, title, options
 (with a save) and a match start.
+
+## 2026-11-16 — EXP-0037: title-time RAM confirmed free
+
+Read/write watch on `0x06009565`-`0x0600FFFF` (`local/edition002/free-watch`):
+BIOS clears at boot, then nothing through the title, OPTION, a change and a
+save; the first access is `MAIN.BIN` `0x0604EC34` at the match start
+(player 2's overlay load). EXP-0037 DONE.
+
+Next action: the edition values and the default for saves without the
+byte (user), then build the switch.

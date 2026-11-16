@@ -1,9 +1,9 @@
 # EXP-0037: Where the Edition Switch's Code and Data Can Live
 
 Task: EDITION-002
-Status: IN_PROGRESS (candidates found; none yet written to or watched)
-Confidence: SUPPORTED (zero in every sampled state; file room from the ISO
-directory); no candidate is proven free
+Status: DONE
+Confidence: CONFIRMED for `0x06009565`-`0x0600FFFF` while the title runs
+(access watch, one session); the other candidates SUPPORTED at most
 
 ## Observation
 
@@ -64,11 +64,28 @@ has 150 free sectors) loaded into the free title-time RAM by a short hook.
 The overlays' guards point at the "Japanese content" byte instead of the
 flag (a literal change on disc). The English epilogues go to a new file.
 
-## Uncertainty and Next Step
+## 3. Access Watch Over the Title-Time Range
 
-- "Zero in every state" is not "never written": a clear of zeros, or use
-  between samples, is invisible. Next: a write and read watch on
-  `0x06009565`-`0x0600FFFF` from power-on through the title, the options
-  screen (with a change and a save) and the start of a match.
-- Whether the title is always the first thing after boot, and whether each
-  return to the title reloads `TITLE.O`, is UNKNOWN.
+`EXP-0036/options_watch.py local/edition002/free-watch <US cue>
+06009565-0600FFFF` (read and write watch, log mode, stock US image). The
+user booted, opened OPTION, changed a setting, saved with Start, and
+started an Arcade match. Accesses by frame:
+
+| Frames | PC | What |
+| --- | --- | --- |
+| 8-11 | `0x000002B0` | BIOS start-up clear |
+| 325 | `0x00002F06` | BIOS, during boot (before `TITLE.O` runs) |
+| 1,206; 1,606; 1,996 | (PC log only) | load-and-unpack, unpack on entering OPTION, pack on Start: no access to the range |
+| 3,471-3,476 | `0x0604EC34` (`MAIN.BIN`) | 6,782 accesses as the match loads player 2's overlay |
+| 3,624 on | `0x06009xxx`-`0x0600Fxxx` | the overlay's own code and data during the fight |
+
+**From boot to the match start, through the title, the options screen, a
+change and a save, nothing reads or writes `0x06009565`-`0x0600FFFF`.** The
+title-time code and data can live there.
+
+## Uncertainty
+
+- One session; the attract mode (title left idle) and returning to the
+  title after a game were not watched.
+- Whether each return to the title reloads `TITLE.O` is UNKNOWN; the edition
+  code must be (re)loaded with it either way.
