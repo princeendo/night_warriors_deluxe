@@ -146,7 +146,9 @@ task repeats a sibling task, the note names it for its method only.
   Enhanced included. Next, the user's pick: `EDITION-002` (the switch; its
   debts: `ST1JPN.BIN` holds the English epilogues, Morrigan's Japanese
   script slot holds her new US script, `ENDING.O`, `ST2USA.BIN`, `PL05`,
-  `PL10` and `PL14` patched statically) or `EDITION-003` (JP Enhanced scope).
+  `PL10` and `PL14` patched statically). `EDITION-003` done: JP Enhanced adds
+  the US main endings' extra content in new Japanese (`END-005`), hidden in
+  the menu until it exists.
 
 ## Milestones
 
@@ -628,11 +630,22 @@ is not already on the base disc goes on disc).
 
 ### EDITION-003 - Define JP Enhanced
 
-- **Status:** `BACKLOG`
+- **Status:** `DONE` (2026-11-16)
 - **Milestone:** M7
 - **Dependencies:** EDITION-001.
 - **Objective:** List what JP Enhanced adds to JP original (content the US release has and the Japanese lacks, or fixes), from the difference register, and get the user's choices.
 - **Acceptance criteria:** Candidates with evidence presented to the user; the answers recorded verbatim.
+- **Decision 2026-11-16 (verbatim, multiple choice):** "JP Enhanced = JP original plus what? The register shows little the US has that the Japanese release lacks. Pick any that should go in." → "US-only ending lines" (not chosen: "Pause on missing pad", "Win-quote differences"); "Until JP Enhanced actually differs from JP original, should the options menu offer it?" → "Hide until it differs (Recommended)".
+- **Meaning:** JP Enhanced is JP original plus Japanese versions of the content the US main endings add (`EXP-0030`: Morrigan's added line, Bishamon's closing line, Rikuo's new lines, Huitzil's new page, Felicia's different story), as a new translation (rule 29), retimed to the pictures. The menu hides JP Enhanced until it differs from JP original. Work: `END-005`.
+
+### END-005 - US-only main-ending content in Japanese, for JP Enhanced
+
+- **Status:** `BACKLOG`
+- **Milestone:** M7
+- **Dependencies:** EDITION-003, GATE-TRANSLATION (a new Japanese translation needs the user's source and approval).
+- **Objective:** Give JP Enhanced the lines and pages the US main endings add, in Japanese, in the Japanese script and `ST2JPN` text, timed to the pictures.
+- **Acceptance criteria:** (1) The exact US-only lines per character listed from `EXP-0030`, with which are additions and which are rewrites of Japanese lines (only additions qualify unless the user decides otherwise). (2) Japanese text from a source the user approves, marked as a new translation. (3) Encoded in the Japanese text codes (`MOJI`, D-011), inserted and retimed as `EXP-0031` did, shown forced and from a cold boot in JP Enhanced.
+- **Notes:** Felicia's US ending is a different story rather than added lines; how much of it counts is for the user in (1).
 
 ## Phase G: M2, the Same Change From a Disc Image
 

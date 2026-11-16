@@ -1214,3 +1214,13 @@ JP Enhanced or not. Answers: "No, one code set"; "Options menu, saved";
 added as BACKLOG.
 
 Next action: the user chooses between `EDITION-002` and `EDITION-003`.
+
+## 2026-11-16 — EDITION-003 decided: what JP Enhanced adds
+
+From the register, the US-only candidates put to the user: the US main
+endings' added lines and pages (`EXP-0030`), the pause on a missing pad
+(D-016), win-quote differences (not yet compared, `QUO-001`). Answers:
+"US-only ending lines"; "Hide until it differs (Recommended)". `END-005`
+added (BACKLOG; needs a `GATE-TRANSLATION` decision for new Japanese text).
+
+Next action: the user chooses (`EDITION-002`, or `END-005`).
