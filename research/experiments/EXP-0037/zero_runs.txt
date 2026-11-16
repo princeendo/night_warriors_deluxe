@@ -1,0 +1,4 @@
+wram_h 0x06000aff-0x06000bff 257
+wram_h 0x06000e19-0x06000fc1 425
+wram_h 0x060ff804-0x060ffceb 1256
+90 states

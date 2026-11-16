@@ -1260,3 +1260,16 @@ why the user saw no APPENDIX. A new EDITION line fits only by moving the
 exit line down, or on the hidden APPENDIX screen.
 
 Next action: the user chooses where the EDITION line goes.
+
+## 2026-11-16 — EXP-0037: room for the edition switch
+
+Zero-run scan of 90 states (boot, matches, endings, menus): no free WRAM-L,
+and in WRAM-H only the system area below `0x06001000` and the stack's
+reach. Disc room after each file measured (`TITLE.O` 740 bytes,
+`ENDING.O` 1,456, `MAIN.BIN` 240). The RAM after `ENDING.O` is used during
+endings. While the title runs, `0x06009565`-`0x0600FFFF` stays zero (only
+`0x06009564` is used after `TITLE.O`). Design: title-time code applies the
+edition and patches `MAIN.BIN`'s RAM. Not proven free yet.
+
+Next action: a write/read watch on that range across boot, title, options
+(with a save) and a match start.
