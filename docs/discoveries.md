@@ -395,3 +395,19 @@ the 14 English epilogues (PSP *Chronicle* text, logged edits only) shows
 whole on top of the art, and every run continues to the cast roll.
 
 Reproduce: `research/experiments/EXP-0026/README.md`.
+
+## D-026: The win quotes share the epilogue's text builder; the list start is switched only for the epilogue (`END-002`, `EXP-0027`)
+
+Holds for: the US image patched by `EXP-0023/build_en_epilogue.py
+--late-array1 --step 0` for rosters 1-14 (Track 1 `8ebc0ca3…0b67`).
+
+Changing the glyph-list literal at `0x06037A98` on disc blanked the win
+quote after a cold boot: the win screens use the same builder and literal.
+The epilogue's text is built once, at frame 6,141 for Morrigan, between the
+first and second per-frame calls of `ENDING.O`'s `r12`. The array-1 redraw
+routine (D-024, D-025) therefore sets the literal to `0x060833CC` on its
+first call (a flag in its own data in the freshly loaded `ST1JPN.BIN`) and
+restores `0x060839D4` on every later call. `MAIN.BIN` keeps its original
+literal; the win quote is English and the 14 epilogues are whole.
+
+Reproduce: `research/experiments/EXP-0027/README.md`.

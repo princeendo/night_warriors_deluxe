@@ -111,11 +111,21 @@ R12_PATCHES = [  # (file, offset, original, new, address); None = the delta
     ("ENDING.O", 0xBFC6, "D33C60302008", "6CC2D33B3C3C", 0x0600CFC6),
     ("ENDING.O", 0xC0B8, "0608089A", None, 0x0600D0B8),
 ]
+# EXP-0027: the win screens use the same text builder and literal, so MAIN.BIN
+# is not patched for this layout. The epilogue text is built once, between the
+# routine's first and second calls (frame 6,141 for Morrigan), so the routine
+# sets the literal at 0x06037A98 on its first call (a flag in its own data,
+# fresh with each load of ST1JPN.BIN) and restores 0x060839D4 on every later
+# call.
 LATE_ROUTINE = (
-    "4F22 D305 430B 0009"  # sts.l pr,@-r15; mov.l main,r3; jsr @r3; nop
-    "D404 D305 430B E56F"  # mov.l base,r4; mov.l reader,r3; jsr @r3; mov #111,r5
-    "4F26 000B 0009 0009"  # lds.l @r15+,pr; rts; nop; (pad)
-    "06020766 060833CC 060188D4"  # main, base (array 1 slot 17), reader
+    "4F22 D10A D20A C70E"  # sts.l pr; r1 = &literal; r2 = old base; r0 = &flag
+    "6302 2338 8B02"  # r3 = flag; if flag != 0 skip the next three
+    "E301 2032 D208"  # flag = 1; r2 = new base
+    "2122"  # literal = r2
+    "D308 430B 0009"  # jsr 0x06020766
+    "D405 D307 430B E56F"  # jsr reader(0x060833CC, 111)
+    "4F26 000B 0009 0009"  # lds.l pr; rts; nop; (pad)
+    "06037A98 060839D4 060833CC 06020766 060188D4 00000000"  # ..., flag
 )
 FILLER = 0x00AC  # any non-space code; drawn off screen or overwritten
 HIDDEN = (0x170, 0x00E0)  # x right of the screen, y at the bottom
@@ -165,6 +175,7 @@ def patches(chars: list[int], y0: int, step: int, layout: str = "") -> list[tupl
     hole, slots = None, 0
     if layout:
         start, hole, slots = LAYOUTS[layout]
+    if layout == "array2":  # EXP-0024 only; "late" sets the literal at run time
         f, off, old = LIST_LITERAL
         out.append(
             (f, off, old, f"{start:08X}", 0x06037A98, f"glyph list -> {start:#x}")

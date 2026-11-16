@@ -112,9 +112,12 @@ task repeats a sibling task, the note names it for its method only.
   top in the ending; Anakaris's 345-character English epilogue shows whole.
 - **2026-11-15: all 14 English epilogues in one image** (`EXP-0026`,
   D-025), each forced and reviewed.
-- Next: a cold boot of that image with the user (one match won, then the
-  ending), to close `END-002` (M5 for `END-01`). No generalisation or second
-  difference class before (rule 23).
+- **2026-11-15: blank win quote found and fixed** (`EXP-0027`, D-026): the
+  first cold boot showed no win quote; `MAIN.BIN` is now untouched and the
+  epilogue's list start is switched only inside the ending.
+- Next: a second cold boot with the user (one match won, then the ending), to
+  close `END-002` (M5 for `END-01`). No generalisation or second difference
+  class before (rule 23).
 
 ## Milestones
 
@@ -515,6 +518,7 @@ is not already on the base disc goes on disc).
 - **Progress 2026-11-15 (`EXP-0024`, D-023):** the glyph list moved to sprite array 2 (one literal, `0x06037A98`) with an off-screen filler line over the player sprite slots: Morrigan's whole English epilogue shows on top of her art (forced; cold boot pending). Room: 302 characters; Morrigan, Bishamon, Pyron and Donovan fit, the other ten are 5-43 over. Array 1 is drawn under the art.
 - **Progress 2026-11-15 (`EXP-0025`, D-024):** array 1 is drawn again after the art by a 36-byte routine in `ST1JPN.BIN` reached through `ENDING.O`'s `r12`; with the list from array 1 slot 17 there is room for 413 characters. Morrigan (16 lines) and Anakaris (345 characters, 18 lines at 12 px, the longest) show whole on top of their art (forced). Criteria 2-3 met except the cold boot. Next: all 14 in one image (criterion 4), then a cold boot with the user.
 - **Progress 2026-11-15 (`EXP-0026`, D-025):** one image with all 14 English epilogues (Track 1 `21fb1c79…`); a fixed routine address crashed Demitri, Rikuo and Pyron (the file loads at a per-character address), fixed by computing `r12` from the loader's slot table. All 14 forced endings show the whole English paragraph on top of the art and reach the cast roll. Criteria 1-4 met by forcing; a cold boot of this image with the user remains before `END-002` is done.
+- **Progress 2026-11-15 (`EXP-0027`, D-026):** cold boot of the `EXP-0026` image with the user: the win quote was blank (the user's report), because the win screens share the epilogue's text builder and the on-disc `MAIN.BIN` literal change. Fixed: `MAIN.BIN` untouched; the ending-only routine sets the literal on its first call and restores it after. Win quote English again; Pyron, Anakaris and Morrigan whole (forced). Next: a second cold boot with the user.
 
 ### EDITION-001 - Design the edition switch
 

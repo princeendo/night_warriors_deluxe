@@ -968,3 +968,25 @@ art and reach the cast roll (D-025). Frame picker added
 (`EXP-0026/pick_text_frame.py`).
 
 Next action: cold boot of the all-14 image with the user present.
+
+## 2026-11-15 — EXP-0027: the cold boot showed a blank win quote
+
+User request: "Yes, start it" (cold boot of the all-14 image). The user won
+Demitri vs. Victor and reported: "The win quote was blank." Screenshots agree.
+
+Cause (CONFIRMED): the win screens share the epilogue's text builder and the
+glyph-list literal at `0x06037A98`, which `EXP-0025` changed on disc. My
+`EXP-0024`-`EXP-0026` tests only covered the ending (forced from states),
+so they could not see it.
+
+Tried and failed: swapping the literal only around the routine's call to
+`0x06020766` (the builder does not run there; epilogues cut at 238 again).
+A PC log showed the builder runs once, between the routine's first and
+second calls. Fix: set on the first call (flag in the routine's data),
+restore on later calls; `MAIN.BIN` untouched. Win quote English, Pyron,
+Anakaris and Morrigan whole, literal restored after the ending (D-026).
+
+Lesson: a change to a file loaded at boot must be checked on every screen
+that uses the same code, not only the one it was made for.
+
+Next action: second cold boot with the user present.

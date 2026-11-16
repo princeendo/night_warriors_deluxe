@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # EXP-0018: one recorded play session on the patched US image (cold boot).
-# Run from the repository root after build_epilogue.py: session.sh [OUT_DIR]. The user plays
+# Run from the repository root after build_epilogue.py: session.sh [OUT_DIR] [CUE]
+# (CUE defaults to the version 2 image; EXP-0026 passes its own). The user plays
 # Morrigan and wins one match; this records a state every second (all kept)
 # and a screenshot every half second, as EXP-0007 did, in the interactive
 # home. The session ends when the user closes the Mednafen window.
@@ -8,7 +9,8 @@ set -euo pipefail
 
 ROOT="$PWD"
 d="${1:-local/disc002/us-enhanced-session}"  # output folder; one per session
-CUE="build/us_enhanced_epilogue/Night Warriors - Darkstalkers' Revenge (USA).cue"
+V2="build/us_enhanced_epilogue/Night Warriors - Darkstalkers' Revenge (USA).cue"
+CUE="${2:-$V2}"
 BIN="vendor/mednafen/build-agent/src/mednafen"
 mkdir -p "$d"
 date "+%H:%M:%S start"
