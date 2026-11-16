@@ -462,7 +462,7 @@ Reproduce: `research/experiments/EXP-0030/README.md`.
 ## D-030: Morrigan's two missing main-ending lines restored in US Enhanced, in step with her pictures (`END-004`, `EXP-0031`)
 
 Holds for: the US image patched by `EXP-0031/build_morrigan_main.py` (Track 1
-`f4edd2a4…1091`), forced from a state with its `MAIN.BIN` changes in RAM.
+`f4edd2a4…1091`), forced from a state and from a cold boot.
 
 The ending's pictures run on their own timeline (her pages start at script
 time + 422 frames; the butler scene ends near 3,850, the bed scene runs

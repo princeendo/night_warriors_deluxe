@@ -1,8 +1,8 @@
 # EXP-0031: Morrigan's Missing Main-Ending Lines in US Enhanced
 
 Task: END-004 (criteria 1-3; the cold boot follows)
-Status: DONE (forced); cold boot pending
-Confidence: CONFIRMED (forced from a state, `MAIN.BIN` changes written in RAM)
+Status: DONE
+Confidence: CONFIRMED (forced, then from a cold boot)
 
 ## Observation
 
@@ -76,6 +76,17 @@ sprites differ), so the text pages' on and off frames were compared: the
 win screen identical; Pyron's and Anakaris's within one shot (30 frames),
 apart from blips where animated cyan sprites trip the detector.
 
+## Step 5: Cold Boot
+
+With the user present: `research/experiments/EXP-0018/session.sh
+local/end004/cold-session "build/us_en_morrigan_main/…(USA).cue"` (133
+states, 264 screenshots). The user played Morrigan and beat Victor; the win
+quote is English ("My victories, like my beauty are eternal!"). From the
+bonus-screen state `f00007111`, her ending forced with the stage byte only
+(no RAM write; `local/end004/cold-05`, agent-reviewed) shows the same
+sequence as Step 4; Pyron's (`cold-12`) shows his whole English epilogue
+(key frame `r004037` `164c8004…`, identical to `EXP-0026`'s).
+
 ## Conclusion
 
 **CONFIRMED (forced):** Morrigan's main ending in US Enhanced shows her two
@@ -85,7 +96,6 @@ quote are unaffected (D-030).
 
 ## Uncertainty and Alternatives
 
-- Not yet from a cold boot.
 - Pages 33-36 are shown 60 frames shorter; read on screen, still readable.
 - Japanese mode on this image would play the new US script over `ST2JPN`
   (wrong order); the edition switch must restore her Japanese script.

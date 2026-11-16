@@ -1067,3 +1067,12 @@ and later pages keep their times. Forced: in step (D-030). Win quote, Pyron,
 Anakaris unchanged (text-page timings; shots differ by animation phase only).
 
 Next action: cold boot with the user.
+
+## 2026-11-16 — EXP-0031 cold boot; END-004 done
+
+User request: "Yes, start it". The user played Morrigan and beat Victor;
+English win quote. From the bonus-screen state `f00007111`, her ending
+(stage byte only) shows the two restored lines in the butler scene and the
+rest as shipped; Pyron's epilogue unchanged. `END-004` DONE.
+
+Next action: the user chooses `EDITION-001` or `AUD-002`.
