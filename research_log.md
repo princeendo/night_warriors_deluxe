@@ -1342,3 +1342,14 @@ new `TITLE.O`).
 
 Next action: a session with the user on that image (OPTION, move to
 EDITION, left/right, Start).
+
+## 2026-11-16 — EXP-0038: the EDITION line works live
+
+Session with the user on `build/exp0038_menu_test`: the line shows in
+OPTION MODE's blank slot, the cursor reaches it, left/right change E, and
+the apply routine switches flag, language, C and the `MAIN.BIN` patches
+at once (E 2 → JP original values; E 0 → US Enhanced); Start saves E.
+Not seen: the APPENDIX-unlocked layout.
+
+Next action: the overlay literals (C), `ENDING.O`'s edition test and frame
+wait, the English file in `ST2HIS.BIN`'s place; then the full build.

@@ -110,6 +110,21 @@ size (both-endian) rewritten too.
   live session: test image `build/exp0038_menu_test` (stock US plus the new
   `TITLE.O`, relocated; Track 1 hash in its `build_manifest.json`).
 
+- **Live test of the EDITION line** (`local/edition002/menu-session`,
+  `EXP-0036/options_watch.py` on `build/exp0038_menu_test`, Track 1
+  `e5d26ec6…4570`; the user opened OPTION, moved to EDITION, pressed
+  left/right, saved with Start and went on to character select). Shots:
+  the line reads "EDITION  US ENHANCED" in the blank slot under
+  CONFIGURATION, aligned with the other labels and values, and "EDITION  JP
+  ORIGINAL" after a press. States, by second: cursor 9 from `0032`; at
+  `0034` E 2 with flag 0, language 0, C 0 and the `ST1` call and
+  Morrigan's table entry back to stock; from `0035` E 0 with flag 2,
+  language 1, C 0 and the US Enhanced patches. The save written on Start
+  has block byte `0x11` = 0 (the value left). **CONFIRMED live: the line
+  draws, the cursor reaches it, left/right change the edition, the apply
+  follows within a frame, and Start saves it.** Not seen: US ORIGINAL on
+  screen (between one-second samples), the APPENDIX-unlocked layout.
+
 ## Open Risks
 
 - The flag and language are set at start-up (D-013); changing them later
