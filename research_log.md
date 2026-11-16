@@ -1201,3 +1201,16 @@ entry-table check stopped on out-of-range offsets in `PL08`/`PL10`/`PL11`
 (now counted, not decoded).
 
 Next action: `EDITION-001` options to the user.
+
+## 2026-11-16 — EDITION-001 decided
+
+Options put to the user (`AskUserQuestion`) with `EXP-0035`'s costs: both
+code sets (+1,075 sectors, boot-time choice, loader UNKNOWN) or one code set
+switched at run time (US code in Japanese mode; US code changes stay;
+`P00`/`P03_` maybe needed); chooser at boot, boot menu, or saved options;
+JP Enhanced or not. Answers: "No, one code set"; "Options menu, saved";
+"Yes". Recorded verbatim in `EDITION-001` and the edition policy.
+`EDITION-002` (implementation) and `EDITION-003` (JP Enhanced scope)
+added as BACKLOG.
+
+Next action: the user chooses between `EDITION-002` and `EDITION-003`.

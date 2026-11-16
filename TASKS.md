@@ -139,12 +139,14 @@ task repeats a sibling task, the note names it for its method only.
   creatures and sample (`EXP-0034`, D-033), in `build/us_en_sasquatch`;
   both confirmed from a cold boot. `AUD-003` done. Every region-flag reader
   in the character code is now handled except Donovan's unreached second
-  guard. Still open: `EDITION-001` (its debts: `ST1JPN.BIN` holds the
-  English epilogues, Morrigan's Japanese script slot holds her new US
-  script, `ENDING.O`, `ST2USA.BIN`, `PL05`, `PL10` and `PL14` patched).
-  Still open after it: Still open: `EDITION-001` (its debts: `ST1JPN.BIN` holds the
-  English epilogues, Morrigan's Japanese script slot holds her new US
-  script, `ENDING.O`, `ST2USA.BIN` and `PL05` patched).
+  guard.
+- **2026-11-16: edition switch decided** (`DIFF-001` done first, `EXP-0035`;
+  `EDITION-001` done): one code set (the US release's) switched at run time
+  from an options entry saved in spare save bytes; four editions, JP
+  Enhanced included. Next, the user's pick: `EDITION-002` (the switch; its
+  debts: `ST1JPN.BIN` holds the English epilogues, Morrigan's Japanese
+  script slot holds her new US script, `ENDING.O`, `ST2USA.BIN`, `PL05`,
+  `PL10` and `PL14` patched statically) or `EDITION-003` (JP Enhanced scope).
 
 ## Milestones
 
@@ -601,13 +603,36 @@ is not already on the base disc goes on disc).
 
 ### EDITION-001 - Design the edition switch
 
-- **Status:** `BACKLOG`
+- **Status:** `DONE` (2026-11-16)
 - **Milestone:** M7 (design may start once `DIFF-001` and one of `AUD-001`/`END-001` are done)
 - **Dependencies:** DIFF-001.
 - **Blockers:** None for the static part.
 - **Objective:** Decide how one image offers JP original, US original, US Enhanced (and JP Enhanced if needed), from measured costs.
 - **Acceptance criteria:** Options with costs presented to the user as a multiple-choice question: where the choice is made (boot menu, options screen, a button held at boot), where it is stored, and how each edition gets its code and data (both regions' differing files on disc and loaded by name, or one region's files plus patches applied at load); whether "original" must be byte-for-byte that release's code; the disc-space route. The answer is recorded verbatim.
 - **Notes:** Static (`SESSION-0002`): track 1 has 150 free sectors (0.3 MiB) in both releases; one region's copy of the 52 differing files is about 2.1 MB; the header differs (`T-1202G` vs `T-1208H`, area `JT` vs `U`). Growing track 1 moves track 2 (a short warning or silence), changes the system area's sizes, and rules out SSP (`docs/lessons_from_cyberbots.md`, section 4). The system area also decides which BIOS region a real Saturn accepts: **UNKNOWN** how a merged image should be labelled. Cyberbots' options sub-menu and spare-save-byte pattern (D-055 to D-058) is the sibling precedent.
+- **Decision 2026-11-16 (verbatim, multiple choice; options and costs in `EXP-0035` and `research_log.md`):**
+  - "Edition switch: must 'JP original' and 'US original' each run that release's own code, byte for byte? (Each region's code is one linked set — boot, main program and 41 overlays — so the regions can't be mixed file by file.)" → "No, one code set"
+  - "Where should the player choose the edition?" → "Options menu, saved"
+  - "Is a JP Enhanced edition needed (Japanese text and voices, plus fixes like the US Enhanced ones)?" → "Yes"
+- **Meaning:** one code set, the US release's, switched at run time; "JP original" is the US code in Japanese mode (region flag 0, language 0), not the Japanese release byte for byte, and keeps the US code's own changes. The edition is an entry in the game's options, saved in spare save bytes (the Cyberbots pattern). Four editions: JP original, US original, US Enhanced, JP Enhanced (its content to define).
+
+
+### EDITION-002 - The edition byte and options entry (US code)
+
+- **Status:** `BACKLOG`
+- **Milestone:** M7
+- **Dependencies:** EDITION-001.
+- **Objective:** One US image where an options entry, saved in spare save bytes, selects JP original, US original, US Enhanced or JP Enhanced at run time.
+- **Acceptance criteria:** (1) Where the options screen and save block are, and spare bytes proven unused (as Cyberbots D-055 to D-058). (2) The region flag and language byte set from the saved edition at the points that set them now (`DISC-001`). (3) Every US Enhanced change turned from a static patch into a run-time test of the edition: `PL05`/`PL10`/`PL14` guards, Morrigan's script, `ENDING.O` hook; the English epilogues moved out of `ST1JPN.BIN` so the Japanese editions get it intact. (4) Each edition from a cold boot with the user against its reference (JP 1M for JP original; stock US for US original), differences listed.
+- **Notes:** Known differences the US code keeps in Japanese mode: only player 1's Start begins a game (`EXP-0017`), pause on a missing pad (D-016), and unexplained main-program changes (`EXP-0035`). Whether `P00.BIN`/`P03_.BIN`/`P03_.SPR` (data, 344 JP sectors, content UNKNOWN) must be carried for JP original is open; 150 sectors are free.
+
+### EDITION-003 - Define JP Enhanced
+
+- **Status:** `BACKLOG`
+- **Milestone:** M7
+- **Dependencies:** EDITION-001.
+- **Objective:** List what JP Enhanced adds to JP original (content the US release has and the Japanese lacks, or fixes), from the difference register, and get the user's choices.
+- **Acceptance criteria:** Candidates with evidence presented to the user; the answers recorded verbatim.
 
 ## Phase G: M2, the Same Change From a Disc Image
 
