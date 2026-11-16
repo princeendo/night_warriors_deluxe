@@ -1,8 +1,8 @@
 # EXP-0034: Sasquatch's Region-Gated Win Poses
 
 Task: AUD-003 (`ANI-01`)
-Status: IN_PROGRESS
-Confidence: SUPPORTED (static reading of the US code); nothing run yet
+Status: IN_PROGRESS (criteria 1-2 met; the cold boot is left)
+Confidence: CONFIRMED (forced replays from both regions' play sessions)
 
 ## Observation
 
@@ -51,11 +51,72 @@ In the US release Sasquatch's win poses 0 and 4 run without the effect
 objects the Japanese release spawns, and the random pose 1 is replaced by
 pose 5.
 
-## Planned Experiment
+## Sessions (with the user, sound recorded)
 
-1. Sessions with the user, one per release (Japanese 1M, US original), as
-   Sasquatch winning a match, holding Up + A + B + C after one KO.
-2. From a post-KO US state: replays with the flag 2 and cleared (one
-   variable), screenshots and `EXP-0008/dense.py`; the pose forced by
-   writing the random call (`0x060045A4` `410B` → `E000`/`E001`, in RAM).
-3. The same from the Japanese state.
+`EXP-0018/session.sh` on the stock images:
+
+| Session | Image | Play |
+| --- | --- | --- |
+| `local/aud004/jp-session` | Japanese 1M | Sasquatch beat Victor 2-0, Up + A + B + C held after each KO |
+| `local/aud004/us-session` | US original (`nw_saturn_us`) | the same |
+
+From the live states (object `0x06076C70` JP, `0x06076C20` US; `+5` state,
+`+0x61` pose; the Japanese addresses are US + `0x50`): in both releases the
+pad word read **`0x0708`** while the user held Up + A + B + C, and both
+rounds took **pose 4** (JP `f00005660`, `f00007307`; US `f00006254`,
+`f00007858`). This confirms the button reading above. `PL10.O` has the same
+layout in both releases (only literals differ), so the code addresses are
+shared. Japanese replays from post-KO states, no input: round 1 took random
+pose 1 (`0x060044A0`, then both spawners), round 2 pose 0 (`0x06004456`,
+then `0x06004348`). The Japanese hidden pose shows steam from his nose
+(live shots after `f00005603`).
+
+## Forced Replays
+
+From the US state `f00007802` (round 2, state 1, just before the choice)
+and the Japanese `f00007249`, the pose was forced by a RAM write to the
+chooser: `060045A0=A019` (`bra` to pose 4), or `060045A4=E000`/`E001` (the
+random call replaced by `mov #0/#1,r0`). Then, one variable at a time, the
+US flag left at 2, the flag written to 0, or only the six guards made `nop`
+in RAM (`060042D0 06004354 060043C2 06004460 060044CA 060045B8` = `0009`).
+`force.py --log-pc` (30 × 10 frames, screenshots) and `dense.py` (300
+frames):
+
+| Pose | Japanese | US flag 2 | US flag 0 | US six `nop`s |
+| --- | --- | --- | --- | --- |
+| 1 (random) | shy, blushing pose; six small snow creatures; sample `0x53116` | **pose 5**, a roar; no creatures; no `0x53116` | as Japanese | as Japanese |
+| 0 (random) | two creatures; `0x53116` | no creatures; no `0x53116` | as Japanese | as Japanese |
+| 4 (Up + A + B + C) | steam; two creatures; `0x53116` | steam; no creatures; no `0x53116` | as Japanese | as Japanese |
+
+The spawned objects are the creatures (`0x01003900`/`0x01003A00` for pose
+1, `0x01007300` for poses 0 and 4). `0x53116` (8-bit, `0x3271` bytes) is the
+only sample that differs in each pair; the Japanese pose 1 plays it at
+frame 97, and its bytes are at the same sound-RAM address in both regions.
+So the asset is on the US disc and loaded; only the code skips it. The
+steam of pose 4 is not region-gated: the hidden pose the US guide describes
+exists in both releases.
+
+## Build
+
+`research/experiments/EXP-0034/build_sasquatch.py`: the `EXP-0033` image
+plus the six guards made `nop` in `PL10.O` and `PL10.O2` (file `0x32D0`
+`8F1D`, `0x3354` `8F2B`, `0x33C2` `8F27`, `0x3460` `8B08`, `0x34CA` `8B08`,
+`0x35B8` `8B04`). Track 1
+`e6e81ccc10264cea70aed3bc35c9b007d4705ac620fee5914775fde71fbbdc99`. It
+loads from disc: replaying the US state `f00003511` (before the match loads
+`PL10`) on this image for 400 frames, all six read `0009` in RAM.
+
+## Conclusion
+
+**CONFIRMED (forced replays):** in the US release Sasquatch's win poses 0, 1
+and 4 lose the small snow creatures and their sample `0x53116`, and the
+random pose 1 is replaced by pose 5. Six `nop`s in `PL10` restore the
+Japanese behaviour with the flag kept at 2 (D-033). Left: a cold boot of the
+build with the user (`AUD-003` criterion 3).
+
+## Uncertainty and Alternatives
+
+- The sample was identified by address and bytes, not listened to.
+- Pose 2 (the round-result branch) has no flag test and was not shown.
+- Player 2's copy (`PL10.O2`) is patched at the same offsets but was not
+  played.

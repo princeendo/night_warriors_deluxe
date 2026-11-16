@@ -1156,3 +1156,19 @@ Pose 4 needs the pad word `0x0708` at the choice; the button table
 `0x0606792C` reads it as Up + A + B + C (bit order HYPOTHESIS). Not run.
 
 Next action: Sasquatch sessions with the user, Japanese 1M and US original.
+
+## 2026-11-16 — EXP-0034: Sasquatch sessions, replays and build
+
+Sessions with the user (`local/aud004/jp-session`, `us-session`, stock
+images): Sasquatch beat Victor 2-0 in each, holding Up + A + B + C; the pad
+word read `0x0708` and both releases took pose 4 every round. Forced poses
+(RAM writes to the chooser) from `us f00007802` and `jp f00007249`: US flag
+2 lacks the snow creatures and sample `0x53116` in poses 0, 1, 4 and plays
+pose 5 for 1; flag 0, or the six `nop`s alone, match the Japanese. Build
+`build/us_en_sasquatch` (Track 1 `e6e81ccc…`), checked loaded from disc from
+`us f00003511`. D-033. The lead's "steam" pose is not region-gated.
+
+Commands: `EXP-0034/README.md`. Tests: `pytest` and `ruff` pass.
+
+Next action: one cold boot of `build/us_en_sasquatch` with the user, a win
+as Donovan and a win as Sasquatch (`AUD-003` criterion 3).

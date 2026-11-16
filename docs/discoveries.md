@@ -503,3 +503,20 @@ restored in RAM it never does, and no other sample differs. The sample's
 bytes are at the same sound-RAM address in both regions.
 
 Reproduce: `research/experiments/EXP-0033/README.md`.
+
+## D-033: Sasquatch's Japanese win-pose creatures and pose restored by six `nop`s (`AUD-003`, `EXP-0034`)
+
+Holds for: the US image patched by `EXP-0034/build_sasquatch.py` (Track 1
+`e6e81ccc…dc99`), shown by forced replays from play sessions of both
+releases with the same `nop`s written in RAM; not yet from a cold boot.
+
+Sasquatch's code (`PL10.O`, player 1; `PL10.O2` same offsets) chooses his
+win pose in one state machine (`0x060044FC`): Up + A + B + C held gives pose
+4 (pad word `0x0708`, confirmed in both releases), otherwise a random pose 0
+or 1. With the region flag non-zero, poses 0, 1 and 4 skip spawning small
+snow creatures and their sample `0x53116`, and pose 5 (a roar) replaces pose
+1 (a shy pose). Making the six guards `nop` (file `0x32D0`, `0x3354`,
+`0x33C2`, `0x3460`, `0x34CA`, `0x35B8`) gives the Japanese poses, creatures
+and sample with the flag at 2. The steam of pose 4 is in both releases.
+
+Reproduce: `research/experiments/EXP-0034/README.md`.
