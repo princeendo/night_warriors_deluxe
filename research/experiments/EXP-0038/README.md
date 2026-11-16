@@ -125,6 +125,16 @@ size (both-endian) rewritten too.
   follows within a frame, and Start saves it.** Not seen: US ORIGINAL on
   screen (between one-second samples), the APPENDIX-unlocked layout.
 
+- **Full build** (`research/experiments/EXP-0038/build_edition.py`, from the
+  stock US image): new `TITLE.O` and `ST2HIS.BIN` (the English epilogue
+  file, 29,332 bytes: the working English `ST1JPN.BIN` with a slot `0x1BE`
+  header entry) relocated to the free tail; `PL05`/`PL10`/`PL14` flag
+  literals → C; `ENDING.O` rewritten at `0x0600CF86`-`0x0600CFCD` (one
+  two-frame wait; moved block; r12 = @`0x06091E50`; C test) with literals
+  `0x0600D0B0` = `0x06091E50`, `0x0600D0B8` = C; `ST2USA.BIN` Morrigan
+  records. `ST1JPN.BIN`, `MAIN.BIN` stock. `build/us_edition` Track 1
+  `25e05ec14a258e7f2bea49e51023dfbf96c553aae688b67c5044728c4040f1be`.
+
 ## Open Risks
 
 - The flag and language are set at start-up (D-013); changing them later
