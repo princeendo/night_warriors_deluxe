@@ -379,3 +379,19 @@ fit; Anakaris's 345-character, 18-line English epilogue shows whole at
 12-pixel spacing.
 
 Reproduce: `research/experiments/EXP-0025/README.md`.
+
+## D-025: One patched US image shows all 14 English epilogues (`END-002`, `EXP-0026`)
+
+Holds for: the US image patched by `EXP-0023/build_en_epilogue.py
+--late-array1 --step 0` for rosters 1-14 (Track 1 `21fb1c79…9b87`), each
+ending forced from a state with the `MAIN.BIN` literal written in RAM.
+
+`ST1JPN.BIN` is loaded from a heap, at an address that depends on the
+character (`0x060CB408` for Morrigan, `0x060C7C14` for Pyron); the loader
+stores the file's table address (slot `0x1BC`) at `0x06091E48`. Computing
+`ENDING.O`'s `r12` from it at the epilogue's start (`0x0600CFC2`-`0x0600CFCA`)
+makes the array-1 redraw routine (D-024) work for every character. Each of
+the 14 English epilogues (PSP *Chronicle* text, logged edits only) shows
+whole on top of the art, and every run continues to the cast roll.
+
+Reproduce: `research/experiments/EXP-0026/README.md`.

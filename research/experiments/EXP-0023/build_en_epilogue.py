@@ -96,13 +96,21 @@ LAYOUTS = {
     "array2": (0x06083744, (64, 18), 320),  # EXP-0024
     "late": (0x060833CC, (175, 18), 431),  # EXP-0025: array 1 slot 17 on
 }
-# --late-array1 (EXP-0025): ENDING.O calls r12 = 0x06020766 each frame, which
-# ends by drawing arrays 2-3 after the art. A routine placed in ST1JPN.BIN
-# (loaded at 0x060CB408) calls it, then draws array 1 slots 17-127 again, last,
-# so text there is on top. ENDING.O's r12 literal (0x0600D0B0) points at the
-# routine through the cache-through mirror (0x2...).
-ST1_RAM = 0x060CB408  # where the ending loads ST1JPN.BIN (EXP-0023 read trace)
-R12_LITERAL = ("ENDING.O", 0xC0B0, "06020766", 0x0600D0B0)
+# --late-array1 (EXP-0025, EXP-0026): ENDING.O calls r12 = 0x06020766 each
+# frame, which ends by drawing arrays 2-3 after the art. A routine placed in
+# ST1JPN.BIN calls it, then draws array 1 slots 17-127 again, last, so text
+# there is on top. ST1JPN.BIN's load address depends on the character
+# (0x060CB408 for Morrigan, 0x060C7C14 for Pyron), so r12 is computed when
+# the epilogue starts: the loader stores the file's table address (slot
+# 0x1BC) at 0x06091E48, and the three flag-test instructions the EXP-0018
+# patch left unused become r12 = @0x06091E48 + (routine - 0x0C), through the
+# cache-through mirror (0x2...).
+SLOT_1BC = 0x06091E48  # 0x06091758 + 4 * 0x1BC
+R12_PATCHES = [  # (file, offset, original, new, address); None = the delta
+    ("ENDING.O", 0xC0B0, "06020766", f"{SLOT_1BC:08X}", 0x0600D0B0),
+    ("ENDING.O", 0xBFC6, "D33C60302008", "6CC2D33B3C3C", 0x0600CFC6),
+    ("ENDING.O", 0xC0B8, "0608089A", None, 0x0600D0B8),
+]
 LATE_ROUTINE = (
     "4F22 D305 430B 0009"  # sts.l pr,@-r15; mov.l main,r3; jsr @r3; nop
     "D404 D305 430B E56F"  # mov.l base,r4; mov.l reader,r3; jsr @r3; mov #111,r5
@@ -163,7 +171,10 @@ def patches(chars: list[int], y0: int, step: int, layout: str = "") -> list[tupl
         )
     for roster in chars:
         paras, applied = paragraph(roster)
-        rec, lines = record(paras, y0, step, hole, slots)
+        n_lines = len([x for p in paras for x in textwrap.wrap(p, WIDTH)])
+        # step 0 (--auto-step, EXP-0026): 13 px up to 16 lines, else 12 px
+        line_step = step or (13 if n_lines <= 16 else 12)
+        rec, lines = record(paras, y0, line_step, hole, slots)
         if pos + len(rec) > len(data):
             raise ValueError("records do not fit in ST1JPN.BIN")
         out.append(
@@ -173,7 +184,8 @@ def patches(chars: list[int], y0: int, step: int, layout: str = "") -> list[tupl
                 data[pos : pos + len(rec)].hex().upper(),
                 rec.hex().upper(),
                 None,
-                f"roster {roster}: {len(lines)} lines; edits {applied or 'none'}",
+                f"roster {roster}: {len(lines)} lines at {line_step} px; "
+                f"edits {applied or 'none'}",
             )
         )
         e = entry(roster - 1)
@@ -192,19 +204,10 @@ def patches(chars: list[int], y0: int, step: int, layout: str = "") -> list[tupl
         pos = (pos + 3) & ~3
         code = bytes.fromhex(LATE_ROUTINE)
         old = data[pos : pos + len(code)].hex().upper()
-        out.append(
-            (
-                "ST1JPN.BIN",
-                pos,
-                old,
-                code.hex().upper(),
-                ST1_RAM + pos,
-                "late array-1 draw routine",
-            )
-        )
-        f, off, old_r12, ram = R12_LITERAL
-        new_r12 = f"{0x20000000 | (ST1_RAM + pos):08X}"  # cache-through mirror
-        out.append((f, off, old_r12, new_r12, ram, "r12 -> late routine"))
+        out.append(("ST1JPN.BIN", pos, old, code.hex().upper(), None, "late routine"))
+        delta = f"{0x20000000 | (pos - TABLE):08X}"  # + table address = routine
+        for f, off, orig, new, ram in R12_PATCHES:
+            out.append((f, off, orig, new or delta, ram, "r12 = @0x06091E48 + delta"))
     return out
 
 
@@ -213,7 +216,7 @@ def main() -> int:
     ap.add_argument("chars", nargs="+", type=int)
     ap.add_argument("--out", default="build/us_en_epilogue")
     ap.add_argument("--y0", type=lambda v: int(v, 0), default=0x10)
-    ap.add_argument("--step", type=int, default=13)
+    ap.add_argument("--step", type=int, default=13)  # 0: by line count (EXP-0026)
     ap.add_argument("--move-list", action="store_true")  # EXP-0024
     ap.add_argument("--late-array1", action="store_true")  # EXP-0025
     args = ap.parse_args()

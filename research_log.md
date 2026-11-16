@@ -952,3 +952,19 @@ Not checked: a cold boot; the routine's area after the cast roll; spacing
 13 vs 12 per character.
 
 Next action: all 14 in one image (criterion 4 of `END-002`).
+
+## 2026-11-15 — EXP-0026: all 14 English epilogues in one image
+
+User request: "Yes, build all 14". Built with per-character spacing (13 px
+up to 16 lines, else 12 px). First run: Demitri, Rikuo and Pyron crashed
+after the card. DISPROVEN: the routine is overwritten (a write log showed
+only the file load). Found: `ST1JPN.BIN` loads at a per-character heap
+address (Pyron `0x060C7C14`), so the fixed `r12` target was wrong for them.
+Fix: `r12` = @`0x06091E48` (the loader's slot-`0x1BC` table pointer) + the
+routine's offset, computed in the three instructions freed by `EXP-0018`.
+
+Result: all 14 forced endings show the whole English paragraph on top of the
+art and reach the cast roll (D-025). Frame picker added
+(`EXP-0026/pick_text_frame.py`).
+
+Next action: cold boot of the all-14 image with the user present.

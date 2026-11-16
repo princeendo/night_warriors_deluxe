@@ -110,8 +110,10 @@ task repeats a sibling task, the note names it for its method only.
   forced, on top of the art; 302 characters of room, enough for 4 of 14.
 - **2026-11-15: room for all 14** (`EXP-0025`, D-024): array 1 redrawn on
   top in the ending; Anakaris's 345-character English epilogue shows whole.
-- Next: in `END-002`, all 14 English epilogues in one image, each forced and
-  reviewed; then a cold boot with the user. No generalisation or second
+- **2026-11-15: all 14 English epilogues in one image** (`EXP-0026`,
+  D-025), each forced and reviewed.
+- Next: a cold boot of that image with the user (one match won, then the
+  ending), to close `END-002` (M5 for `END-01`). No generalisation or second
   difference class before (rule 23).
 
 ## Milestones
@@ -512,6 +514,7 @@ is not already on the base disc goes on disc).
 - **Progress 2026-11-15 (`EXP-0023`, D-022):** records are found through a self-relative table at `0x0C` (index = roster − 1), and the ending reads nothing else in the file, so English records can sit anywhere in it. Morrigan's whole PSP paragraph (16 lines) showed in English but was cut at its 238th character: the glyph list at `0x060839D4` has room for 238 entries. All 14 English epilogues need 263-345. Next: find RAM unused during the ending and move the list there (no text cut), then test 14-18 lines.
 - **Progress 2026-11-15 (`EXP-0024`, D-023):** the glyph list moved to sprite array 2 (one literal, `0x06037A98`) with an off-screen filler line over the player sprite slots: Morrigan's whole English epilogue shows on top of her art (forced; cold boot pending). Room: 302 characters; Morrigan, Bishamon, Pyron and Donovan fit, the other ten are 5-43 over. Array 1 is drawn under the art.
 - **Progress 2026-11-15 (`EXP-0025`, D-024):** array 1 is drawn again after the art by a 36-byte routine in `ST1JPN.BIN` reached through `ENDING.O`'s `r12`; with the list from array 1 slot 17 there is room for 413 characters. Morrigan (16 lines) and Anakaris (345 characters, 18 lines at 12 px, the longest) show whole on top of their art (forced). Criteria 2-3 met except the cold boot. Next: all 14 in one image (criterion 4), then a cold boot with the user.
+- **Progress 2026-11-15 (`EXP-0026`, D-025):** one image with all 14 English epilogues (Track 1 `21fb1c79…`); a fixed routine address crashed Demitri, Rikuo and Pyron (the file loads at a per-character address), fixed by computing `r12` from the loader's slot table. All 14 forced endings show the whole English paragraph on top of the art and reach the cast roll. Criteria 1-4 met by forcing; a cold boot of this image with the user remains before `END-002` is done.
 
 ### EDITION-001 - Design the edition switch
 
