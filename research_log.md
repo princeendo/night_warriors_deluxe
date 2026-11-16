@@ -1004,3 +1004,25 @@ literal (unneeded since `EXP-0027`).
 
 Next action: the user chooses the next class (`EDITION-001`, `END-003`,
 `AUD-002`).
+
+## 2026-11-16 — EXP-0029: main endings, forcing in Japanese and the scripts
+
+User request: "Main endings" (`END-003`, written up as a full task).
+
+Found: the Japanese ending character is `0x060809D0` (US + `0x50`; dump,
+then all 14 Japanese endings forced; Pyron's shows Pyron). `MAIN.BIN` has a
+per-character ending script table per region (`0x0605B1C0` JP, `0x0605B730`
+US); decoded all 28 (`EXP-0029/scripts.py`): page counts differ for 12 of
+14 (D-028). Pyron's closing line differs in meaning (SUPPORTED).
+
+Tried and failed: (1) a text-band extractor over screenshots (missed most
+pages; deleted); (2) the epilogue builder's PC (`0x060379BC`) does not read
+main-ending text; (3) `ST2USA.BIN` is not resident in RAM as a file during
+an ending (only Demitri's record found). The page-id-to-record mapping stays
+UNKNOWN.
+
+Corrected: `EXP-0011` called `ST2USA.BIN` ASCII; most records are Latin-code
+line records like `ST1USA.BIN`, a few are ASCII.
+
+Next action: per-page content in both regions (read `ST2USA`, draw
+`ST2JPN`), then classify the extra pages.

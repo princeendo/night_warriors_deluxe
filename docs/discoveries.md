@@ -425,3 +425,20 @@ text with the user's logged edits) rising on black and staying on top of the
 art, then the US cast roll. This is M5 for `END-01`.
 
 Reproduce: `research/experiments/EXP-0028/README.md`.
+
+## D-028: The Japanese ending character is `0x060809D0`, and the two regions' main endings run from different scripts (`END-003`, `EXP-0029`)
+
+Holds for: the Japanese 1M image and the US image.
+
+Writing `0x060809D0` (the US `0x06080980` + `0x50`) with the stage byte
+`0x0608097B` = 9 at a Japanese won-KO state plays that character's ending.
+`MAIN.BIN` chooses a per-character ending script by the region flag
+(`0x060367A4`): Japanese table `0x0605B1C0`, US `0x0605B730`; a script is an
+initial wait then six-word page groups (id, mode, frames, id | `0x8000`,
+mode, wait). The page counts differ for 12 of 14 characters: the Japanese
+has extra pages for Jon Talbain (2), Morrigan (2) and Pyron (3); the US has
+extra pages for Lord Raptor, Anakaris, Felicia, Bishamon, Rikuo, Sasquatch
+and Huitzil (1-3 each); Hsien-Ko and Donovan use different pages
+altogether; Demitri and Victor match. The US pages are mostly shown longer.
+
+Reproduce: `research/experiments/EXP-0029/README.md`.

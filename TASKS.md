@@ -118,10 +118,11 @@ task repeats a sibling task, the note names it for its method only.
 - **2026-11-16: M5 for `END-01`** (`END-002` done, `EXP-0028`, D-027): from
   a cold boot, the English win quote is kept and all 14 English epilogues
   show whole.
-- Next: with `END-01` through M5, rule 23 allows a second difference class.
-  Candidates: `EDITION-001` (the edition switch; the English layout uses
-  `ST1JPN.BIN`, which the Japanese editions need), `END-003` (main endings),
-  `AUD-002` (voices). The user chooses.
+- **2026-11-16: main endings started** (`END-003`, user: "Main endings";
+  `EXP-0029`, D-028): Japanese endings forced; the two regions' ending scripts
+  differ in page count for 12 of 14 characters; Pyron's meaning differs.
+- Next: in `END-003`, the per-page content of each main ending in both
+  regions (which extra pages are new content), then the register rows.
 
 ## Milestones
 
@@ -525,6 +526,17 @@ is not already on the base disc goes on disc).
 - **Progress 2026-11-15 (`EXP-0027`, D-026):** cold boot of the `EXP-0026` image with the user: the win quote was blank (the user's report), because the win screens share the epilogue's text builder and the on-disc `MAIN.BIN` literal change. Fixed: `MAIN.BIN` untouched; the ending-only routine sets the literal on its first call and restores it after. Win quote English again; Pyron, Anakaris and Morrigan whole (forced). Next: a second cold boot with the user.
 - **Done 2026-11-16 (`EXP-0028`, D-027):** cold boot with the user (Demitri beat Victor): English win quote; from that session's bonus-screen state, all 14 endings (stage and character bytes only) show the whole English epilogue on top of the art and reach the cast roll. Image: `build_en_epilogue.py --late-array1 --step 0` 1-14, Track 1 `8ebc0ca3…0b67`. Open for later tasks: the Japanese editions need `ST1JPN.BIN` intact (`EDITION-001`); the transcription's second reading; real hardware.
 
+### END-003 - The main endings in each release (`END-02`, `END-03`)
+
+- **Status:** `IN_PROGRESS`
+- **Milestone:** M1 (investigation; no image change)
+- **Dependencies:** END-002 (`END-01` through M5, rule 23; the user chose this class on 2026-11-16: "Main endings").
+- **Blockers:** None.
+- **Objective:** For each character, show what the main ending (the scenes before the epilogue) is in each release, and classify every difference: text rewritten, page or scene omitted, added, reordered, retimed, or asset absent.
+- **Acceptance criteria:** (1) A method to force each character's ending in the Japanese release, with its character byte confirmed. (2) All 14 main endings captured in both releases under the same forcing (states kept, screenshots agent-reviewed). (3) The text of each tied to its file (`ST2JPN.BIN`, `ST2USA.BIN`) and record, with a per-character inventory of scenes and pages in each release. (4) Every difference recorded in `docs/difference_register.md` with both regions' evidence and its change type; Pyron's (`END-03`) compared by meaning. English for any restored Japanese-only text is a later `GATE-TRANSLATION` scope.
+- **Notes:** Leads only: the web research (section 5.3) reports rewritten English for Pyron, Huitzil and Bishamon and "different page counts" (arcade). Known on these discs: the US main-ending text is `ST2USA.BIN` (ASCII, `/` line breaks; `EXP-0011`), the Japanese is `ST2JPN.BIN`; US endings are forced with `0x0608092B` = 9 and `0x06080980` = roster number (D-009, D-018).
+- **Progress 2026-11-16 (`EXP-0029`, D-028):** the Japanese ending character is `0x060809D0`; all 14 Japanese endings captured (`local/end003/jp-NN`), the US ones are `EXP-0019`'s controls. The two regions' per-character ending scripts are decoded: page counts differ for 12 of 14 (details in D-028); Pyron's closing line differs in meaning (`END-03`, SUPPORTED). Open: what each page says (the page-id-to-record mapping is UNKNOWN; text can be read from `ST2USA.BIN` and drawn from `ST2JPN.BIN`), so which extra pages are new content.
+
 ### EDITION-001 - Design the edition switch
 
 - **Status:** `BACKLOG`
@@ -598,7 +610,7 @@ tasks" just in time). The method for each is in the three sibling documents.
 | RE-004 | M4 | A second character through the same mechanism. |
 | RE-005 | M5 | Whole roster for the class; capacity; regression references. |
 | END-002 | M3-M5 for END-01 | Now a full task (above). |
-| END-003 | M1-M5 for END-02/03 | Main endings (`END-02`) and Pyron's ending (`END-03`), split out of `END-001` on 2026-11-15; starts after `END-01` reaches M5 (rule 23). |
+| END-003 | M1 for END-02/03 | Now a full task (above). |
 | AUD-002 | M1-M5 for AUD/ANI | Voices and poses for US Enhanced, after `AUD-001`: the rest of the roster (Donovan, Sasquatch first). |
 | QUO-001 | M1-M5 for QUO-01 | Victory quotes: inventory per release, selection conditions, donor English. |
 | LOC-001 | M7 | Names in each edition (NAM-02/03; deferred from `DOC-002`); whether both releases' name art is on both discs; toggle decided early (`docs/lessons_from_xvsf.md`, lesson 9). |
