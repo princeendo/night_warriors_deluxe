@@ -442,13 +442,14 @@ is not already on the base disc goes on disc).
 
 ### DIFF-001 - Classify the 52 differing files offline
 
-- **Status:** `READY`
+- **Status:** `DONE` (2026-11-16)
 - **Milestone:** M1 (static analysis only; no image change)
 - **Dependencies:** ENV-003.
 - **Blockers:** None.
 - **Objective:** For each `FILE-nn` row, describe how the two regions' bytes differ without assuming what the difference does.
 - **Acceptance criteria:** A script (`tools/disc/`) lists, per differing file, the runs of differing bytes (offset, length) and classifies each as a likely pointer/relocation change (consistent 32-bit deltas into a load range) or a content change; the SH-2 code files are identified by disassembly of their entry points; same-size files (`ENDING.O`, `PL*`, `SOBJ*`, `P00.BIN`, `ST?USA.BIN`) are summarized first; `PL*.O` vs `PL*.O2` is explained or listed as open. Committed output: offsets, lengths, hashes and counts only, no game text or code bytes (`AGENTS.md` rule 21). Register rows updated.
 - **Notes:** Which file is loaded when, and where, are runtime questions for `DBG-004`. A content change in a program overlay is a lead, not an explanation.
+- **Done 2026-11-16 (`EXP-0035`):** `tools/disc/diff_files.py` (tested) classifies every differing word as pointer or content and finds code by entry tables. The 41 overlays are relinked, not rewritten (pointers `-0x50`, `-0x858`, `-0x86C`, `-0x8C4`; 0-40 content words each); `.O2` is `.O` relinked `+0x8000` for player 2; `0.BIN`, `MAIN.BIN`, `TITLE.O` changed as code; `P00`/`P03_` are data. A region's code is one linked set. Register rows `FILE-01`-`FILE-07` updated.
 
 ### DIFF-002 - Locate where each release keeps its text
 

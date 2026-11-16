@@ -1188,3 +1188,16 @@ after `0x1B4B2`, and not with the guards restored. AUD-003 DONE.
 Tests: `pytest` 119 passed; `ruff` clean.
 
 Next action: the user chooses (`EDITION-001`, or Donovan's second guard).
+
+## 2026-11-16 — EXP-0035 / DIFF-001: how the 52 files differ
+
+User request: "Edition switch design". `EDITION-001` depends on `DIFF-001`
+(READY), so that ran first. `tools/disc/diff_files.py` (new, 4 unit tests):
+overlays relinked against their region's `MAIN.BIN` (four repeated pointer
+deltas, few content words); `.O2` = `.O` relinked `+0x8000`; boot, main and
+title changed as code; `P00`/`P03_` data. JP copies of all 52: 1,075
+sectors against 150 free. Slips: the empty `VH_*.TXT` broke the decoder; an
+entry-table check stopped on out-of-range offsets in `PL08`/`PL10`/`PL11`
+(now counted, not decoded).
+
+Next action: `EDITION-001` options to the user.

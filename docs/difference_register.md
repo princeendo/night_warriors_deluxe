@@ -60,13 +60,13 @@ From `references/saturn_us/README.md` (2026-11-13). Both discs hold the same
 
 | ID | Files | Observation | What it does | Status | Task |
 | --- | --- | --- | --- | --- | --- |
-| FILE-01 | `0.BIN` | +456 bytes in US | UNKNOWN (boot program, by name) | UNKNOWN | `DIFF-001` |
-| FILE-02 | `MAIN.BIN` | +6,496 bytes in US | UNKNOWN | UNKNOWN | `DIFF-001` |
-| FILE-03 | `TITLE.O` | +316 bytes in US | UNKNOWN (title screen, by name) | UNKNOWN | `DIFF-001` |
-| FILE-04 | `ENDING.O` | same size, 1,668 bytes differ | UNKNOWN; lead for END-01/END-02 | UNKNOWN | `DIFF-001` |
-| FILE-05 | `P00.BIN`, `P03_.BIN`, `P03_.SPR` | 1,179 and 46 bytes differ; `P03_.SPR` +288 bytes | UNKNOWN | UNKNOWN | `DIFF-001` |
-| FILE-06 | `PL01`-`PL14` `.O`/`.O2` | 28 files; same size except `PL08` (-60) and `PL09` (+16) | UNKNOWN; per-character by count (14) | UNKNOWN | `DIFF-001` |
-| FILE-07 | `SOBJ01`-`SOBJ12.O3` | same sizes, 55-215 bytes each | UNKNOWN | UNKNOWN | `DIFF-001` |
+| FILE-01 | `0.BIN` | +456 bytes in US | Boot program, starts with code; code inserted and changed plus pointers (`EXP-0035`) | code change (what it does UNKNOWN) | `DIFF-001` |
+| FILE-02 | `MAIN.BIN` | +6,496 bytes in US | Main program (JP base `0x06013A00`, US `0x06012000`); code inserted and changed (`EXP-0035`); in part the region-flag tables, pause and title checks (`EXP-0015`-`0017`) | code change | `DIFF-001` |
+| FILE-03 | `TITLE.O` | +316 bytes in US | Title overlay (entry table, 30 of 34 entries code); code inserted and changed (`EXP-0035`) | code change | `DIFF-001` |
+| FILE-04 | `ENDING.O` | same size, 1,668 bytes differ | Overlay; only pointers (relinked against its region's `MAIN.BIN`), no content words (`EXP-0035`); the epilogue switch is data (D-012) | relocation | `DIFF-001` |
+| FILE-05 | `P00.BIN`, `P03_.BIN`, `P03_.SPR` | 1,179 and 46 bytes differ; `P03_.SPR` +288 bytes | Data, not code; content changes only (`EXP-0035`); what they hold UNKNOWN | content (UNKNOWN) | `DIFF-001` |
+| FILE-06 | `PL01`-`PL14` `.O`/`.O2` | 28 files; same size except `PL08` (-60) and `PL09` (+16) | Character code (`PL05` Morrigan, `PL10` Sasquatch, `PL14` Donovan confirmed); relinked (pointers `-0x50`, `-0x858`, `-0x86C`, `-0x8C4`) with 0-40 content words each, more in `PL08`/`PL09`; `.O2` = `.O` relinked `+0x8000` for player 2 (`EXP-0035`) | relocation plus small code changes | `DIFF-001` |
+| FILE-07 | `SOBJ01`-`SOBJ12.O3` | same sizes, 55-215 bytes each | Stage overlays (code); pointers only except one word in `SOBJ11` (`EXP-0035`) | relocation | `DIFF-001` |
 | FILE-08 | `ST1USA.BIN`, `ST2USA.BIN` | same sizes; 116 and 8,073 bytes differ; their `JPN` and `HIS` siblings are identical | `ST1JPN.BIN`: Japanese epilogue text (D-011); `ST2JPN`/`ST2USA`: main-ending dialogue per language (`EXP-0011`); `ST1USA`/`ST1HIS`/`ST2HIS`: not loaded at the ending, purpose UNKNOWN; `ST1USA` is not English text | UNKNOWN | `DIFF-001`, `DIFF-002` |
 | FILE-09 | `VH_ABS.TXT`, `VH_BIB.TXT`, `VH_CPY.TXT` | emptied on the US disc | ISO descriptive files, presumably never shown in game | UNKNOWN | `DIFF-001` |
 | FILE-10 | Track 2 | JP: about 18 s of audio; US: silence | UNKNOWN (probably the CD-player warning) | UNKNOWN | `DIFF-001` |
