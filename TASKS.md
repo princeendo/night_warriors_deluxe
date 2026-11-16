@@ -133,7 +133,9 @@ task repeats a sibling task, the note names it for its method only.
   the four region-flag guards in her code opened; the win line plays (forced).
 - **2026-11-16: Morrigan's voices restored** (`AUD-002` and `AUD-001`
   done, `EXP-0032`, D-031): all four play in US Enhanced from a cold boot.
-- Next (the user chooses): Still open: `EDITION-001` (its debts: `ST1JPN.BIN` holds the
+- **2026-11-16: Donovan and Sasquatch** (`AUD-003`, user choice): Donovan's
+  two guarded sound calls opened in a build (`EXP-0033`); play sessions next.
+  Still open after it: Still open: `EDITION-001` (its debts: `ST1JPN.BIN` holds the
   English epilogues, Morrigan's Japanese script slot holds her new US
   script, `ENDING.O`, `ST2USA.BIN` and `PL05` patched).
 
@@ -575,6 +577,16 @@ is not already on the base disc goes on disc).
 - **Notes:** Guards (US `PL05.O`, base `0x06001000`, same offsets in `PL05.O2`): `bf` at file `0x1490` (codes `0x137`/`0x136`), `0x1A1E` (`0x134`/`0x136`, through `0x0603A76E`), `0x3342` (`0x139`), `0x5280` (`0x135`). The US and Japanese `PL05.O` differ only in 465 address bytes (relocation, `MAIN.BIN` addresses). Sound is identical on both discs (`AUD-001`).
 - **Progress 2026-11-16 (`EXP-0032`):** with the four guards made `nop` in RAM (flag 2), the bat-seat line plays at her win; one at a time, only the guard at `0x06002490` does it. Image built (`build_voices.py`, Track 1 `2985ff73…`). Next: a cold-boot play session (throws, Vector Drain, hurt, a win).
 - **Done 2026-11-16 (`EXP-0032`, D-031):** cold boot and play with the user (Morrigan vs. Jon Talbain): throw, hurt, Vector Drain and win voices all found in the recording at their events; three guards tied by PC log, hurt by elimination; win quote English. The rest of the roster (Donovan `AUD-04`, Sasquatch `ANI-01`) is a later task.
+
+### AUD-003 - Donovan's and Sasquatch's Japanese-only behaviour (`AUD-04`, `ANI-01`)
+
+- **Status:** `IN_PROGRESS`
+- **Milestone:** M1-M3 (user choice 2026-11-16: "Other characters' voices")
+- **Dependencies:** AUD-002 (the method and the build it extends).
+- **Blockers:** None.
+- **Objective:** Find what the Japanese release plays or shows for Donovan and Sasquatch that the US release does not, and restore it in US Enhanced as for Morrigan.
+- **Acceptance criteria:** (1) `PL14`/`PL10` tied to Donovan/Sasquatch by a fight. (2) Each guarded difference reproduced in both releases from play (sound recorded, samples identified with `EXP-0008/dense.py`). (3) A patched image plays or shows the Japanese behaviour from a cold boot, with the win quote and other characters unchanged.
+- **Notes:** Only `PL05`, `PL10`, `PL14` (and `SOBJ08.O3`) read the region flag. `PL14.O`: two guarded sound calls (`bf` at file `0x111C`, codes `0x1B4`; `0x23C4`, `0x1B2`), opened in `EXP-0033/build_donovan.py`. `PL10.O`: six readers that pick routines and object settings (calls to `0x06030ABA`, states 64/48, routine 1 vs 5), likely pose logic; not patched yet.
 
 ### EDITION-001 - Design the edition switch
 

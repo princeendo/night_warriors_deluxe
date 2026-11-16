@@ -1101,3 +1101,14 @@ elimination. Win quote English. `session.sh` now records sound.
 
 Next action: the user chooses (`EDITION-001`, or the rest of the roster's
 voices and poses).
+
+## 2026-11-16 — AUD-003 started: Donovan and Sasquatch
+
+User request: "Other characters' voices". Only `PL05`, `PL10`, `PL14` and
+`SOBJ08.O3` read the region flag. `PL14` (Donovan by roster order,
+HYPOTHESIS): two guarded sound calls like Morrigan's; opened in
+`EXP-0033/build_donovan.py` (Track 1 `64344d58…`). `PL10` (Sasquatch,
+HYPOTHESIS): six readers choosing routines and object settings, not sounds
+alone; not patched yet.
+
+Next action: play sessions (Japanese reference and patched US) as Donovan.
