@@ -458,3 +458,19 @@ Japanese scene is absent from the US. The meaning comparisons are SUPPORTED
 readings, not translations.
 
 Reproduce: `research/experiments/EXP-0030/README.md`.
+
+## D-030: Morrigan's two missing main-ending lines restored in US Enhanced, in step with her pictures (`END-004`, `EXP-0031`)
+
+Holds for: the US image patched by `EXP-0031/build_morrigan_main.py` (Track 1
+`f4edd2a4…1091`), forced from a state with its `MAIN.BIN` changes in RAM.
+
+The ending's pictures run on their own timeline (her pages start at script
+time + 422 frames; the butler scene ends near 3,850, the bed scene runs
+3,980-4,870). New `ST2USA.BIN` records in the file's unused tail (entries
+`0xB1`, `0xB2`) and a new 11-page US script (in her unread Japanese script's
+134 bytes, US table entry 4 repointed), with pages 33-36 shortened, put "I'm
+a little tired. / Prepare my bed." and "Certainly, mistress." (a new
+translation the user approved) inside the butler scene; every later page
+keeps its shipped time. Other endings and the win quote are unchanged.
+
+Reproduce: `research/experiments/EXP-0031/README.md`.

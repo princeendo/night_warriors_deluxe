@@ -1049,3 +1049,21 @@ recommended option): restore only Morrigan's missing lines; English from the
 PSP main-ending movies first; minimal change. Recorded in
 `docs/localization_policy.md`, the `GATE-TRANSLATION` block, and a new task
 `END-004`.
+
+## 2026-11-16 — EXP-0031: Morrigan's missing main-ending lines
+
+User request: "Yes, start END-004". PSP `Hmovie04_1` read: it reuses the US
+English, no lines to borrow. The user chose a new translation for both lines.
+
+Space: `ST2USA.BIN` tail `0x418`-`0x4BD` free (unused table entries and an
+unreferenced "A" record). DISPROVEN as free: `MAIN.BIN` zero run at
+`0x0606CA5D` (an ending buffer). Used: her Japanese script slot (134 bytes,
+unread with flag 2) for the new US script.
+
+First build: pages after the insert ran late, the last one over the emblem
+card (pictures keep their own timeline). Measured the scene windows in the
+control and shortened pages 33-36 so both new lines sit in the butler scene
+and later pages keep their times. Forced: in step (D-030). Win quote, Pyron,
+Anakaris unchanged (text-page timings; shots differ by animation phase only).
+
+Next action: cold boot with the user.

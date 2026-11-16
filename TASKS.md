@@ -127,7 +127,9 @@ task repeats a sibling task, the note names it for its method only.
 - **2026-11-16: main-ending scope decided:** US Enhanced restores only
   Morrigan's missing lines (`END-004`), English from the PSP first, all else
   as shipped.
-- Next: `END-004` (read the PSP `Hmovie04_1` for Morrigan's lines first).
+- **2026-11-16: Morrigan's main-ending lines restored** (`EXP-0031`,
+  D-030), forced; new translation approved by the user.
+- Next: cold boot of the `EXP-0031` image with the user to close `END-004`.
 
 ## Milestones
 
@@ -545,13 +547,14 @@ is not already on the base disc goes on disc).
 
 ### END-004 - Restore Morrigan's missing main-ending lines (US Enhanced)
 
-- **Status:** `READY`
+- **Status:** `IN_PROGRESS`
 - **Milestone:** M3 for `END-02` (Morrigan only, user decision 2026-11-16)
 - **Dependencies:** END-003, END-002 (the build it extends), GATE-TRANSLATION (`END-02` Morrigan block, 2026-11-16).
 - **Blockers:** None.
 - **Objective:** In US Enhanced, Morrigan's main ending shows the Japanese-only pages the US drops (her request for bed, the butler's reply, the pause page; Japanese `ST2JPN` `36`, `37`, `B1`), in English, with every other US line unchanged.
 - **Acceptance criteria:** (1) The PSP *Chronicle* Morrigan main-ending movie (`Hmovie04_1`) read for these lines, with frames and hashes; a new translation only after the user's yes. (2) The US script (`0x0605B730` entry 4) and `ST2USA.BIN` changed to show the restored pages in the Japanese order, from a cold boot, with before/after screenshots and the unpatched control. (3) The other 13 main endings and the win quotes unchanged (checked).
 - **Notes:** The scripts live in `MAIN.BIN` (loaded at boot; the US table is read only by the ending, but check every screen that shares code, `EXP-0027`). Page timing and order: Japanese `34`-`B2` (D-028).
+- **Progress 2026-11-16 (`EXP-0031`, D-030):** the PSP has no English for the lines (its main ending reuses the US text); the user approved a new translation ("I'm a little tired. / Prepare my bed.", "Certainly, mistress."). New records in `ST2USA.BIN`'s unused tail, a new 11-page script over her Japanese script, pages 33-36 shortened so both lines sit in the butler scene. Forced: in step, card clean; win quote, Pyron and Anakaris unchanged. Next: cold boot with the user.
 
 ### EDITION-001 - Design the edition switch
 
