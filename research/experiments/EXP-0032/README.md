@@ -1,8 +1,8 @@
 # EXP-0032: Morrigan's Japanese-Only Voices in US Enhanced
 
 Task: AUD-002
-Status: IN_PROGRESS (forced part done; play session next)
-Confidence: CONFIRMED for the win line (forced); the other three pending
+Status: DONE
+Confidence: CONFIRMED (all four play from a cold boot); guard-to-event CONFIRMED for three, SUPPORTED for the hurt voice
 
 ## Observation
 
@@ -57,9 +57,51 @@ So the guard at `0x06002490` is the bat-seat win line.
 the four `bf` → `nop` in `PL05.O` and `PL05.O2` (Track 1
 `2985ff7366b3d0e28cbbf63be4e5399f73d2802923c36eadac1e2d0e0edc1ae8`).
 
-## Next
+## Test 2: Cold Boot and Play
 
-A cold-boot play session with the user (throws, Vector Drain, being hit, a
-win), sample search of the recording for `50C2C`, `41220`, `4F10C` and
-`56D60`, and offline PC logs of the session's states to tie the other three
-guards to their events.
+With the user present: `research/experiments/EXP-0018/session.sh
+local/aud002/play-session "build/us_en_voices/…(USA).cue"` (the script now
+records sound, `-soundrecord`; WAV 52,522,584 bytes). The user played
+Morrigan against Jon Talbain: throws, a Vector Drain, taking hits, a win.
+Sample search (`EXP-0009/wavsearch.py`, threshold 0.35):
+
+| Voice | Sample | Found at | Score | Screenshots there (agent-reviewed) |
+| --- | --- | --- | --- | --- |
+| normal throw (`AUD-01`) | `50C2C` | 174.4 s | 0.405 | Morrigan throwing him (frame ≈ 10,433) |
+| hurt (`AUD-05`) | `4F10C` | 204.4 s | 0.586 | his attack landing on her (≈ 12,228) |
+| Vector Drain (`AUD-02`) | `41220` | 249.2 s | 0.661 | her flying up carrying him (≈ 14,908) |
+| bat-seat line (`AUD-03`) | `56D60` | 261.0 s | 0.731 | the bat seat with the bonus tally (≈ 15,614) |
+
+(Time to frame: × 59.83.) The control sample `424E0` was not found in this
+session (its event did not occur). The unpatched US control is `EXP-0009`'s
+US recording, where none of the four occurs. The win quote after the match
+is English.
+
+## Test 3: Which Guard Is Which
+
+The session's states just before each event, replayed 12 × 15 frames with
+`--log-pc` on the four guarded call sites (`0x060024A6`, `0x06002A30`,
+`0x0600434C`, `0x06006288`):
+
+| Event | State | Call site that fired | Guard |
+| --- | --- | --- | --- |
+| throw | `f00010418` | `0x06006288` | `0x5280` (code `0x135`) |
+| Vector Drain | `f00014824`, `f00014881` | `0x06002A30` | `0x1A1E` (`0x134`/`0x136`) |
+| win | `f00015511`, `f00015568` | `0x060024A6` | `0x1490` (`0x137`/`0x136`) |
+| hurt | `f00012128`, `f00012186` | none (the replay, without the user's inputs, did not repeat the hit) | `0x3342` (`0x139`) by elimination |
+
+## Conclusion
+
+**CONFIRMED:** with the four region-flag guards in Morrigan's code made
+`nop` (both player sides, flag kept at 2), US Enhanced plays her four
+Japanese-only voices at the same events as the Japanese release, from a cold
+boot; three guards are tied to their events by PC log, the hurt one by
+elimination (D-031). The win quote is unchanged.
+
+## Uncertainty and Alternatives
+
+- One instance of each voice was played; the throw match is the weakest
+  (0.405).
+- Player 2 Morrigan (`PL05.O2`) was patched but not played.
+- Whether the Japanese release plays exactly these code pairs at these
+  events (`0x136` is shared by two guards) is not compared call by call.

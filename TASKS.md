@@ -131,8 +131,9 @@ task repeats a sibling task, the note names it for its method only.
   `EXP-0031`, D-030), confirmed from a cold boot.
 - **2026-11-16: Morrigan's voices** (`AUD-002`, user choice; `EXP-0032`):
   the four region-flag guards in her code opened; the win line plays (forced).
-- Next: a cold-boot play session for the throw, Vector Drain and hurt
-  voices. Still open: `EDITION-001` (its debts: `ST1JPN.BIN` holds the
+- **2026-11-16: Morrigan's voices restored** (`AUD-002` and `AUD-001`
+  done, `EXP-0032`, D-031): all four play in US Enhanced from a cold boot.
+- Next (the user chooses): Still open: `EDITION-001` (its debts: `ST1JPN.BIN` holds the
   English epilogues, Morrigan's Japanese script slot holds her new US
   script, `ENDING.O`, `ST2USA.BIN` and `PL05` patched).
 
@@ -495,7 +496,7 @@ is not already on the base disc goes on disc).
 
 ### AUD-001 - Are Morrigan's Japanese-only voices on the US disc?
 
-- **Status:** `IN_PROGRESS`
+- **Status:** `DONE`
 - **Milestone:** M1 (investigation; no image change)
 - **Dependencies:** EMU-021, DBG-001.
 - **Blockers:** None.
@@ -506,6 +507,7 @@ is not already on the base disc goes on disc).
 - **Progress 2026-11-14 (`EXP-0008`, D-007):** the bat-seat pose line is CONFIRMED present on the US disc and not played (sample `MORRIGA.BIN` `0x1BAA0`); throw (`50C2C`), Vector Drain (`41220`) and hurt (`4F10C`) samples play only in the Japanese session (SUPPORTED, 1 s states). Remaining for `DONE`: locate US throws and replay them densely beside Japanese ones (matched evidence), then find what selects each sample.
 - **Progress 2026-11-14 (`EXP-0009`, D-008):** a waveform search of the `EXP-0007` recordings confirms the normal-throw voice is never played in the US release (an observed US throw is silent); Vector Drain and hurt voices are absent from the whole US recording (SUPPORTED). Live slot logging during play was abandoned: it made the game stutter (the user's report). Remaining for `DONE`: what selects each sample (the code to change for US Enhanced); a US Vector Drain, if wanted.
 - **Progress 2026-11-14 (`EXP-0014`, D-014):** the epilogue flag also gates Morrigan's voices: clearing it in US RAM after her winning KO makes the bat-seat line play at the same pose (control: no line). Her code (`PL05`) skips four voice calls when the flag is non-zero. Next: the throw and Vector Drain with the flag cleared (needs play), and what `PL14` (two guarded sound calls) is.
+- **Done 2026-11-16 (via `AUD-002`, D-031):** what selects each sample is the four guarded calls in `PL05` (codes `0x134`-`0x139`); opening them plays the Japanese samples in the US release. The register rows have their change type (conditionally suppressed).
 
 ### END-001 - The per-character epilogue screens
 
@@ -564,7 +566,7 @@ is not already on the base disc goes on disc).
 
 ### AUD-002 - Morrigan's Japanese-only voices in US Enhanced
 
-- **Status:** `IN_PROGRESS`
+- **Status:** `DONE`
 - **Milestone:** M2-M3 for `AUD-01`, `AUD-02`, `AUD-03`, `AUD-05` (user choice 2026-11-16: "Morrigan's voices")
 - **Dependencies:** AUD-001 (D-007, D-008, D-014), END-004 (the build it extends).
 - **Blockers:** None.
@@ -572,6 +574,7 @@ is not already on the base disc goes on disc).
 - **Acceptance criteria:** (1) Each of the four guards tied to its event. (2) A patched image plays each voice where the Japanese release does, shown by recorded sound (sample search) from a cold boot and play, with an unpatched control. (3) Nothing else about her or the opponent changes (no other `PL05` difference; win quotes and endings unchanged).
 - **Notes:** Guards (US `PL05.O`, base `0x06001000`, same offsets in `PL05.O2`): `bf` at file `0x1490` (codes `0x137`/`0x136`), `0x1A1E` (`0x134`/`0x136`, through `0x0603A76E`), `0x3342` (`0x139`), `0x5280` (`0x135`). The US and Japanese `PL05.O` differ only in 465 address bytes (relocation, `MAIN.BIN` addresses). Sound is identical on both discs (`AUD-001`).
 - **Progress 2026-11-16 (`EXP-0032`):** with the four guards made `nop` in RAM (flag 2), the bat-seat line plays at her win; one at a time, only the guard at `0x06002490` does it. Image built (`build_voices.py`, Track 1 `2985ff73…`). Next: a cold-boot play session (throws, Vector Drain, hurt, a win).
+- **Done 2026-11-16 (`EXP-0032`, D-031):** cold boot and play with the user (Morrigan vs. Jon Talbain): throw, hurt, Vector Drain and win voices all found in the recording at their events; three guards tied by PC log, hurt by elimination; win quote English. The rest of the roster (Donovan `AUD-04`, Sasquatch `ANI-01`) is a later task.
 
 ### EDITION-001 - Design the edition switch
 

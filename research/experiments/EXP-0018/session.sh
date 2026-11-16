@@ -2,7 +2,8 @@
 # EXP-0018: one recorded play session on the patched US image (cold boot).
 # Run from the repository root after build_epilogue.py: session.sh [OUT_DIR] [CUE]
 # (CUE defaults to the version 2 image; EXP-0026 passes its own). The user plays
-# Morrigan and wins one match; this records a state every second (all kept)
+# Morrigan and wins one match; this records sound (WAV, since EXP-0032), a
+# state every second (all kept)
 # and a screenshot every half second, as EXP-0007 did, in the interactive
 # home. The session ends when the user closes the Mednafen window.
 set -euo pipefail
@@ -15,7 +16,7 @@ BIN="vendor/mednafen/build-agent/src/mednafen"
 mkdir -p "$d"
 date "+%H:%M:%S start"
 MEDNAFEN_HOME="$ROOT/local/mednafen" MEDNAFEN_AGENT_DIR="$ROOT/$d/agent" \
-  "$BIN" "$CUE" > "$d/mednafen.log" 2>&1 &
+  "$BIN" -soundrecord "$ROOT/$d/sound.wav" "$CUE" > "$d/mednafen.log" 2>&1 &
 pid=$!
 ./invenv.sh python -c "
 import sys, time

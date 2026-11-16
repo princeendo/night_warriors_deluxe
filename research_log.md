@@ -1088,3 +1088,16 @@ left at 2, the bat-seat line plays at her win (5.021 s, score 0.734, as
 literals.
 
 Next action: cold-boot play session (throws, Vector Drain, hurt, win).
+
+## 2026-11-16 — EXP-0032: Morrigan's voices from a cold boot; AUD-002 done
+
+User played the voices image (Morrigan vs. Jon Talbain) after I explained
+the inputs (my first request listed the moves without saying how; the user
+pointed this out). All four voices found at their events in the recording
+(throw 174.4 s 0.405, hurt 204.4 s 0.586, Vector Drain 249.2 s 0.661, win
+261.0 s 0.731). Offline replays tie throw, Vector Drain and win to their
+guards; the hurt replay did not repeat the hit (no inputs), so it is by
+elimination. Win quote English. `session.sh` now records sound.
+
+Next action: the user chooses (`EDITION-001`, or the rest of the roster's
+voices and poses).

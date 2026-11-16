@@ -474,3 +474,16 @@ translation the user approved) inside the butler scene; every later page
 keeps its shipped time. Other endings and the win quote are unchanged.
 
 Reproduce: `research/experiments/EXP-0031/README.md`.
+
+## D-031: Four `nop`s in Morrigan's code restore her Japanese-only voices in US Enhanced (`AUD-002`, `EXP-0032`)
+
+Holds for: the US image patched by `EXP-0032/build_voices.py` (Track 1
+`2985ff73…1ae8`), from a cold boot and play.
+
+Her code (`PL05.O`, and `PL05.O2` for player 2, same offsets) skips four
+voice calls when the region flag is non-zero. Making each guard's `bf` a
+`nop` (file `0x1490` win line, `0x1A1E` Vector Drain, `0x3342` hurt,
+`0x5280` normal throw; the hurt one by elimination) plays all four samples
+at their events, with the flag kept at 2; the win quote is unchanged.
+
+Reproduce: `research/experiments/EXP-0032/README.md`.
