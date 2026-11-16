@@ -1283,3 +1283,16 @@ save; the first access is `MAIN.BIN` `0x0604EC34` at the match start
 
 Next action: the edition values and the default for saves without the
 byte (user), then build the switch.
+
+## 2026-11-16 — EXP-0038: edition switch build design
+
+User request: "Yes, build it". Inventory of the static US Enhanced
+changes and an edition-aware form for each (EXP-0038). Findings on the
+way: `ENDING.O` calls `0x06007BBC(1)` twice in a row (a frame-wait loop),
+so one call with 2 frees 6 bytes for an edition test plus the late-routine
+pointer; header slots `0x1BE`/`0x1BF` belong only to the never-loaded HIS
+files, so `ST2HIS.BIN`'s place (14,336 bytes with its room) can hold the
+English epilogue file and `0x1BE` its routine pointer. Nothing built yet.
+
+Next action: let `patch_image.py` grow a file within its room; then the
+build in stages, each tested in replays.
