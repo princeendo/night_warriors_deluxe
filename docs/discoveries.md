@@ -442,3 +442,19 @@ and Huitzil (1-3 each); Hsien-Ko and Donovan use different pages
 altogether; Demitri and Victor match. The US pages are mostly shown longer.
 
 Reproduce: `research/experiments/EXP-0029/README.md`.
+
+## D-029: The US main endings are a free rewrite of the Japanese, with few omissions (`END-003`, `EXP-0030`)
+
+Holds for: `ST2JPN.BIN` (both discs) and the US `ST2USA.BIN`, read through
+the two regions' ending scripts (D-028).
+
+Page ids name table entries in both files (Demitri's are offset by `0x10`,
+Pyron's by `0x60`). Read page by page, the US main endings re-paginate and
+rewrite the Japanese: only Morrigan's loses Japanese text (two lines and a
+pause page); Felicia's, Bishamon's, Huitzil's and Pyron's change in meaning
+and Victor's resolution differs; Bishamon's, Rikuo's and Huitzil's add lines
+or a page; Hsien-Ko's and Donovan's rename (Lei-Lei/Lin-Lin, Anita). No
+Japanese scene is absent from the US. The meaning comparisons are SUPPORTED
+readings, not translations.
+
+Reproduce: `research/experiments/EXP-0030/README.md`.

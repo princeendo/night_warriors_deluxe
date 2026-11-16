@@ -121,8 +121,12 @@ task repeats a sibling task, the note names it for its method only.
 - **2026-11-16: main endings started** (`END-003`, user: "Main endings";
   `EXP-0029`, D-028): Japanese endings forced; the two regions' ending scripts
   differ in page count for 12 of 14 characters; Pyron's meaning differs.
-- Next: in `END-003`, the per-page content of each main ending in both
-  regions (which extra pages are new content), then the register rows.
+- **2026-11-16: main endings compared** (`END-003` done, `EXP-0030`,
+  D-029): the US main endings are a free rewrite; only Morrigan's loses
+  Japanese text; four change in meaning.
+- Next: a user decision on what, if anything, US Enhanced restores from the
+  Japanese main endings (rule 30 keeps US wording by default); otherwise
+  `EDITION-001` or `AUD-002`.
 
 ## Milestones
 
@@ -528,7 +532,7 @@ is not already on the base disc goes on disc).
 
 ### END-003 - The main endings in each release (`END-02`, `END-03`)
 
-- **Status:** `IN_PROGRESS`
+- **Status:** `DONE`
 - **Milestone:** M1 (investigation; no image change)
 - **Dependencies:** END-002 (`END-01` through M5, rule 23; the user chose this class on 2026-11-16: "Main endings").
 - **Blockers:** None.
@@ -536,6 +540,7 @@ is not already on the base disc goes on disc).
 - **Acceptance criteria:** (1) A method to force each character's ending in the Japanese release, with its character byte confirmed. (2) All 14 main endings captured in both releases under the same forcing (states kept, screenshots agent-reviewed). (3) The text of each tied to its file (`ST2JPN.BIN`, `ST2USA.BIN`) and record, with a per-character inventory of scenes and pages in each release. (4) Every difference recorded in `docs/difference_register.md` with both regions' evidence and its change type; Pyron's (`END-03`) compared by meaning. English for any restored Japanese-only text is a later `GATE-TRANSLATION` scope.
 - **Notes:** Leads only: the web research (section 5.3) reports rewritten English for Pyron, Huitzil and Bishamon and "different page counts" (arcade). Known on these discs: the US main-ending text is `ST2USA.BIN` (ASCII, `/` line breaks; `EXP-0011`), the Japanese is `ST2JPN.BIN`; US endings are forced with `0x0608092B` = 9 and `0x06080980` = roster number (D-009, D-018).
 - **Progress 2026-11-16 (`EXP-0029`, D-028):** the Japanese ending character is `0x060809D0`; all 14 Japanese endings captured (`local/end003/jp-NN`), the US ones are `EXP-0019`'s controls. The two regions' per-character ending scripts are decoded: page counts differ for 12 of 14 (details in D-028); Pyron's closing line differs in meaning (`END-03`, SUPPORTED). Open: what each page says (the page-id-to-record mapping is UNKNOWN; text can be read from `ST2USA.BIN` and drawn from `ST2JPN.BIN`), so which extra pages are new content.
+- **Done 2026-11-16 (`EXP-0030`, D-029):** all 14 main endings compared page by page from the files (US decoded, Japanese drawn from `MOJI`), through the two scripts; the Japanese forced runs checked for the right character. Result: a free rewrite re-paginated for English; Japanese text missing from the US only in Morrigan's (two lines and a pause page); meaning changes in Felicia, Bishamon, Huitzil, Pyron (and Victor's resolution); added US lines in Bishamon, Rikuo, Huitzil; renames in Hsien-Ko's and Donovan's. Readings are SUPPORTED. Whether any of this goes into US Enhanced is a user decision (rule 30 keeps the US wording by default) and a later task.
 
 ### EDITION-001 - Design the edition switch
 

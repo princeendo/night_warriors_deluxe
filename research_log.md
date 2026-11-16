@@ -1026,3 +1026,18 @@ line records like `ST1USA.BIN`, a few are ASCII.
 
 Next action: per-page content in both regions (read `ST2USA`, draw
 `ST2JPN`), then classify the extra pages.
+
+## 2026-11-16 — EXP-0030: the main endings page by page
+
+User request: "Yes, continue". `ST2USA.BIN` decoded (both record kinds;
+`EXP-0029/st2_text.py`), `ST2JPN.BIN` drawn from `MOJI` (`draw_st2jpn.py`).
+Page ids map to entries directly except Demitri (+0x10) and Pyron (+0x60),
+found by content. All 14 compared by meaning (D-029): a free rewrite
+re-paginated for English; Morrigan's alone loses Japanese text; Felicia,
+Bishamon, Huitzil, Pyron change in meaning. Japanese forced runs checked for
+the right character. `END-003` DONE.
+
+Not checked: pictures asset by asset; the PSP main-ending movies
+(`HmovieNN_1`) as an English donor; the code path of the page-id offset.
+
+Next action: the user decides what, if anything, US Enhanced restores here.
