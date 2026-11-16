@@ -133,8 +133,10 @@ task repeats a sibling task, the note names it for its method only.
   the four region-flag guards in her code opened; the win line plays (forced).
 - **2026-11-16: Morrigan's voices restored** (`AUD-002` and `AUD-001`
   done, `EXP-0032`, D-031): all four play in US Enhanced from a cold boot.
-- **2026-11-16: Donovan and Sasquatch** (`AUD-003`, user choice): Donovan's
-  two guarded sound calls opened in a build (`EXP-0033`); play sessions next.
+- **2026-11-16: Donovan and Sasquatch** (`AUD-003`, user choice): opening
+  Donovan's first guard plays his Japanese-only win sample in US, from
+  post-KO replays (`EXP-0033`, D-032); a cold boot with the user and
+  Sasquatch (`PL10`) next.
   Still open after it: Still open: `EDITION-001` (its debts: `ST1JPN.BIN` holds the
   English epilogues, Morrigan's Japanese script slot holds her new US
   script, `ENDING.O`, `ST2USA.BIN` and `PL05` patched).
@@ -587,7 +589,7 @@ is not already on the base disc goes on disc).
 - **Objective:** Find what the Japanese release plays or shows for Donovan and Sasquatch that the US release does not, and restore it in US Enhanced as for Morrigan.
 - **Acceptance criteria:** (1) `PL14`/`PL10` tied to Donovan/Sasquatch by a fight. (2) Each guarded difference reproduced in both releases from play (sound recorded, samples identified with `EXP-0008/dense.py`). (3) A patched image plays or shows the Japanese behaviour from a cold boot, with the win quote and other characters unchanged.
 - **Notes:** Only `PL05`, `PL10`, `PL14` (and `SOBJ08.O3`) read the region flag. `PL14.O`: two guarded sound calls (`bf` at file `0x111C`, codes `0x1B4`; `0x23C4`, `0x1B2`), opened in `EXP-0033/build_donovan.py`. `PL10.O`: six readers that pick routines and object settings (calls to `0x06030ABA`, states 64/48, routine 1 vs 5), likely pose logic; not patched yet.
-- **Progress 2026-11-16 (`EXP-0033`):** sessions with the user as Donovan in both releases. `PL14` is Donovan's code (CONFIRMED). The Japanese release makes the first guarded call at his win (frame 180 of the replay; a looping sample `0x1B4B2` starts then); the patched US match never enters that code, even with the flag cleared at the state, so the patch is not yet shown to change anything. Next: more US wins as Donovan, or what enters the block.
+- **Progress 2026-11-16 (`EXP-0033`):** sessions with the user as Donovan in both releases. `PL14` is Donovan's code (CONFIRMED). The Japanese release makes the first guarded call at his win (frame 180 of the replay; a looping sample `0x1B4B2` starts then); the first US replay never reached the KO (a replay has no input), which is why it never entered that code. From three post-KO US states the patched image runs it like the Japanese one, and the only sample that changes is `0x5687A`: the Japanese release and the patched US play it after the shared `0x1B4B2`; with the guard restored the US does not (D-032). Criterion 2 met for Donovan's first guard; the second (`0x23C4`) was not reached. Next: a cold boot of `build/us_en_donovan` with the user (criterion 3), then Sasquatch.
 
 ### EDITION-001 - Design the edition switch
 

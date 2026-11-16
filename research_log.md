@@ -1124,3 +1124,25 @@ the US match (pose or state; the tested variable is `00` US / `01` JP).
 `dense.py` gained an image argument and RAM writes.
 
 Next action: more US wins as Donovan, or trace what enters the block.
+
+## 2026-11-16 — EXP-0033: offline trace, Donovan's guarded sound found
+
+User request: "Trace it offline first". The earlier entry's DISPROVEN was
+wrong: the US state `f00007677` is about 80 frames before the KO and a
+replay sends no input, so the replayed round never ended (shots: timer
+58 → 38, Victor standing). Corrected.
+
+From post-KO US states `f00007737`, `f00007794`, `f00007851` (patched image,
+`force.py --log-pc 06002088 --log-pc 0600211E --log-pc 060033C6`, 60 × 15
+frames): each runs the state routine 8 times and the first guarded call
+once, as the Japanese replay did; the second guarded call never.
+`dense.py us f00007737 400`, patched vs guards restored in RAM: identical
+samples except `0x5687A` (patched frame 189, restored never); the Japanese
+run plays the same `0x5687A` (frame 177) after the shared `0x1B4B2`. Its
+bytes are at the same sound-RAM address in both regions. D-032.
+
+Slip: running two `dense.py` at once fails (the second left an empty
+folder); run them one after the other.
+
+Next action: a cold boot of `build/us_en_donovan` with the user, playing
+Donovan to a win; then Sasquatch (`PL10`).

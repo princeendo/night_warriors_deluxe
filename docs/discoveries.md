@@ -487,3 +487,19 @@ voice calls when the region flag is non-zero. Making each guard's `bf` a
 at their events, with the flag kept at 2; the win quote is unchanged.
 
 Reproduce: `research/experiments/EXP-0032/README.md`.
+
+## D-032: Opening Donovan's first guard plays his Japanese-only win sample in US Enhanced (`AUD-003`, `EXP-0033`)
+
+Holds for: the US image patched by `EXP-0033/build_donovan.py` (Track 1
+`64344d58…984e`), replayed from post-KO states of a play session; not yet
+from a cold boot.
+
+Donovan's code (`PL14.O`, player 1) skips a sound call (code `0x1B4`, `bf` at
+file `0x111C`) when the region flag is non-zero. At his win the Japanese
+release starts sample `0x5687A` (8-bit, `0x2475` bytes) 8 frames after the
+looping `0x1B4B2` both regions play. From the same US state, the patched
+image starts `0x5687A` 12 frames after `0x1B4B2`; with the guard bytes
+restored in RAM it never does, and no other sample differs. The sample's
+bytes are at the same sound-RAM address in both regions.
+
+Reproduce: `research/experiments/EXP-0033/README.md`.
