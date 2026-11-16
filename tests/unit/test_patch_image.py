@@ -88,3 +88,21 @@ def test_replace_files_handles_two_files_and_rejects_overlap(tmp_path: Path) -> 
     assert target.read_bytes()[20 * RAW_SECTOR + 16 : 20 * RAW_SECTOR + 21] == b"HELLO"
     with pytest.raises(ValueError):
         replace_files(source, target, [(a[0], a[1], b"HELLO"), (a[0], a[1], b"WORLD")])
+
+
+def test_grow_file_rewrites_directory_size(tmp_path: Path) -> None:
+    from tools.disc.patch_image import grow_file
+
+    source = tmp_path / "track.bin"
+    source.write_bytes(valid_image())
+    lsn, size = find_entry(source, "A.BIN;1")
+    reps = grow_file(source, "A.BIN;1", b"G" * (size + 50))
+    target = tmp_path / "out.bin"
+    replace_files(source, target, reps)
+    assert find_entry(target, "A.BIN;1") == (lsn, size + 50)
+    for index in range(len(target.read_bytes()) // RAW_SECTOR):
+        assert is_valid(
+            target.read_bytes()[index * RAW_SECTOR : (index + 1) * RAW_SECTOR]
+        )
+    with pytest.raises(ValueError):
+        grow_file(source, "A.BIN;1", b"G" * 5000)

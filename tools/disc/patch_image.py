@@ -8,7 +8,9 @@ Safety rules (AGENTS.md rule 1):
   the source directory.
 - The replacement must have exactly the original file size. The ISO 9660
   directory is therefore unchanged, and only the file's own sectors are
-  rewritten.
+  rewritten. Exception (Vampire Hunter, EXP-0038): with ``--grow`` a file may
+  change size within the room before the next extent on the disc; its
+  directory record's size (both byte orders) is then rewritten too.
 - Rewritten sectors get regenerated Mode 1 EDC/ECC. All other bytes and files are
   copied unchanged.
 
@@ -34,10 +36,18 @@ import argparse
 import hashlib
 import json
 import shutil
+import struct
 from collections.abc import Sequence
 from pathlib import Path
 
-from tools.disc.iso9660 import RAW_SECTOR, USER_DATA, Track, primary_volume, walk
+from tools.disc.iso9660 import (
+    RAW_SECTOR,
+    USER_DATA,
+    Track,
+    parse_record,
+    primary_volume,
+    walk,
+)
 from tools.disc.sector import regenerate
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -62,6 +72,52 @@ def find_entry(track_path: Path, name: str) -> tuple[int, int]:
             if entry.path == name and not entry.is_dir:
                 return entry.lsn, entry.size_bytes
     raise ValueError(f"file {name!r} not found")
+
+
+def _records(track: Track, lsn: int, size: int):
+    """Yield (entry, sector LSN, offset in sector) for each record below a directory.
+
+    Paths are bare names (no parent); this disc keeps its files in the root.
+    """
+    data = track.read(lsn, size)
+    offset = 0
+    while offset < len(data):
+        if data[offset] == 0:
+            offset = (offset // USER_DATA + 1) * USER_DATA
+            continue
+        entry, length = parse_record(data, offset, "")
+        if entry.path not in ("\x00", "\x01"):
+            yield entry, lsn + offset // USER_DATA, offset % USER_DATA
+            if entry.is_dir:
+                yield from _records(track, entry.lsn, entry.size_bytes)
+        offset += length
+
+
+def grow_file(track_path: Path, name: str, data: bytes) -> list[tuple[int, int, bytes]]:
+    """Replacements that resize ``name`` within its room (file and directory)."""
+    with track_path.open("rb") as stream:
+        track = Track(stream, track_path.stat().st_size)
+        volume = primary_volume(track)
+        root = int(str(volume["root_lsn"])), int(str(volume["root_size"]))
+        found = None
+        starts = {root[0]}
+        for entry, sector, offset in _records(track, *root):
+            starts.add(entry.lsn)
+            if not entry.is_dir and entry.path == name.split("/")[-1]:
+                found = entry, sector, offset
+        if found is None:
+            raise ValueError(f"file {name!r} not found")
+        entry, sector, offset = found
+        following = [s for s in starts if s > entry.lsn]
+        room = (min(following) - entry.lsn) * USER_DATA if following else 0
+        if not 0 < len(data) <= room:
+            raise ValueError(
+                f"{name}: {len(data)} bytes; room before the next extent is {room}"
+            )
+        user = bytearray(track.user(sector))
+    struct.pack_into("<I", user, offset + 10, len(data))
+    struct.pack_into(">I", user, offset + 14, len(data))
+    return [(entry.lsn, len(data), data), (sector, USER_DATA, bytes(user))]
 
 
 def replace_files(
@@ -131,6 +187,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         "--data", action="append", type=Path, required=True, help="paired with --file"
     )
     parser.add_argument("--out-dir", type=Path, required=True)
+    parser.add_argument(
+        "--grow", action="store_true", help="let a file change size within its room"
+    )
     args = parser.parse_args(argv)
 
     source_dir: Path = args.source_dir.resolve()
@@ -158,7 +217,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         for name, data_path in zip(args.file, args.data, strict=True):
             lsn, size = find_entry(track, name)
             data = data_path.read_bytes()
-            replacements.append((lsn, size, data))
+            if args.grow and len(data) != size:
+                replacements += grow_file(track, name, data)
+            else:
+                replacements.append((lsn, size, data))
             files.append(
                 {
                     "file": name,

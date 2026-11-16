@@ -1296,3 +1296,14 @@ English epilogue file and `0x1BE` its routine pointer. Nothing built yet.
 
 Next action: let `patch_image.py` grow a file within its room; then the
 build in stages, each tested in replays.
+
+## 2026-11-16 — EXP-0038: patcher grows files; title hook found
+
+`patch_image.py --grow` (tested). The title and options screens draw their
+text once; a boot replay runs `TITLE.O` slot `0x4D9` (`0x060032A4`) every
+title frame from `MAIN.BIN`'s title-mode table, a hook point needing only
+a `TITLE.O` header change. Slip: a force.py run with 34 `--log-pc` values
+logged nothing; nine at a time works.
+
+Next action: confirm slot `0x4D9` runs on the options screen and after a
+game; then write the apply routine and the EDITION line.

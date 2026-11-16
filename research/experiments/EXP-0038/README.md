@@ -1,7 +1,7 @@
 # EXP-0038: The Edition Switch Build (design)
 
 Task: EDITION-002 (criteria 2-3)
-Status: IN_PROGRESS (design; nothing built)
+Status: IN_PROGRESS (design; patcher can grow files; hook point found)
 Confidence: each element below is SUPPORTED by the cited reading; the whole
 is a HYPOTHESIS until built and played
 
@@ -37,6 +37,24 @@ ending's English file overwrites it with its routine.
 `tools/disc/patch_image.py` replaces files at their exact size. Growing
 `TITLE.O` and `ST2HIS.BIN` within their room needs the directory record's
 size (both-endian) rewritten too.
+
+## Progress
+
+- **Patcher.** `tools/disc/patch_image.py --grow` lets a file change size
+  within the room before the next extent and rewrites its directory record
+  (both byte orders); unit test `test_grow_file_rewrites_directory_size`.
+- **Hook.** Text on the title and options screens is drawn once, not every
+  frame (`--log-pc 06018A1A` over title and options states: no calls). A
+  boot replay with no input (`f00000008`, 2,000 frames) runs three
+  `TITLE.O` entries: `0x060024B8` (slot `0x4D8`, frame 553 only),
+  `0x060032A4` (slot `0x4D9`, every frame from 1,936, reached from
+  `MAIN.BIN`'s title-mode table `0x0606BDF8` with return `0x06036062`) and
+  `0x06005AA0` (slot `0x4DA`, the object runner). Pointing slot `0x4D9`'s
+  header entry at a wrapper (apply, then jump to `0x060032A4`) runs the
+  apply each title frame without touching `MAIN.BIN` on disc. Not yet
+  checked: that it also runs on the options screen and after a game.
+- Options exit with Start calls the pack through a `TITLE.O` literal
+  (`0x060052AE`), a second hook if needed.
 
 ## Open Risks
 
