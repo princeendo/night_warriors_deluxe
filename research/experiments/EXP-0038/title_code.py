@@ -37,6 +37,10 @@ TASK, TASK_SLOT_HEADER = 0x06004FAC, 0x18
 E_ADDR, C_ADDR = 0x060830C5, 0x060830C6
 FLAG, LANG, LANG2 = 0x0608089A, 0x06080882, 0x060808A8
 SLOT_1BE, R12_ORIG = 0x06091E50, 0x26020766
+APPENDIX_FLAG, APPENDIX_STR = 0x06080A2B, 0x06001BE0
+HANDLER_EXIT, APPENDIX_HANDLER = 0x06005622, 0x06005600
+EDITION_NAMES = ["US ENHANCED", "US ORIGINAL", "JP ORIGINAL", "JP ENHANCED"]
+LABEL_X, VALUE_X = 128, 200  # labels end at x 184 ("TIME LIMIT" at 104); values at 200
 # per E: flag, language, C
 VALUES = [(2, 1, 0), (2, 1, 2), (0, 0, 0), (0, 0, 0)]
 
@@ -71,6 +75,158 @@ def patch_list() -> list[tuple[int, bytes, bytes]]:
         (0x0605B740, struct.pack(">I", 0x0605ADBC)),
     ]
     return [(a, e, main_bytes(a, len(e))) for a, e in enh]
+
+
+def color(a: Assembler, idx_reg: int) -> None:
+    """r6 = 3 if the cursor (@r12) equals idx_reg, else 1."""
+    a.mov_w_load(12, 0)
+    a.cmp_eq(idx_reg, 0)
+    a.op(0x0629)  # movt r6
+    a.shll(6)
+    a.add_imm(1, 6)
+
+
+def draw_line(a: Assembler, string_label: str | None, x: int) -> None:
+    """Draw r7 (or string_label) at (x, r9) in colour r8, as TITLE.O does."""
+    a.op(0x2FE6)  # mov.l r14,@-r15
+    a.mov_imm(0, 2)
+    a.op(0x2F26)  # mov.l r2,@-r15
+    if string_label:
+        a.mov_l_label(string_label, 7)
+    a.mov(8, 6)
+    a.mov(9, 5)
+    a.mov_imm(x // 2, 4)
+    a.shll(4)
+    a.jsr(13)
+    a.nop()
+    a.add_imm(8, 15)
+
+
+def menu(a: Assembler) -> None:
+    """The EDITION line: drawing (from 0x06004B84) and input (from 0x06005400).
+
+    draw: in OPTION MODE's draw function (r12 = cursor 0x0608086C, r13 = text
+    routine 0x06018A1A, r14 = its first stack argument); draws APPENDIX as the
+    stock code does when unlocked, then EDITION and its value in the next
+    slot (index 9 at y 0xB8 locked, 10 at y 0xC8 unlocked).
+    dispatch: reached for cursor values 9 and up (r0 = cursor; r10 = the
+    left/right mask, r13 = 1, r14 = the pad words); APPENDIX keeps index 9
+    when unlocked; on EDITION, left/right cycle E over 0-2, then r11 = r9 = 1
+    as the other lines do (redraw), and all leave through 0x06005622.
+    """
+    a.label("draw")
+    a.push_pr()
+    a.op(0x2F86)  # mov.l r8,@-r15
+    a.op(0x2F96)  # mov.l r9,@-r15
+    a.mov_l_label("L_app", 0)
+    a.mov_b_load(0, 0)
+    a.tst(0, 0)
+    a.branch("bt", "d_locked")
+    a.mov_imm(9, 8)
+    color(a, 8)
+    a.mov(6, 8)
+    a.mov_imm(0x5C, 9)
+    a.shll(9)  # y 0xB8
+    a.mov_l_label("L_appstr", 7)
+    a.op(0x2FE6)
+    a.mov_imm(0, 2)
+    a.op(0x2F26)
+    a.mov(8, 6)
+    a.mov(9, 5)
+    a.mov_imm(120, 4)
+    a.jsr(13)
+    a.nop()
+    a.add_imm(8, 15)
+    a.mov_imm(10, 8)
+    a.mov_imm(0x64, 9)
+    a.shll(9)  # y 0xC8
+    a.branch("bra", "d_edition")
+    a.nop()
+    a.label("d_locked")
+    a.mov_imm(9, 8)
+    a.mov_imm(0x5C, 9)
+    a.shll(9)  # y 0xB8
+    a.label("d_edition")
+    color(a, 8)
+    a.mov(6, 8)
+    draw_line(a, "L_label", LABEL_X)
+    a.mov_l_label("L_E", 1)
+    a.mov_b_load(1, 0)
+    a.extu_b(0, 0)
+    a.mov_imm(4, 1)
+    a.cmp_hs(1, 0)
+    a.branch("bf", "d_name")
+    a.mov_imm(0, 0)
+    a.label("d_name")
+    a.op(0x4008)  # shll2 r0
+    a.mov_l_label("L_names", 1)
+    a.op(0x071E)  # mov.l @(r0,r1),r7
+    draw_line(a, None, VALUE_X)
+    a.op(0x69F6)  # mov.l @r15+,r9
+    a.op(0x68F6)  # mov.l @r15+,r8
+    a.pop_pr()
+    a.rts()
+    a.nop()
+
+    a.label("dispatch")
+    a.mov_l_label("L_app", 1)
+    a.mov_b_load(1, 1)
+    a.tst(1, 1)
+    a.branch("bt", "x_locked")
+    a.op(0x8809)  # cmp/eq #9,r0
+    a.branch("bt", "x_appendix")
+    a.op(0x880A)  # cmp/eq #10,r0
+    a.branch("bt", "x_edition")
+    a.branch("bra", "x_exit")
+    a.nop()
+    a.label("x_locked")
+    a.op(0x8809)  # cmp/eq #9,r0
+    a.branch("bt", "x_edition")
+    a.label("x_exit")
+    a.mov_l_label("L_exit", 1)
+    a.op(0x412B)  # jmp @r1
+    a.nop()
+    a.label("x_appendix")
+    a.mov_l_label("L_apphandler", 1)
+    a.op(0x412B)
+    a.nop()
+    a.label("x_edition")
+    a.mov_w_r0_disp(2, 14)
+    a.op(0x600D)  # extu.w r0,r0
+    a.tst(10, 0)
+    a.branch("bt", "x_exit")
+    a.mov_l_label("L_E", 1)
+    a.mov_b_load(1, 2)
+    a.extu_b(2, 2)
+    a.mov_imm(3, 3)
+    a.cmp_hs(3, 2)  # E >= 3 (hidden or junk) counts as 0
+    a.branch("bf", "x_e_ok")
+    a.mov_imm(0, 2)
+    a.label("x_e_ok")
+    a.mov_imm(0x40, 3)
+    a.shll8(3)  # 0x4000: left
+    a.tst(3, 0)
+    a.branch("bt", "x_right")
+    a.add_imm(-1, 2)
+    a.op(0x4211)  # cmp/pz r2
+    a.branch("bt", "x_right")
+    a.mov_imm(2, 2)
+    a.label("x_right")
+    a.mov_imm(-128, 3)
+    a.shll8(3)  # ...8000: right
+    a.tst(3, 0)
+    a.branch("bt", "x_store")
+    a.add_imm(1, 2)
+    a.mov_imm(3, 3)
+    a.op(0x3233)  # cmp/ge r3,r2
+    a.branch("bf", "x_store")
+    a.mov_imm(0, 2)
+    a.label("x_store")
+    a.mov_b_store(2, 1)
+    a.mov(13, 11)
+    a.mov(13, 9)
+    a.branch("bra", "x_exit")
+    a.nop()
 
 
 def code() -> bytes:
@@ -145,6 +301,7 @@ def code() -> bytes:
     a.label("done")
     a.rts()
     a.nop()
+    menu(a)
     a.align4()
     for name, value in [
         ("L_apply", "apply"),
@@ -159,6 +316,12 @@ def code() -> bytes:
         ("L_slot", SLOT_1BE),
         ("L_r12", R12_ORIG),
         ("L_list", "list"),
+        ("L_app", APPENDIX_FLAG),
+        ("L_appstr", APPENDIX_STR),
+        ("L_exit", HANDLER_EXIT),
+        ("L_apphandler", APPENDIX_HANDLER),
+        ("L_names", "names"),
+        ("L_label", "s_label"),
     ]:
         a.label(name)
         a.long(value)
@@ -172,7 +335,47 @@ def code() -> bytes:
     a.data(bytes(4))
     a.label("last")
     a.data(b"\xff\0\0\0")
-    return a.assemble()
+    a.label("names")
+    for i in range(4):
+        a.long(f"s_{i}")
+    for name, text in [("s_label", "EDITION")] + [
+        (f"s_{i}", t) for i, t in enumerate(EDITION_NAMES)
+    ]:
+        a.label(name)
+        a.data(text.encode() + b"\0")
+    out = a.assemble()
+    _LAST_LABELS.clear()
+    _LAST_LABELS.update(a.labels)
+    return out
+
+
+_LAST_LABELS: dict[str, int] = {}
+
+
+def _labels() -> dict[str, int]:
+    """The routine addresses, from a fresh assembly."""
+    code()
+    return dict(_LAST_LABELS)
+
+
+def static_patches() -> list[tuple[int, bytes, bytes]]:
+    """(address, stock bytes, new bytes) inside the stock TITLE.O."""
+    lab = _labels()
+    return [
+        # OPTION MODE draw: the APPENDIX block becomes a call to "draw"
+        (0x06004B84, bytes.fromhex("60302008"), bytes.fromhex("430B7F08")),
+        (0x06004B88, bytes.fromhex("8D0E7F08"), bytes.fromhex("A00E0009")),
+        (0x06004C54, struct.pack(">I", APPENDIX_FLAG), struct.pack(">I", lab["draw"])),
+        # cursor bounds: last index 9/8 -> 10/9 (EDITION)
+        (0x0600536A, bytes.fromhex("E109E108"), bytes.fromhex("E10AE109")),
+        (0x06005384, bytes.fromhex("E209E208"), bytes.fromhex("E20AE209")),
+        # line dispatch: cursor 9 and up go to "dispatch"
+        (
+            0x060053FE,
+            bytes.fromhex("88098B01A0FD0009A10C"),
+            bytes.fromhex("D101412B0009") + struct.pack(">I", lab["dispatch"]),
+        ),
+    ]
 
 
 def title_o() -> bytes:
@@ -181,6 +384,11 @@ def title_o() -> bytes:
     assert (slot, off) == (0x4D7, TASK - BASE), (hex(slot), hex(off))
     out = stock + bytes(CODE - BASE - len(stock)) + code()
     struct.pack_into(">I", out, TASK_SLOT_HEADER + 4, CODE - BASE)  # wrapper first
+    for addr, old, new in static_patches():
+        o = addr - BASE
+        if out[o : o + len(old)] != old:
+            raise ValueError(f"{addr:#x}: expected {old.hex()}")
+        out[o : o + len(new)] = new
     if BASE + len(out) > 0x06010000:
         raise ValueError("title code past the free title-time RAM")
     return bytes(out)

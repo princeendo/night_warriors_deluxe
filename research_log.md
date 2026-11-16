@@ -1331,3 +1331,14 @@ patches. Slip: the "ST2HIS.BIN" string is at `0x0605B780` (fixed).
 
 Next action: the EDITION line and its input, then the overlay and ending
 changes and the English file.
+
+## 2026-11-16 — EXP-0038: EDITION line written; needs a live test
+
+Draw and input routines for the EDITION line added to `title_code.py`
+(920 bytes in all). Simulated presses (on-hit pad writes) reach the task's
+pad read but move no cursor, stock or patched (an input gate not traced),
+so the line is tested live: `build/exp0038_menu_test` (stock US plus the
+new `TITLE.O`).
+
+Next action: a session with the user on that image (OPTION, move to
+EDITION, left/right, Start).

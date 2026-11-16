@@ -96,6 +96,20 @@ size (both-endian) rewritten too.
   CONFIRMED in RAM. (`ST2HIS.BIN` is at `0x0605B780` in `MAIN.BIN`, not
   `0x0605B784` as first written.)
 
+- **EDITION line** (`title_code.py` `menu`): `draw` replaces OPTION MODE's
+  APPENDIX block (`0x06004B84`-`0x06004B8B` → `jsr`, `add #8,r15`, `bra
+  0x06004BA8`; literal `0x06004C54` → `draw`); it draws APPENDIX as stock
+  when unlocked, then "EDITION" (x 128, ending at 184 like the other labels)
+  and the value (x 200) at y `0xB8` (index 9) or `0xC8` (index 10). Cursor
+  bounds 8/9 → 9/10 (`0x0600536A`, `0x06005384`). The line dispatch for
+  cursor 9 and up (`0x060053FE`) jumps to `dispatch` (APPENDIX keeps 9 when
+  unlocked; left/right on EDITION cycle E over 0-2, then r11 = r9 = 1 like
+  the other lines). Code now 920 bytes (`TITLE.O` 35,072).
+  Simulated presses (on-hit writes of `0x06076AB8` at the task's pad read
+  `0x06004FDC`) did not move the stock cursor either, so the menu needs a
+  live session: test image `build/exp0038_menu_test` (stock US plus the new
+  `TITLE.O`, relocated; Track 1 hash in its `build_manifest.json`).
+
 ## Open Risks
 
 - The flag and language are set at start-up (D-013); changing them later
