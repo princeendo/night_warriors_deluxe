@@ -1307,3 +1307,15 @@ logged nothing; nine at a time works.
 
 Next action: confirm slot `0x4D9` runs on the options screen and after a
 game; then write the apply routine and the EDITION line.
+
+## 2026-11-16 — EXP-0038: relocation works; the title task is the hook
+
+`patch_image.py --relocate` (tested) moves a file into track 1's 150 free
+tail sectors. With Start held by an on-hit RAM write, a relocated
+`TITLE.O` (with a marker) loads like the stock one: the game follows the
+directory entry. The real per-frame title hook is the title task
+`0x06004FAC` (slot `0x4D7`); the earlier `0x060032A4` is attract mode.
+Slips: `force.py` keeps no states to read RAM from, so RAM checks use a
+small agent script; replays without input never reach the title.
+
+Next action: write the apply routine and wrapper; test by holding Start.

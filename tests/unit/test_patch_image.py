@@ -106,3 +106,21 @@ def test_grow_file_rewrites_directory_size(tmp_path: Path) -> None:
         )
     with pytest.raises(ValueError):
         grow_file(source, "A.BIN;1", b"G" * 5000)
+
+
+def test_relocate_file_moves_extent(tmp_path: Path) -> None:
+    from tools.disc.patch_image import relocate_files
+
+    source = tmp_path / "track.bin"
+    source.write_bytes(valid_image())  # last extent ends at LSN 23; 23 is free
+    target = tmp_path / "out.bin"
+    replace_files(source, target, relocate_files(source, [("A.BIN;1", b"M" * 100)]))
+    assert find_entry(target, "A.BIN;1") == (23, 100)
+    raw = target.read_bytes()
+    assert raw[23 * RAW_SECTOR + 16 : 23 * RAW_SECTOR + 116] == b"M" * 100
+    assert all(
+        is_valid(raw[i * RAW_SECTOR : (i + 1) * RAW_SECTOR])
+        for i in range(len(raw) // RAW_SECTOR)
+    )
+    with pytest.raises(ValueError):
+        relocate_files(source, [("A.BIN;1", b"M" * 3000)])

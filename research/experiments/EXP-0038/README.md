@@ -56,6 +56,27 @@ size (both-endian) rewritten too.
 - Options exit with Start calls the pack through a `TITLE.O` literal
   (`0x060052AE`), a second hook if needed.
 
+- **Room for the title code: relocation.** The 740 bytes after `TITLE.O`
+  would not hold Morrigan's two scripts plus the code. Track 1 has 150
+  zero sectors after the last extent (`S570.BIN` ends at LSN 209,774; the
+  track has 209,924). `patch_image.py --relocate NAME` writes a file there
+  and rewrites its directory position and size (unit test
+  `test_relocate_file_moves_extent`). Test image `build/exp0038_reloc_test`:
+  `TITLE.O` relocated with 64 marker bytes appended. From the cold-session
+  state `f00000008`, holding Start by writing `0x0800` to the raw pad word
+  `0x06076AB6` each time `0x0601CB8C` runs (agent on-hit write), both the
+  stock and the test image load `TITLE.O` at `0x06001000` by frame 1,805;
+  the test image also has the marker at `0x0600951C`. **The game loads
+  `TITLE.O` from its directory entry, wherever it is: CONFIRMED.** So the
+  title code can use the free title-time RAM (to `0x0600FFFF`). The held-
+  Start write also lets replays reach the title without the user.
+- **Hook, corrected.** `0x060032A4` turned out to run in the no-input
+  attract mode, not on the title. The title and options screens are one
+  task, `TITLE.O` `0x06004FAC` (slot `0x4D7`), switching on mode
+  `0x06080864` (2 title menu `0x06005108`, 3 options `0x060052A4`); `MAIN.BIN`'s
+  task runner reads its address from the slot (`0x06045C24` loads
+  `0x06092AB4`) every frame. The wrapper goes there.
+
 ## Open Risks
 
 - The flag and language are set at start-up (D-013); changing them later

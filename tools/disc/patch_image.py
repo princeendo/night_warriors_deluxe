@@ -10,7 +10,10 @@ Safety rules (AGENTS.md rule 1):
   directory is therefore unchanged, and only the file's own sectors are
   rewritten. Exception (Vampire Hunter, EXP-0038): with ``--grow`` a file may
   change size within the room before the next extent on the disc; its
-  directory record's size (both byte orders) is then rewritten too.
+  directory record's size (both byte orders) is then rewritten too. With
+  ``--relocate NAME`` the file is written to the unused sectors after the
+  last extent (they must be zero) and its record's position and size are
+  rewritten.
 - Rewritten sectors get regenerated Mode 1 EDC/ECC. All other bytes and files are
   copied unchanged.
 
@@ -120,6 +123,38 @@ def grow_file(track_path: Path, name: str, data: bytes) -> list[tuple[int, int, 
     return [(entry.lsn, len(data), data), (sector, USER_DATA, bytes(user))]
 
 
+def relocate_files(
+    track_path: Path, files: Sequence[tuple[str, bytes]]
+) -> list[tuple[int, int, bytes]]:
+    """Replacements that move each file to the free sectors after the last extent."""
+    with track_path.open("rb") as stream:
+        track = Track(stream, track_path.stat().st_size)
+        volume = primary_volume(track)
+        root = int(str(volume["root_lsn"])), int(str(volume["root_size"]))
+        records = list(_records(track, *root))
+        free = max(e.lsn + -(-e.size_bytes // USER_DATA) for e, _, _ in records)
+        out: list[tuple[int, int, bytes]] = []
+        dirs: dict[int, bytearray] = {}
+        for name, data in files:
+            hit = [r for r in records if not r[0].is_dir and r[0].path == name]
+            if len(hit) != 1:
+                raise ValueError(f"file {name!r} not found")
+            _, sector, offset = hit[0]
+            count = -(-len(data) // USER_DATA)
+            if free + count > track.sectors:
+                raise ValueError(f"{name}: no room after the last extent")
+            if any(any(track.user(lsn)) for lsn in range(free, free + count)):
+                raise ValueError(f"{name}: sectors after the last extent are not empty")
+            user = dirs.setdefault(sector, bytearray(track.user(sector)))
+            struct.pack_into("<I", user, offset + 2, free)
+            struct.pack_into(">I", user, offset + 6, free)
+            struct.pack_into("<I", user, offset + 10, len(data))
+            struct.pack_into(">I", user, offset + 14, len(data))
+            out.append((free, len(data), data))
+            free += count
+    return out + [(sector, USER_DATA, bytes(u)) for sector, u in dirs.items()]
+
+
 def replace_files(
     source: Path, target: Path, replacements: Sequence[tuple[int, int, bytes]]
 ) -> list[dict[str, object]]:
@@ -190,6 +225,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "--grow", action="store_true", help="let a file change size within its room"
     )
+    parser.add_argument(
+        "--relocate",
+        action="append",
+        default=[],
+        help="move this file to the free tail",
+    )
     args = parser.parse_args(argv)
 
     source_dir: Path = args.source_dir.resolve()
@@ -214,10 +255,13 @@ def main(argv: Sequence[str] | None = None) -> int:
         track = source_dir / args.track
         replacements = []
         files = []
+        moved = []
         for name, data_path in zip(args.file, args.data, strict=True):
             lsn, size = find_entry(track, name)
             data = data_path.read_bytes()
-            if args.grow and len(data) != size:
+            if name in args.relocate:
+                moved.append((name, data))
+            elif args.grow and len(data) != size:
                 replacements += grow_file(track, name, data)
             else:
                 replacements.append((lsn, size, data))
@@ -229,6 +273,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                     "replacement_sha256": hashlib.sha256(data).hexdigest(),
                 }
             )
+        if moved:
+            replacements += relocate_files(track, moved)
         out_dir.mkdir(parents=True, exist_ok=True)
         changed = replace_files(track, out_dir / args.track, replacements)
         for component in components:
