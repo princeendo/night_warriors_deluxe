@@ -1112,3 +1112,15 @@ HYPOTHESIS): six readers choosing routines and object settings, not sounds
 alone; not patched yet.
 
 Next action: play sessions (Japanese reference and patched US) as Donovan.
+
+## 2026-11-16 — EXP-0033: Donovan sessions
+
+Two sessions with the user (Japanese, patched US), Donovan beating Victor.
+`PL14` is Donovan's code. The Japanese replay runs the guarded sound block
+at his win (frame 180); the US replay never enters it (flag 2 or cleared),
+and opening the guards changes no sample. DISPROVEN for this match: that the
+guards alone hold back his win sound. Open: why the block is not entered in
+the US match (pose or state; the tested variable is `00` US / `01` JP).
+`dense.py` gained an image argument and RAM writes.
+
+Next action: more US wins as Donovan, or trace what enters the block.

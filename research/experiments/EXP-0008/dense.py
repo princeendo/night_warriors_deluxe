@@ -3,7 +3,7 @@
 Run from the repository root:
 
     ./invenv.sh python research/experiments/EXP-0008/dense.py \
-        {jp,us} STATE FRAMES OUT_DIR
+        {jp,us} STATE FRAMES OUT_DIR [IMAGE|- [ADDRESS=HEX ...]]
 
 Launches the patched Mednafen (D-005) in the quiet home, loads STATE, and
 while the game runs saves a state as often as the agent allows (every 2-4
@@ -44,7 +44,14 @@ IMAGES = {
 }
 
 
-def main(release: str, state: Path, frames: int, out: Path) -> int:
+def main(
+    release: str,
+    state: Path,
+    frames: int,
+    out: Path,
+    image: Path | None = None,
+    writes: tuple[str, ...] = (),
+) -> int:
     out.mkdir(parents=True, exist_ok=False)
     agent_dir = (out / "agent").resolve()
     env = {
@@ -57,7 +64,7 @@ def main(release: str, state: Path, frames: int, out: Path) -> int:
     tmp = (out / "tmp.mc0").resolve()
     with (out / "mednafen.log").open("wb") as log:
         process = subprocess.Popen(
-            [str(BINARY), str(IMAGES[release])],
+            [str(BINARY), str(image or IMAGES[release])],
             env=env,
             stdout=log,
             stderr=subprocess.STDOUT,
@@ -75,6 +82,11 @@ def main(release: str, state: Path, frames: int, out: Path) -> int:
                     time.sleep(0.5)
             agent.loadstate(state)
             agent.pause()
+            for w in writes:  # EXP-0033: ADDRESS=HEX into WRAM-H after the load
+                address, data = w.split("=", 1)
+                agent.write(
+                    "workramh", int(address, 16) - 0x06000000, bytes.fromhex(data)
+                )
             (out / "scspram.bin").write_bytes(agent.read("scspram", 0, 0x80000))
             first = int(agent.status()["frame"])
             agent.run()
@@ -102,5 +114,12 @@ def main(release: str, state: Path, frames: int, out: Path) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(
-        main(sys.argv[1], Path(sys.argv[2]), int(sys.argv[3]), Path(sys.argv[4]))
+        main(
+            sys.argv[1],
+            Path(sys.argv[2]),
+            int(sys.argv[3]),
+            Path(sys.argv[4]),
+            Path(sys.argv[5]) if len(sys.argv) > 5 and sys.argv[5] != "-" else None,
+            tuple(sys.argv[6:]),
+        )
     )

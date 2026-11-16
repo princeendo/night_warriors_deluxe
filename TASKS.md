@@ -587,6 +587,7 @@ is not already on the base disc goes on disc).
 - **Objective:** Find what the Japanese release plays or shows for Donovan and Sasquatch that the US release does not, and restore it in US Enhanced as for Morrigan.
 - **Acceptance criteria:** (1) `PL14`/`PL10` tied to Donovan/Sasquatch by a fight. (2) Each guarded difference reproduced in both releases from play (sound recorded, samples identified with `EXP-0008/dense.py`). (3) A patched image plays or shows the Japanese behaviour from a cold boot, with the win quote and other characters unchanged.
 - **Notes:** Only `PL05`, `PL10`, `PL14` (and `SOBJ08.O3`) read the region flag. `PL14.O`: two guarded sound calls (`bf` at file `0x111C`, codes `0x1B4`; `0x23C4`, `0x1B2`), opened in `EXP-0033/build_donovan.py`. `PL10.O`: six readers that pick routines and object settings (calls to `0x06030ABA`, states 64/48, routine 1 vs 5), likely pose logic; not patched yet.
+- **Progress 2026-11-16 (`EXP-0033`):** sessions with the user as Donovan in both releases. `PL14` is Donovan's code (CONFIRMED). The Japanese release makes the first guarded call at his win (frame 180 of the replay; a looping sample `0x1B4B2` starts then); the patched US match never enters that code, even with the flag cleared at the state, so the patch is not yet shown to change anything. Next: more US wins as Donovan, or what enters the block.
 
 ### EDITION-001 - Design the edition switch
 
