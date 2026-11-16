@@ -136,9 +136,12 @@ task repeats a sibling task, the note names it for its method only.
 - **2026-11-16: Donovan and Sasquatch** (`AUD-003`, user choice): opening
   Donovan's first guard plays his Japanese-only win sample in US
   (`EXP-0033`, D-032); six `nop`s give Sasquatch his Japanese win poses,
-  creatures and sample (`EXP-0034`, D-033), in `build/us_en_sasquatch`.
-  Next: one cold boot of that build with the user (Donovan and Sasquatch
-  wins).
+  creatures and sample (`EXP-0034`, D-033), in `build/us_en_sasquatch`;
+  both confirmed from a cold boot. `AUD-003` done. Every region-flag reader
+  in the character code is now handled except Donovan's unreached second
+  guard. Still open: `EDITION-001` (its debts: `ST1JPN.BIN` holds the
+  English epilogues, Morrigan's Japanese script slot holds her new US
+  script, `ENDING.O`, `ST2USA.BIN`, `PL05`, `PL10` and `PL14` patched).
   Still open after it: Still open: `EDITION-001` (its debts: `ST1JPN.BIN` holds the
   English epilogues, Morrigan's Japanese script slot holds her new US
   script, `ENDING.O`, `ST2USA.BIN` and `PL05` patched).
@@ -584,7 +587,7 @@ is not already on the base disc goes on disc).
 
 ### AUD-003 - Donovan's and Sasquatch's Japanese-only behaviour (`AUD-04`, `ANI-01`)
 
-- **Status:** `IN_PROGRESS`
+- **Status:** `DONE` (2026-11-16)
 - **Milestone:** M1-M3 (user choice 2026-11-16: "Other characters' voices")
 - **Dependencies:** AUD-002 (the method and the build it extends).
 - **Blockers:** None.
@@ -592,7 +595,8 @@ is not already on the base disc goes on disc).
 - **Acceptance criteria:** (1) `PL14`/`PL10` tied to Donovan/Sasquatch by a fight. (2) Each guarded difference reproduced in both releases from play (sound recorded, samples identified with `EXP-0008/dense.py`). (3) A patched image plays or shows the Japanese behaviour from a cold boot, with the win quote and other characters unchanged.
 - **Notes:** Only `PL05`, `PL10`, `PL14` (and `SOBJ08.O3`) read the region flag. `PL14.O`: two guarded sound calls (`bf` at file `0x111C`, codes `0x1B4`; `0x23C4`, `0x1B2`), opened in `EXP-0033/build_donovan.py`. `PL10.O`: six readers that pick routines and object settings (calls to `0x06030ABA`, states 64/48, routine 1 vs 5), likely pose logic; not patched yet.
 - **Progress 2026-11-16 (`EXP-0033`):** sessions with the user as Donovan in both releases. `PL14` is Donovan's code (CONFIRMED). The Japanese release makes the first guarded call at his win (frame 180 of the replay; a looping sample `0x1B4B2` starts then); the first US replay never reached the KO (a replay has no input), which is why it never entered that code. From three post-KO US states the patched image runs it like the Japanese one, and the only sample that changes is `0x5687A`: the Japanese release and the patched US play it after the shared `0x1B4B2`; with the guard restored the US does not (D-032). Criterion 2 met for Donovan's first guard; the second (`0x23C4`) was not reached. Next: a cold boot of `build/us_en_donovan` with the user (criterion 3), then Sasquatch.
-- **Progress 2026-11-16 (`EXP-0034`, static):** all six `PL10` readers sit in one win-pose chooser. With the flag non-zero, poses 0 and 4 (4 = Up + A + B + C held, by the pad table) spawn no effect objects and random pose 1 becomes pose 5 (SUPPORTED, from the code). Sessions with the user in both releases confirmed Up + A + B + C (`0x0708`) gives pose 4. Forced replays: the US skips the small snow creatures and sample `0x53116` in poses 0, 1 and 4 and plays pose 5 for pose 1; the flag cleared, or only the six guards `nop`, give the Japanese result (D-033). `EXP-0034/build_sasquatch.py` (Track 1 `e6e81ccc…`) loads them from disc. Criterion 2 met for both characters. Next: a cold boot of `build/us_en_sasquatch` with the user, winning as Donovan and as Sasquatch (criterion 3).
+- **Progress 2026-11-16 (`EXP-0034`, static):** all six `PL10` readers sit in one win-pose chooser. With the flag non-zero, poses 0 and 4 (4 = Up + A + B + C held, by the pad table) spawn no effect objects and random pose 1 becomes pose 5 (SUPPORTED, from the code). Sessions with the user in both releases confirmed Up + A + B + C (`0x0708`) gives pose 4. Forced replays: the US skips the small snow creatures and sample `0x53116` in poses 0, 1 and 4 and plays pose 5 for pose 1; the flag cleared, or only the six guards `nop`, give the Japanese result (D-033). `EXP-0034/build_sasquatch.py` (Track 1 `e6e81ccc…`) loads them from disc. Criterion 2 met for both characters. 
+- **Done 2026-11-16 (cold boot, `local/aud004/cold-session`):** the user won as Donovan and as Sasquatch on `build/us_en_sasquatch` (Track 1 `e6e81ccc…`). All eight guards read `0009` from the disc; Sasquatch's shy pose and snow creatures show live and `0x53116` plays; Donovan's `0x5687A` plays after his round-2 win (pose 0 only; round 1 takes pose 1, which has no call in either region). Win quotes unchanged. All criteria met. Left open: Donovan's second guard (`0x23C4`, code `0x1B2`) was never reached.
 
 ### EDITION-001 - Design the edition switch
 

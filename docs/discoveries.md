@@ -491,8 +491,9 @@ Reproduce: `research/experiments/EXP-0032/README.md`.
 ## D-032: Opening Donovan's first guard plays his Japanese-only win sample in US Enhanced (`AUD-003`, `EXP-0033`)
 
 Holds for: the US image patched by `EXP-0033/build_donovan.py` (Track 1
-`64344d58…984e`), replayed from post-KO states of a play session; not yet
-from a cold boot.
+`64344d58…984e`), replayed from post-KO states of play sessions, including a cold boot
+(`EXP-0034`'s session). The call follows only his pose 0, a win after the
+first round.
 
 Donovan's code (`PL14.O`, player 1) skips a sound call (code `0x1B4`, `bf` at
 file `0x111C`) when the region flag is non-zero. At his win the Japanese
@@ -508,7 +509,7 @@ Reproduce: `research/experiments/EXP-0033/README.md`.
 
 Holds for: the US image patched by `EXP-0034/build_sasquatch.py` (Track 1
 `e6e81ccc…dc99`), shown by forced replays from play sessions of both
-releases with the same `nop`s written in RAM; not yet from a cold boot.
+releases with the same `nop`s written in RAM, and from a cold boot.
 
 Sasquatch's code (`PL10.O`, player 1; `PL10.O2` same offsets) chooses his
 win pose in one state machine (`0x060044FC`): Up + A + B + C held gives pose

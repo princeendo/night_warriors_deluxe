@@ -1,8 +1,8 @@
 # EXP-0034: Sasquatch's Region-Gated Win Poses
 
 Task: AUD-003 (`ANI-01`)
-Status: IN_PROGRESS (criteria 1-2 met; the cold boot is left)
-Confidence: CONFIRMED (forced replays from both regions' play sessions)
+Status: DONE
+Confidence: CONFIRMED (forced replays from both regions' play sessions, and a cold boot of the build)
 
 ## Observation
 
@@ -106,13 +106,24 @@ plus the six guards made `nop` in `PL10.O` and `PL10.O2` (file `0x32D0`
 loads from disc: replaying the US state `f00003511` (before the match loads
 `PL10`) on this image for 400 frames, all six read `0009` in RAM.
 
+## Cold Boot
+
+With the user: `research/experiments/EXP-0018/session.sh local/aud004/cold-session
+"build/us_en_sasquatch/…(USA).cue"` (347 states). The user won a match as
+Donovan (Victor), lost the next (Bishamon), continued as Sasquatch and beat
+Bishamon, the second round with Up + A + B + C held. In the live states
+`PL10`'s six guards read `0009` from the disc. Round 1 took random pose 1
+(`f00017960`): the live shots show the shy pose and the snow creatures; a
+`dense.py` replay from the post-KO state `f00017787` on the build plays
+`0x53116` (frame 197). Round 2 took pose 4 (`f00019612`). Donovan's English
+win quote and Bishamon's are unchanged. Donovan's part is in `EXP-0033`.
+
 ## Conclusion
 
 **CONFIRMED (forced replays):** in the US release Sasquatch's win poses 0, 1
 and 4 lose the small snow creatures and their sample `0x53116`, and the
 random pose 1 is replaced by pose 5. Six `nop`s in `PL10` restore the
-Japanese behaviour with the flag kept at 2 (D-033). Left: a cold boot of the
-build with the user (`AUD-003` criterion 3).
+Japanese behaviour with the flag kept at 2 (D-033), from a cold boot.
 
 ## Uncertainty and Alternatives
 

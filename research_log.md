@@ -1172,3 +1172,19 @@ Commands: `EXP-0034/README.md`. Tests: `pytest` and `ruff` pass.
 
 Next action: one cold boot of `build/us_en_sasquatch` with the user, a win
 as Donovan and a win as Sasquatch (`AUD-003` criterion 3).
+
+## 2026-11-16 — AUD-003 cold boot: Donovan and Sasquatch confirmed
+
+Session with the user on `build/us_en_sasquatch` (`local/aud004/cold-session`):
+Donovan beat Victor 2-0, lost to Bishamon, continued as Sasquatch, beat
+Bishamon 2-0. In live RAM all eight guards (`PL14` two, `PL10` six) read
+`0009`. Sasquatch round 1 (random pose 1): the shy pose and snow creatures
+on screen; replay from `f00017787` plays `0x53116`. Donovan: the first
+post-KO replay (`f00005029`) never reached the guarded call. Reading the
+chooser: the call follows only pose 0, a win after the first round (round
+counter `0x0608096A`); round 2 from `f00007017` plays `0x5687A` 8 frames
+after `0x1B4B2`, and not with the guards restored. AUD-003 DONE.
+
+Tests: `pytest` 119 passed; `ruff` clean.
+
+Next action: the user chooses (`EDITION-001`, or Donovan's second guard).

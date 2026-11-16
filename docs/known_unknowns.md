@@ -17,3 +17,4 @@ belong in `docs/difference_register.md` instead.
 | What do the byte changes in the 52 differing files do? | Sizes and differing-byte counts only (`references/saturn_us/README.md`). | Classify each run as relocation or content; disassemble the code files' entry points. | `DIFF-001` |
 | Why are `PL*.O` and `PL*.O2` different files that differ between regions in the same places? | Checked for `PL01` and `PL05` (`SESSION-0001`). | Compare all 14 pairs; find which is loaded when (CD command log). | `DIFF-001` |
 | What is on the Japanese track 2? | About 18 s of audio; the US track 2 is silence. | Listen to it (play it as audio). | `DIFF-001` |
+| What does Donovan's second region guard play? | `PL14` `0x23C4` (P1 `0x060033C4`) skips a call with code `0x1B2` in US; opened in the build, never reached in any replay or session (`EXP-0033`). | Find what reaches the block holding `0x060033C4` (log its callers), then force it from a post-KO state. | `AUD-003` |

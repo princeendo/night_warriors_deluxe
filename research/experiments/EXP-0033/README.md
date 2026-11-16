@@ -1,10 +1,10 @@
 # EXP-0033: Donovan's Region-Gated Sound
 
 Task: AUD-003
-Status: IN_PROGRESS
+Status: DONE
 Confidence: CONFIRMED (`PL14` is Donovan; the first guard holds back one
 sample at his win, and opening it plays that sample in US, from post-KO
-states); cold boot pending
+states, then a cold boot)
 
 ## Observation
 
@@ -90,8 +90,27 @@ regions; it is not the regional difference.
 win sound in the Japanese release; with the guard a `nop` the US build plays
 it at the same point; with the guard restored it does not (D-032). The
 second guard (`0x23C4`, code `0x1B2`) was not reached in any replay; its
-event is UNKNOWN. Left: a cold boot with the user (criterion 3), and what the
-second guard's sound is.
+event is UNKNOWN. Confirmed from a cold boot (below). Open: what the second guard's sound
+is.
+
+## Which Win Pose Has the Sound
+
+The block at `0x06002088` is Donovan's win-pose chooser. The guarded call
+follows only pose 0: pose 1 when the round counter `0x0608096A` (US) is 0,
+that is a first-round win; pose 0 for a later round (pose 4/5 under a
+`+0x46 = 0x90` test, not met here). So his first-round win never makes the
+call in either region.
+
+## Cold Boot
+
+In `EXP-0034`'s cold boot of `build/us_en_sasquatch` (which includes this
+change) the user won 2-0 as Donovan; both guards read `0009` in RAM. Round
+1 took pose 1, and a replay from its post-KO state (`f00005029`) runs the
+chooser 8 times without the call, as expected. Round 2 took pose 0; from
+its post-KO state `f00007017`, `dense.py` on the build: `0x1B4B2` at frame
+193, **`0x5687A` at 201** (8 frames later, as in Japanese); with the two
+guards restored in RAM, `0x5687A` never. Donovan's English win quote is
+unchanged.
 
 ## Uncertainty and Alternatives
 
