@@ -990,3 +990,17 @@ Lesson: a change to a file loaded at boot must be checked on every screen
 that uses the same code, not only the one it was made for.
 
 Next action: second cold boot with the user present.
+
+## 2026-11-16 — EXP-0028: cold boot of the fixed image; END-002 done
+
+User request: "Yes, start it" (second cold boot). The user beat Victor with
+Demitri; the win quote is English. From the session's bonus-screen state
+`f00007427`, all 14 endings forced with the stage and character bytes only:
+every one shows its whole English epilogue on top of the art and reaches
+the cast roll (D-027). `END-002` DONE: M5 for `END-01`.
+
+`all_en.sh` now takes `STATE` and `OUT` and no longer writes the `MAIN.BIN`
+literal (unneeded since `EXP-0027`).
+
+Next action: the user chooses the next class (`EDITION-001`, `END-003`,
+`AUD-002`).

@@ -411,3 +411,17 @@ restores `0x060839D4` on every later call. `MAIN.BIN` keeps its original
 literal; the win quote is English and the 14 epilogues are whole.
 
 Reproduce: `research/experiments/EXP-0027/README.md`.
+
+## D-027: From a cold boot, the patched US image keeps the English win quote and shows all 14 English epilogues (`END-002`, `EXP-0028`)
+
+Holds for: the US image patched by `EXP-0023/build_en_epilogue.py
+--late-array1 --step 0` for rosters 1-14 (Track 1 `8ebc0ca3…0b67`).
+
+Cold-booted and played (Demitri beat Victor): the win quote is English. From
+that session's bonus-screen state, each of the 14 endings forced with the
+stage and character bytes only (no RAM write) shows the English main ending,
+the emblem card, then the character's whole English epilogue (PSP *Chronicle*
+text with the user's logged edits) rising on black and staying on top of the
+art, then the US cast roll. This is M5 for `END-01`.
+
+Reproduce: `research/experiments/EXP-0028/README.md`.
