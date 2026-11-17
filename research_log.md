@@ -1401,3 +1401,9 @@ description and authors, `uv.lock` (`uv lock --offline`: the package entry
 only), the schema `$id`. Unchanged: provenance notes naming the repository
 as it was when code was copied, past log entries, the GitHub repository
 and local folder names (`vampire_hunter_ultimate`). Tests: 125 passed.
+Then, at the user's request ("Rename both"), the GitHub repository was
+renamed `princeendo/night_warriors_deluxe` (as `princeendo`, not the work
+account active in `gh`; GitHub redirects the old URL), `origin` repointed,
+and the local folder moved to `/Users/colinwhite/workspace/personal/night_warriors_deluxe`
+(the virtual environment re-synced there, since its scripts hold absolute
+paths).
