@@ -1376,3 +1376,17 @@ epilogue with restored lines, stock US, Japanese with GALLON. D-034.
 
 Next action: the user chooses (`END-005` for JP Enhanced, Donovan's second
 guard, a release, or the remaining register rows).
+
+## 2026-11-16 — EXP-0039: Donovan's second guard
+
+User choice: "Donovan's second guard". Static: the guard ends an action
+starter that needs Donovan's `+0x228` = 1 and is called after a
+punch + same-strength-kick check. Live session (JP) with the call logged:
+4 fires, all while his sword was planted. Replays injecting light punch +
+light kick reproduce it in exactly the planted states; `dense.py` shows
+the only flag-dependent sample is `0x4F2EA`. Code identical in both
+releases. D-035. Tools: `options_watch.py` `pc:` arguments; `dense.py`
+on-hit writes. The user asked for a move list; inputs were given as
+generic motions (no verified Donovan list on hand).
+
+Next action: the user chooses.

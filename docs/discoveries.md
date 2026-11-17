@@ -538,3 +538,17 @@ character guards and the ending read C. The English epilogues are in
 stock. Each edition gives its own voices, endings and names.
 
 Reproduce: `research/experiments/EXP-0038/README.md`.
+
+## D-035: Donovan's second region guard holds back a sound for punch + kick with his sword planted (`EXP-0039`)
+
+Holds for: the Japanese 1M image (live session and replays); the US
+release by identical code.
+
+`PL14`'s guard at file `0x23C4` skips sample `0x4F2EA` (8-bit, `0xD00`
+bytes, code `0x1B2`) that the Japanese release plays when, with Donovan's
+sword stuck in the floor (object byte `+0x228` = 1), a punch and the kick
+of the same strength are pressed together. Writing the flag to 2 in the
+Japanese release removes only that sample. The code path is the same in
+both releases' `PL14.O` apart from relocated literals.
+
+Reproduce: `research/experiments/EXP-0039/README.md`.

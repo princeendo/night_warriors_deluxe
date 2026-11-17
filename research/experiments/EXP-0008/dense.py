@@ -3,7 +3,7 @@
 Run from the repository root:
 
     ./invenv.sh python research/experiments/EXP-0008/dense.py \
-        {jp,us} STATE FRAMES OUT_DIR [IMAGE|- [ADDRESS=HEX ...]]
+        {jp,us} STATE FRAMES OUT_DIR [IMAGE|- [ADDRESS=HEX | PC:ADDRESS=HEX ...]]
 
 Launches the patched Mednafen (D-005) in the quiet home, loads STATE, and
 while the game runs saves a state as often as the agent allows (every 2-4
@@ -82,10 +82,24 @@ def main(
                     time.sleep(0.5)
             agent.loadstate(state)
             agent.pause()
+            onhit = [w for w in writes if ":" in w]  # EXP-0039: PC:ADDRESS=HEX
             for w in writes:  # EXP-0033: ADDRESS=HEX into WRAM-H after the load
+                if ":" in w:
+                    continue
                 address, data = w.split("=", 1)
                 agent.write(
                     "workramh", int(address, 16) - 0x06000000, bytes.fromhex(data)
+                )
+            if onhit:  # written each time PC runs (a simulated button press)
+                agent.bpmode("log")
+                for w in onhit:
+                    pc, rest = w.split(":", 1)
+                    address, data = rest.split("=", 1)
+                    agent.onhit_write(
+                        int(pc, 16), int(address, 16), bytes.fromhex(data)
+                    )
+                agent.breakpoints(
+                    "pc", [f"{w.split(':')[0]}-{w.split(':')[0]}" for w in onhit]
                 )
             (out / "scspram.bin").write_bytes(agent.read("scspram", 0, 0x80000))
             first = int(agent.status()["frame"])

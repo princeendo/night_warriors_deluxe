@@ -9,7 +9,8 @@ settings variables the unpack routine fills and on the settings block's
 option bytes, logs the load-and-unpack and pack routines (EXP-0036), and
 takes a screenshot and a save state each second, and waits for the user to
 close the window. RANGEs (``LO-HI``, hex; EXP-0037) replace the default
-watch and are watched for reads too. Every write is logged with its PC in
+watch and are watched for reads too; ``pc:ADDR`` arguments (EXP-0039)
+replace the logged PCs. Every write is logged with its PC in
 ``OUT_DIR/agent/events.log``. Nothing is pressed for the user.
 """
 
@@ -41,7 +42,9 @@ PCS = ["06014718-06014718", "060148C4-060148C4"]  # load-and-unpack, pack
 def main() -> int:
     out = Path(sys.argv[1])
     cue = Path(sys.argv[2]) if len(sys.argv) > 2 else CUE
-    ranges = sys.argv[3:] or WATCH
+    extra = sys.argv[3:]
+    pcs = [f"{a[3:]}-{a[3:]}" for a in extra if a.startswith("pc:")]
+    ranges = [a for a in extra if not a.startswith("pc:")] or (WATCH if not pcs else [])
     out.mkdir(parents=True)
     env = dict(
         os.environ,
@@ -60,10 +63,11 @@ def main() -> int:
             except AgentError:
                 time.sleep(0.5)
         agent.bpmode("log")
-        agent.breakpoints("write", ranges)
-        if sys.argv[3:]:
+        if ranges:
+            agent.breakpoints("write", ranges)
+        if ranges and extra:
             agent.breakpoints("read", ranges)
-        agent.breakpoints("pc", PCS)
+        agent.breakpoints("pc", pcs or PCS)
         print(time.strftime("%H:%M:%S"), "watching", ranges, flush=True)
         for d in ("shots", "states"):
             (out / d).mkdir()
