@@ -135,6 +135,29 @@ size (both-endian) rewritten too.
   records. `ST1JPN.BIN`, `MAIN.BIN` stock. `build/us_edition` Track 1
   `25e05ec14a258e7f2bea49e51023dfbf96c553aae688b67c5044728c4040f1be`.
 
+- **Forced endings per edition** (Morrigan; `EXP-0010/force.py` on
+  `build/us_edition` from the stock won-KO state
+  `local/aud001/us-session/rec/states/f00011016.mcs`, `--write
+  0608092B=09 --write 06080980=05`, 330 steps, plus the RAM writes the
+  title code makes for each edition, as listed by `title_code.patch_list`
+  and `VALUES`):
+  - US original (`local/edition002/end-e1-05`): the stock US main ending
+    (her US lines, "You worry too much…", "Hurry…"), no text on the art,
+    cast roll.
+  - JP original (`end-e2-05`): the Japanese main ending (`ST2JPN`), the
+    Japanese epilogue text, cast roll.
+  - US Enhanced (`end-e0-05`): her restored lines, but no English epilogue
+    at first: the loader was called for "ST2HIS.BIN" (`0x0603B90C`, r4
+    `0x0605B780`) yet r12 at `0x0600CFC0` was `0x26020766`. Cause: the game
+    caches the disc directory in RAM at boot (24-byte entries: FAD, size,
+    attributes, name; `ST2HIS.BIN` at `0x060709EC`, FAD `0x46FC`, size
+    12,572), and the state came from a stock-image session. With the entry
+    written to the relocated file (`060709EC=0003341600007294`: LSN
+    209,792 + 150, 29,332 bytes; `end-e0-05b`), r12 = `0x260D0754` (the
+    late routine) and the English epilogue draws over the art, as in D-027.
+  A cold boot builds the cache from the new directory; replays from old
+  states need the entry written.
+
 ## Open Risks
 
 - The flag and language are set at start-up (D-013); changing them later

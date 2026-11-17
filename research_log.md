@@ -1353,3 +1353,15 @@ Not seen: the APPENDIX-unlocked layout.
 
 Next action: the overlay literals (C), `ENDING.O`'s edition test and frame
 wait, the English file in `ST2HIS.BIN`'s place; then the full build.
+
+## 2026-11-16 — EXP-0038: full build; endings correct per edition (forced)
+
+`build_edition.py` builds from the stock image (`build/us_edition`). Forced
+Morrigan endings with the title code's RAM writes per edition: US original
+stock, JP original Japanese with its epilogue, US Enhanced with restored
+lines and, once the boot-time directory cache entry for the relocated
+`ST2HIS.BIN` is written too (states from stock sessions cache the old
+entry, `0x060709EC`), the English epilogue on top of the art.
+
+Next action: a cold boot of `build/us_edition` with the user: choose each
+edition in OPTION and win a match; endings forced from those states.
