@@ -4,7 +4,7 @@ This file is authoritative for every AI-agent session in this repository. The
 project is an empirical reverse-engineering investigation of the two Sega
 Saturn releases of Capcom's 1996 Darkstalkers sequel, the Japanese *Vampire
 Hunter: Darkstalkers' Revenge* (T-1202G) and the US *Night Warriors:
-Darkstalkers' Revenge* (T-1208H). Its goal is one "Ultimate" image that combines
+Darkstalkers' Revenge* (T-1208H). Its goal is one image, **Night Warriors Deluxe**, that combines
 them: content one region has and the other lacks, reproduced from evidence and
 selectable where the user decides. It is not a speculative implementation
 exercise.

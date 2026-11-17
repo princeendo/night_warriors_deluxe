@@ -1,6 +1,7 @@
 # Edition Policy
 
-The user's policy decisions for Vampire Hunter Ultimate (`DOC-002`). Each row
+The user's policy decisions for Night Warriors Deluxe (`DOC-002`; called
+Vampire Hunter Ultimate until 2026-11-16). Each row
 quotes the user. These are policy, not facts: whether each one is achievable
 on these discs is found by experiment.
 
@@ -9,6 +10,7 @@ on these discs is found by experiment.
 | Topic | The user's words | Meaning for this project |
 | --- | --- | --- |
 | Editions in the image | "For this release, my goal is to have the "Ultimate" edition have the option for the user to switch between the JP original, the US original, and the US "Enhanced" which incorporates the missing JP pieces. If there are pieces in the US version which don't exist in the JP version, we can also create an "Enhanced" version for JP." | One image, with an in-game choice of **JP original**, **US original** and **US Enhanced** (US plus the Japanese-only content), and **JP Enhanced** only if the US release turns out to have content the Japanese one lacks. Working interpretation, to confirm in `EDITION-001`: "original" means behaving exactly as that release does. How the choice is offered and stored, and what it costs on disc, is found by `EDITION-001`. |
+| Project name (2026-11-16) | "I want to rename it as "Night Warriors Deluxe" because it's focused on Night Warriors instead of Vampire Hunter and also may not include every last possible thing (_e.g._, it may not fully have everything from the PSP release)." | The project and its image are **Night Warriors Deluxe** (was Vampire Hunter Ultimate). The editions keep their names (US Enhanced, US original, JP original, JP Enhanced). Provenance notes that name the repository as it was when code was copied are left unchanged. |
 | Edition switch (2026-11-16, `EDITION-001`) | "No, one code set"; "Options menu, saved"; JP Enhanced "Yes" | One code set, the US release's; "JP original" is the US code in Japanese mode, not the Japanese release byte for byte (this replaces the working interpretation above). The edition is an options entry saved in spare save bytes. Four editions, JP Enhanced included (`EDITION-003`). |
 | JP Enhanced content (2026-11-16, `EDITION-003`) | "US-only ending lines"; "Hide until it differs (Recommended)" | JP Enhanced = JP original plus Japanese versions of what the US main endings add (a new translation, `END-005`); not the US pause or win-quote behaviour. Hidden in the menu until it differs. |
 | EDITION line (2026-11-16, `EDITION-002`) | "Replace the blank slot" | In OPTION MODE, EDITION uses the empty slot below CONFIGURATION while APPENDIX is locked, and moves below APPENDIX once it is unlocked. |

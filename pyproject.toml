@@ -1,11 +1,11 @@
 [project]
-name = "vampire-hunter-ultimate"
+name = "night-warriors-deluxe"
 version = "0.1.0"
-description = "Reproducible research tooling for a merged Vampire Hunter / Night Warriors Saturn image"
+description = "Reproducible research tooling for Night Warriors Deluxe, a merged Vampire Hunter / Night Warriors Saturn image"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { file = "LICENSE" }
-authors = [{ name = "Vampire Hunter Ultimate contributors" }]
+authors = [{ name = "Night Warriors Deluxe contributors" }]
 dependencies = []
 
 [build-system]

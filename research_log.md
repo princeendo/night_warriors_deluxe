@@ -1390,3 +1390,14 @@ on-hit writes. The user asked for a move list; inputs were given as
 generic motions (no verified Donovan list on hand).
 
 Next action: the user chooses.
+
+## 2026-11-16 — Project renamed Night Warriors Deluxe
+
+User request: rename the project "Night Warriors Deluxe" (built on Night
+Warriors; not aiming to include everything, e.g. all of the PSP release).
+Changed: `AGENTS.md` goal line, README title and a sentence on the name,
+the edition policy (decision row, verbatim), `pyproject.toml` name,
+description and authors, `uv.lock` (`uv lock --offline`: the package entry
+only), the schema `$id`. Unchanged: provenance notes naming the repository
+as it was when code was copied, past log entries, the GitHub repository
+and local folder names (`vampire_hunter_ultimate`). Tests: 125 passed.

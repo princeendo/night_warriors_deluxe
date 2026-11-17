@@ -1,4 +1,4 @@
-# Vampire Hunter Ultimate (Saturn)
+# Night Warriors Deluxe (Saturn)
 
 This repository will build one Sega Saturn image of Capcom's 1996
 Darkstalkers sequel that combines its two releases: the Japanese **Vampire
@@ -9,7 +9,10 @@ rewritten endings and victory quotes, voice samples, poses, and character
 names. The image will let the player choose the **JP original**, the **US
 original**, or a **US Enhanced** edition that adds the Japanese-only content
 (and a JP Enhanced one if the US release has anything the Japanese lacks); see
-[docs/localization_policy.md](docs/localization_policy.md).
+[docs/localization_policy.md](docs/localization_policy.md). It is named
+**Night Warriors Deluxe** because it is built on the US *Night Warriors*
+release and does not aim to include every last thing from every release
+(for example, all of the PSP *Darkstalkers Chronicle*).
 
 Any English the US release lacks will come from an official source where
 one exists and be marked as a new translation where none does.

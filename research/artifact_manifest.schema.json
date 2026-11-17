@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.invalid/vampire-hunter-ultimate/artifact-manifest.schema.json",
+  "$id": "https://example.invalid/night-warriors-deluxe/artifact-manifest.schema.json",
   "title": "Local research artifact metadata",
   "type": "object",
   "additionalProperties": false,
