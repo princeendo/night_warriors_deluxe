@@ -1,7 +1,8 @@
 # EXP-0038: The Edition Switch Build (design)
 
 Task: EDITION-002 (criteria 2-3)
-Status: IN_PROGRESS (apply routine works in RAM; menu line, overlays, ending and English file not built)
+Status: DONE
+Confidence: CONFIRMED (cold boot with the user, three editions, Morrigan)
 Confidence: each element below is SUPPORTED by the cited reading; the whole
 is a HYPOTHESIS until built and played
 
@@ -157,6 +158,46 @@ size (both-endian) rewritten too.
     late routine) and the English epilogue draws over the art, as in D-027.
   A cold boot builds the cache from the new directory; replays from old
   states need the entry written.
+
+## Cold Boot (with the user)
+
+`research/experiments/EXP-0018/session.sh local/edition002/cold-session
+"build/us_edition/…(USA).cue"` (491 states, sound). The user set EDITION in
+OPTION, saved, and won an Arcade match as Morrigan, three times. From the
+states (block byte `0x11`, flag, language, C, `MAIN.BIN` `0x0603B902`):
+
+| Match | Edition (from frame) | Values | Opponent | Win pose |
+| --- | --- | --- | --- | --- |
+| 1 | US Enhanced (first title frame, 2,312: the default) | 2, 1, 0, US Enhanced patches | Victor | bat seat |
+| 2 | US original (11,213) | 2, 1, 2, stock | Sasquatch | another pose |
+| 3 | JP original (19,420) | 0, 0, 0, stock | Bishamon | bat seat |
+
+`TITLE.O` reloads on each return to the title (header back at
+`0x06001000`) and the edition applies on its first frame.
+
+- **Voices** (`EXP-0009/wavsearch.py`, threshold 0.35, on the session's
+  `sound.wav`, `MORRIGA.BIN` offsets as `EXP-0009`): throw `50C2C` at 97.3 s
+  (match 1) and 387.1 s (match 3); hurt `4F10C` at 115.6 s (match 1);
+  bat-seat line `56D60` at 160.4 s (match 1) and 455.8 s (match 3); none in
+  match 2. Match 2 had no bat-seat pose, so its silence is shown by a
+  replay instead: from `f00009454` (match 1, before the pose), the guard
+  `0x06002490` runs and the call `0x060024A6` follows as recorded; with C
+  written to 2 the guard runs and the call is skipped.
+- **Endings** (forced with the stage byte only, no other RAM write, from
+  each match's bonus-screen state `f00009680`, `f00017302`, `f00027335`):
+  US Enhanced: English main ending with her two restored lines, the English
+  epilogue on top of the art, cast roll; US original: the stock US ending,
+  no epilogue text, cast roll with US names; JP original: the Japanese main
+  ending and epilogue, cast roll with the Japanese names (GALLON).
+
+## Differences From the References (JP original)
+
+JP original is the US code in Japanese mode (`EDITION-001`). Seen or
+known: the title screen and intro logo are the US ones (`NAM-01`,
+`INT-01`: graphics data, not switched); the US code's own changes stay
+(`EXP-0035`). Behaviour the flag already switches follows Japanese (names,
+epilogues, Morrigan's voices, the title's Start test, pause on a missing
+pad, D-015, D-016). JP Enhanced is hidden until `END-005`.
 
 ## Open Risks
 

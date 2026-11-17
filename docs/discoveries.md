@@ -521,3 +521,20 @@ snow creatures and their sample `0x53116`, and pose 5 (a roar) replaces pose
 and sample with the flag at 2. The steam of pose 4 is in both releases.
 
 Reproduce: `research/experiments/EXP-0034/README.md`.
+
+## D-034: One US image switches between US Enhanced, US original and JP original from OPTION (`EDITION-002`, `EXP-0035`-`EXP-0038`)
+
+Holds for: `build/us_edition` (`EXP-0038/build_edition.py`, Track 1
+`25e05ec1…f1be`), from a cold boot with the user, Morrigan.
+
+An EDITION line in OPTION MODE (in APPENDIX's blank slot) stores the
+edition in the settings block's spare byte `0x11` (saved with the other
+settings; 0 = US Enhanced, the default). Code added to a relocated
+`TITLE.O`, run before the title task each frame, applies it: region flag,
+language, a "Japanese content" byte C (block byte `0x12`) and, for US
+Enhanced only, `MAIN.BIN`'s epilogue-file call and Morrigan's script. The
+character guards and the ending read C. The English epilogues are in
+`ST2HIS.BIN`'s place (language 2, never selected), `ST1JPN.BIN` stays
+stock. Each edition gives its own voices, endings and names.
+
+Reproduce: `research/experiments/EXP-0038/README.md`.

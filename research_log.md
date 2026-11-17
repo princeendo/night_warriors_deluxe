@@ -1365,3 +1365,14 @@ entry, `0x060709EC`), the English epilogue on top of the art.
 
 Next action: a cold boot of `build/us_edition` with the user: choose each
 edition in OPTION and win a match; endings forced from those states.
+
+## 2026-11-16 — EDITION-002 done: cold boot in three editions
+
+Session with the user on `build/us_edition`: three Morrigan wins, one per
+edition. The edition applies on each title load; restored voices play in
+US Enhanced and JP original (wavsearch), a replay shows the US original
+guard skipping the bat-seat call; forced endings from each match: English
+epilogue with restored lines, stock US, Japanese with GALLON. D-034.
+
+Next action: the user chooses (`END-005` for JP Enhanced, Donovan's second
+guard, a release, or the remaining register rows).
