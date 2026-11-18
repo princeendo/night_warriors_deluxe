@@ -1407,3 +1407,16 @@ account active in `gh`; GitHub redirects the old URL), `origin` repointed,
 and the local folder moved to `/Users/colinwhite/workspace/personal/night_warriors_deluxe`
 (the virtual environment re-synced there, since its scripts hold absolute
 paths).
+
+## 2026-11-18 — Local disk cleanup
+
+User request: clean up the space (35 GB). Deleted permanently, by the
+user's choice: the 16 test images in `build/` other than `us_edition`
+(each rebuilt by its experiment's script), and the screenshots, states,
+sound-RAM dumps and WAVs inside the 256 replay folders under `local/`
+(`force.py`/`dense.py` outputs; their `run.json`, event logs and slot lists
+kept). 19.2 GiB; the repository is now 16 GB. Kept: every user play
+session, the source images, `local/extracted`, `local/psp_extract`,
+`vendor/`, the waveform-search work files. Earlier screenshot-based
+results are recorded in the experiment READMEs; to see them again, rebuild
+the image and rerun the recorded command.
