@@ -1420,3 +1420,13 @@ session, the source images, `local/extracted`, `local/psp_extract`,
 `vendor/`, the waveform-search work files. Earlier screenshot-based
 results are recorded in the experiment READMEs; to see them again, rebuild
 the image and rerun the recorded command.
+
+## 2026-11-19 — Play sessions archived on the homelab
+
+User request: archive the play sessions on the homelab, using the
+`remote_server_maintenance` repository's access method. The 24 user
+play-session folders under `local/` (10,938 files, 9,363,348,412 bytes)
+were copied to the homelab archive folder `NightWarriorsDeluxe-Saturn`
+(same paths, SHA-256 `MANIFEST.tsv`, restore `README.md`), verified with
+`sha256sum -c` on the server, and logged there (commit `5787f0d`). The Mac
+copies were kept. Location and access are in `local_agent_guidance.md`.
