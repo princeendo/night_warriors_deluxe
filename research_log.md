@@ -1430,3 +1430,10 @@ were copied to the homelab archive folder `NightWarriorsDeluxe-Saturn`
 (same paths, SHA-256 `MANIFEST.tsv`, restore `README.md`), verified with
 `sha256sum -c` on the server, and logged there (commit `5787f0d`). The Mac
 copies were kept. Location and access are in `local_agent_guidance.md`.
+Then the user chose "Delete Mac copies": with all 10,938 local files
+confirmed in the manifest at matching sizes, the 24 folders were deleted
+from `local/` (9,363,348,412 bytes; the repository is now 6.9 GB). The
+homelab archive is now the only copy; restore a group folder before
+replaying any of its states (archive `README.md`; maintenance repo commit
+`9b75553`). Experiment READMEs still cite these sessions by their `local/`
+paths, which restoring brings back.
