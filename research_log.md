@@ -1437,3 +1437,63 @@ homelab archive is now the only copy; restore a group folder before
 replaying any of its states (archive `README.md`; maintenance repo commit
 `9b75553`). Experiment READMEs still cite these sessions by their `local/`
 paths, which restoring brings back.
+
+
+## 2026-11-25 — Release 0.1.0 preparation (`ENV-007`, `DOC-004`, `REL-001`)
+
+User request: check readiness for `v0.1.0` on GitHub and draft the Reddit
+announcement post (using the sibling template, with screenshots).
+
+User decisions (verbatim, multiple choice, recorded in
+`docs/localization_policy.md`):
+- Scope: "(Recommended) Ship v0.1.0 with what's built now (US Enhanced, US Original, JP Original) and defer END-005, QUO-001, LOC-001, and full audit to later versions"
+- Format: "(Recommended) xdelta only (proven reliable in Cyberbots; build relocates TITLE.O and ST2HIS.BIN in Track 1)"
+- Pre-release checks: "(Recommended) Run full pre-release prep: ENV-007 (Redump check), DOC-004 (README), REL-001 (xdelta zips + verification), and RetroAchievements hash check"
+- Screenshots: "(Recommended) Capture fresh clean screenshots from build/us_edition in Mednafen (OPTION menu, English epilogues, restored Morrigan ending lines, Sasquatch pose, JP mode)"
+
+Results:
+- **`ENV-007` DONE (Redump verification):** verified in the built-in browser
+  against `http://redump.org/`. Untouched US image matches Redump disc `5836`
+  (`Night Warriors: Darkstalkers' Revenge`, `T-1208H`, V1.001: Track 1 CRC-32
+  `91921ea9`, MD5 `d284efa0…30e5`, SHA-1 `c1c01169…fb1d`; Track 2 CRC-32
+  `e75e991c`, MD5 `3b0c741e…1090`, SHA-1 `ac745b71…46d5`). Untouched JP 1M
+  image matches Redump disc `3677` (`Vampire Hunter: Darkstalkers' Revenge`,
+  `T-1202G`, V1.000: Track 1 CRC-32 `94c313ab`, SHA-1 `77390da7…800ed`; Track
+  2 CRC-32 `9921da39`, SHA-1 `780688b0…4bb84`). All Redump entries listed
+  (`5836`, PAL `4675`, JP `3677` 1M, `3681` 2M/4M, `1456` 3M, Sample `20095`);
+  `1M`/`2M, 4M`/`3M` confirmed as JVC glass-mastering batch ring codes.
+  Updated `references/saturn_us/README.md`, `references/saturn_jp/README.md`,
+  and `docs/known_unknowns.md`.
+- **RetroAchievements check:** `retroachievements.org` returned HTTP 403
+  Cloudflare bot check in the browser (not bypassed); web search indicates
+  there is currently no Sega Saturn set for *Night Warriors* (arcade only).
+  First 512 bytes of Track 1 sector 0 user data hash to MD5
+  `8c7156c2e38f75a9ec54016427967e9e` in both untouched US Track 1 and
+  `build/us_edition` Track 1 (enforced by `tools.disc.make_patch`).
+- **`REL-001` DONE (release tools, xdelta patch, reproducible zip):**
+  - Ported `tools/disc/make_patch.py`, `tools/release/make_zips.py`,
+    `tools/release/check_zips.py`, and their unit tests from Cyberbots
+    (`bac6fde`) with provenance notes and Night Warriors Deluxe defaults
+    (xdelta-only). Also fixed 6 pre-existing strict mypy annotations in
+    `tools/disc/patch_image.py` and `tests/unit/test_diff_files.py`.
+  - Built `night_warriors_deluxe.Track1.xdelta` (54,362 bytes, SHA-256
+    `01f3aeabae96a25fa50905a90f1a4028382fc302c91e10872efdeb0d4d86fa82`,
+    xdelta3 3.2.2) twice identically (`cmp` clean) and round-trip verified;
+    committed metadata record `release/night_warriors_deluxe.json`.
+  - Built `build/release/v0.1.0/night_warriors_deluxe_0.1.0_xdelta.zip`
+    (49,807 bytes, SHA-256
+    `92b8c26c3b9236c2294a6d169fddc6c8edcc1e31b33cb30e089e905a471330e0`) twice
+    identically (`v0.1.0` and `v0.1.0-again`), verified by `check_zips`
+    applying the unpacked patch to untouched US Track 1 (`d0960087…70da`) and
+    producing `25e05ec14a258e7f2bea49e51023dfbf96c553aae688b67c5044728c4040f1be`.
+- **`DOC-004` DONE:** updated `README.md` to the final MSHvSF/Cyberbots layout
+  and wrote `release/README.md`, `release/RELEASING.md`, and
+  `release/notes_v0.1.0.md`.
+
+Checks: `./invenv.sh ruff check .` passed; `./invenv.sh ruff format --check .`
+(146 files formatted); `./invenv.sh mypy` (0 issues in 57 source files);
+`./invenv.sh pytest -q` (142 passed).
+
+Next action: commit, push `main`, and push tag `v0.1.0` as `princeendo`;
+capture fresh screenshots from `build/us_edition` and draft the Reddit post
+under `build/reddit_0.1.0/post.md`.

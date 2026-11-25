@@ -24,13 +24,31 @@ since their data track is identical; their archives remain in
 `~/Downloads/vh_nw_saturn/` and their hashes stay below as provenance.
 
 Release description: `Vampire Hunter: Darkstalkers' Revenge (Japan), Sega
-Saturn T-1202G V1.000 19960128; three Redump-style BIN/CUE sets labelled (1M),
-(2M, 4M) and (3M), supplied by the user 2026-11-13; release identity as named,
-not independently verified`.
+Saturn T-1202G V1.000 19960128; Redump discs 3677 (1M), 3681 (2M, 4M), and 1456
+(3M)`.
 
-**Database match: not yet checked** (`ENV-007`). Identity is **SUPPORTED** by
-the header and names only. The labels' meaning (pressing ring codes, per the
-web research's game-ID list) is not verified.
+**Database match: CONFIRMED (`ENV-007`, 2026-11-25).** The working 1M image's
+Track 1 (`493,741,248` bytes, CRC-32 `94c313ab`, MD5
+`beef086bf1235c752ef9d2b693a5642c`, SHA-1
+`77390da7878762e3963bb54d8a7c3ba3f86800ed`) and Track 2 (`3,880,800` bytes,
+CRC-32 `9921da39`, MD5 `93f7afdb4d52616e7ce7137e8f2fbf06`, SHA-1
+`780688b058e41b5fa85440b74a9339723304bb84`) match Redump disc `3677`
+(`http://redump.org/disc/3677/`) across size, CRC-32, MD5, and SHA-1.
+
+The labels `1M`, `2M, 4M`, and `3M` are JVC glass-mastering batch ring codes
+(`T-1202GP-00715 <batch> C 62`, Mastering SID `IFPI L223`). Every retail
+pressing shares the exact same Track 1 and differs only by a 1-4 stereo sample
+offset in Track 2:
+
+| Redump ID | Label | Serial / Version | Ring batch(es) | Track 1 CRC-32 / SHA-1 | Track 2 CRC-32 / SHA-1 |
+| --- | --- | --- | --- | --- | --- |
+| `3677` | `(1M)` (working image) | `T-1202G` V1.000 | `1M1`, `1M2`, `1MB1` | `94c313ab` / `77390da7…800ed` | `9921da39` / `780688b0…4bb84` |
+| `3681` | `(2M, 4M)` | `T-1202G` V1.000 | `2M2`, `2M3`, `2MC1`, `4MB3` | `94c313ab` / `77390da7…800ed` | `ea2afe21` / `bab86fcf…c01f` |
+| `1456` | `(3M)` | `T-1202G` V1.000 | `3M1`, `3MB1` | `94c313ab` / `77390da7…800ed` | `8b3d5dce` / `d032b23e…22d0d` |
+| `20095` | Sample | `ST-1202G` V0.001 (1995-08-25) | `1MM1` | `90b7af0c` / `be5fa9b7…3c4a` | `ea2afe21` / `bab86fcf…c01f` |
+
+RetroAchievements disc header MD5 (1M Track 1 sector 0 user data, first 512
+bytes): `0028d288ca2e19d5267e4601bee148dc`.
 
 Hashes were produced with
 `./invenv.sh python -m tools.disc.hash_source --json local/disc_images/<folder>/*`

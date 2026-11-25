@@ -40,12 +40,13 @@ import hashlib
 import json
 import shutil
 import struct
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from pathlib import Path
 
 from tools.disc.iso9660 import (
     RAW_SECTOR,
     USER_DATA,
+    Entry,
     Track,
     parse_record,
     primary_volume,
@@ -77,7 +78,7 @@ def find_entry(track_path: Path, name: str) -> tuple[int, int]:
     raise ValueError(f"file {name!r} not found")
 
 
-def _records(track: Track, lsn: int, size: int):
+def _records(track: Track, lsn: int, size: int) -> Iterator[tuple[Entry, int, int]]:
     """Yield (entry, sector LSN, offset in sector) for each record below a directory.
 
     Paths are bare names (no parent); this disc keeps its files in the root.

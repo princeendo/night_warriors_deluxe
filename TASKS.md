@@ -146,12 +146,19 @@ task repeats a sibling task, the note names it for its method only.
   Enhanced included.
 - **2026-11-16: edition switch built** (`EDITION-002` done, `EXP-0036`-
   `EXP-0038`, D-034): `build/us_edition` offers US Enhanced (default), US
-  original and JP original from OPTION, confirmed from a cold boot. Next, the user's pick: `EDITION-002` (the switch; its
-  debts: `ST1JPN.BIN` holds the English epilogues, Morrigan's Japanese
-  script slot holds her new US script, `ENDING.O`, `ST2USA.BIN`, `PL05`,
-  `PL10` and `PL14` patched statically). `EDITION-003` done: JP Enhanced adds
-  the US main endings' extra content in new Japanese (`END-005`), hidden in
-  the menu until it exists.
+  original and JP original from OPTION, confirmed from a cold boot. `EDITION-003`
+  done: JP Enhanced adds the US main endings' extra content in new Japanese
+  (`END-005`), hidden in the menu until it exists.
+- **2026-11-25: v0.1.0 release prepared** (`ENV-007`, `DOC-004`, `REL-001`
+  done): US (`T-1208H`, Redump `5836`) and JP 1M (`T-1202G`, Redump `3677`)
+  source identities CONFIRMED against Redump; `make_patch`, `make_zips`, and
+  `check_zips` ported from Cyberbots (`bac6fde`) with unit tests; xdelta-only
+  release zip `night_warriors_deluxe_0.1.0_xdelta.zip` (49,807 bytes, SHA-256
+  `92b8c26c…30e0`) built twice identically and round-trip verified to Track 1
+  `25e05ec1…f1be` (RA header MD5 `8c7156c2…7e9e` unchanged). `END-005`,
+  `QUO-001`, `LOC-001`, `REF-004`/`UI-001`/`COV-001`, `DIFF-002`, `REF-001`,
+  and `REF-003` explicitly deferred by the user to post-0.1.0. Ready for tag
+  `v0.1.0` and publication on github.com by `princeendo`.
 
 ## Milestones
 
@@ -242,13 +249,13 @@ is not already on the base disc goes on disc).
 
 ### ENV-007 - Verify the source images against a database
 
-- **Status:** `READY`
+- **Status:** `DONE` (2026-11-25)
 - **Milestone:** M0 (do early; XvSF did this the day before release)
 - **Dependencies:** ENV-006.
-- **Blockers:** None. Cyberbots' first try (`WebFetch` of redump.org) was refused; it succeeded later in the built-in browser.
+- **Blockers:** None.
 - **Objective:** Raise the identity of the two working images (Japanese 1M, US) from **SUPPORTED** to **CONFIRMED**, and learn what the Japanese labels (1M, 2M/4M, 3M) distinguish.
 - **Acceptance criteria:** Each working image's track hashes match a named database entry (size, CRC-32, MD5, SHA-1 per track), or a mismatch is recorded with its consequence; every Redump entry for both titles is listed.
-- **Notes:** Static evidence so far: the Japanese track 1 is identical in all three; their track 2 differs only by a 1-4 sample offset (`references/saturn_jp/README.md`). A release must name the exact image(s) it applies to either way (`AGENTS.md` rule 31).
+- **Done 2026-11-25:** Verified in the built-in browser against `http://redump.org/`. Both working images match Redump across size, CRC-32, MD5, and SHA-1 for every track: US `Night Warriors: Darkstalkers' Revenge` = Redump disc `5836` (`T-1208H`, V1.001); JP 1M `Vampire Hunter: Darkstalkers' Revenge` = Redump disc `3677` (`T-1202G`, V1.000). All Redump entries listed (`5836`, PAL `4675`, JP `3677` 1M, `3681` 2M/4M, `1456` 3M, Sample `20095`); `1M`/`2M, 4M`/`3M` confirmed as JVC glass-mastering batch ring codes (`T-1202GP-00715 <batch> C 62`). Recorded in `references/saturn_us/README.md` and `references/saturn_jp/README.md`.
 
 ## Phase B: Documentation And Decisions
 
@@ -286,12 +293,13 @@ is not already on the base disc goes on disc).
 
 ### DOC-004 - Start the README in its final layout
 
-- **Status:** `BACKLOG`
+- **Status:** `DONE` (2026-11-25)
 - **Milestone:** before REL-001
 - **Dependencies:** DOC-002.
 - **Blockers:** None.
 - **Objective:** Avoid XvSF's post-release README reorganization.
 - **Acceptance criteria:** `README.md` follows the MSHvSF/Cyberbots README section layout, with placeholders for what is not done.
+- **Done 2026-11-25:** Rewrote `README.md` in the MSHvSF/Cyberbots layout (`Download`, `What's Changed`, `Patch Files` + `Applying a Patch`, `Build the Patch`, `Development`), linking `v0.1.0`, `release/README.md`, `release/notes_v0.1.0.md`, and Redump disc `5836`.
 
 ## Phase C: Emulator
 
@@ -722,4 +730,4 @@ tasks" just in time). The method for each is in the three sibling documents.
 | UI-001 | M8 | Title, attract, menus, credits, boot warnings: each surface the register marks different. |
 | COV-001 | M8 | Coverage register: every row resolved (`docs/coverage_exceptions.md`). |
 | SPECIAL-001 | M9, user approval | Unused or unreachable assets, debug features, hidden content. |
-| REL-001 | after M5 | Copy Cyberbots `make_patch` (with the RetroAchievements header guard), `make_zips`/`check_zips` (and `add_files`/`make_ssp` only if needed); parameterize the source folder, manifest and author; decide formats early, since adding files rules out SSP (`docs/lessons_from_cyberbots.md`, section 4). Patches are Release assets only, never committed. |
+| REL-001 | after M5 | **Done (2026-11-25, v0.1.0 prepared):** `make_patch`, `make_zips`, `check_zips` and unit tests copied from Cyberbots (`bac6fde`) and parameterized for Night Warriors Deluxe (xdelta-only per user decision 2026-11-25). Patch `night_warriors_deluxe.Track1.xdelta` (54,362 bytes, SHA-256 `01f3aeab…fa82`, RA MD5 `8c7156c2…7e9e` unchanged) and zip `night_warriors_deluxe_0.1.0_xdelta.zip` (49,807 bytes, SHA-256 `92b8c26c…30e0`) built twice byte-identically and verified with `check_zips --expect 25e05ec1…f1be`. Release docs in `release/`; remaining backlog tasks (`END-005`, `QUO-001`, `LOC-001`, `REF-004`/`UI-001`/`COV-001`, `DIFF-002`, `REF-001`, `REF-003`) explicitly deferred by user decision 2026-11-25. Patches stay under `build/` as Release assets only (`AGENTS.md` rule 21). |

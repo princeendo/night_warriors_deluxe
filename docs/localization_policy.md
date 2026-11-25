@@ -24,14 +24,13 @@ on these discs is found by experiment.
 | Epilogue names (2026-11-15) | Asked whether to keep the PSP spellings ("Rapter", "Le marta") → "Match the US Saturn (Recommended)" | Where the US Saturn release has a name, the epilogue uses its spelling (Raptor); names the US Saturn lacks stay as the PSP has them. The wider names question in the Enhanced editions stays with `LOC-001`. |
 | Epilogue fit (2026-11-15) | Asked what may change if a paragraph does not fit the Saturn layout → "Rewrap, then ask (Recommended)" | Line breaks may change freely; any cut or rewording to fit goes back to the user first. |
 | Main endings in US Enhanced (2026-11-16, `END-003`) | Asked which main-ending differences US Enhanced should change → "Morrigan's missing lines (Recommended)"; source → "Check PSP movies first (Recommended)"; extent → "Minimal (Recommended)" | US Enhanced restores only Morrigan's two missing lines and pause page (D-029); all other US main-ending text stays as shipped (rule 30), including the four meaning changes and the renames. English from the PSP *Chronicle* main-ending movie if it has these lines; any new translation is asked first. Only the missing pages change. |
+| Release 0.1.0 scope, format, and prep (2026-11-25, `REL-001`) | Asked v0.1.0 scope → "(Recommended) Ship v0.1.0 with what's built now (US Enhanced, US Original, JP Original) and defer END-005, QUO-001, LOC-001, and full audit to later versions"; format → "(Recommended) xdelta only (proven reliable in Cyberbots; build relocates TITLE.O and ST2HIS.BIN in Track 1)"; pre-release checks → "(Recommended) Run full pre-release prep: ENV-007 (Redump check), DOC-004 (README), REL-001 (xdelta zips + verification), and RetroAchievements hash check"; screenshots → "(Recommended) Capture fresh clean screenshots from build/us_edition in Mednafen (OPTION menu, English epilogues, restored Morrigan ending lines, Sasquatch pose, JP mode)" | `v0.1.0` ships the `EDITION-002` US edition-switch build (`US ENHANCED`, `US ORIGINAL`, `JP ORIGINAL`) as an xdelta-only GitHub Release asset (`night_warriors_deluxe_0.1.0_xdelta.zip`, never committed). `END-005` (JP Enhanced), `QUO-001`, `LOC-001`, `REF-004`/`UI-001`/`COV-001`, `DIFF-002`, `REF-001`, and `REF-003` are explicitly deferred by name to later releases. |
 
 ## Deferred To Evidence
 
 | Topic | Deferred to | Why |
 | --- | --- | --- |
-| Release formats and timing; patches as GitHub Release assets only (rule 21) | `REL-001` | Adding files or growing track 1 may rule out SSP (`docs/lessons_from_cyberbots.md`, section 4). |
-| Names in each edition (Gallon/Jon Talbain etc., Amanda/Anita) | `LOC-001` | Probably "as that release" for the originals; to ask for the Enhanced editions. |
-| Arcade sets and PSP image as references | `REF-001`, `REF-002` | Asked when an investigation needs them. |
+| JP Enhanced (`END-005`), victory quotes (`QUO-001`), names toggle (`LOC-001`), full surface audit (`REF-004`/`UI-001`/`COV-001`), text scan (`DIFF-002`), arcade sets (`REF-001`), manuals (`REF-003`) | post-0.1.0 | Explicitly deferred by the user on 2026-11-25 so `v0.1.0` ships the confirmed `EDITION-002` build. |
 | The carried preferences in `local_agent_guidance.md` | next decision round | Followed as the user's latest known preferences meanwhile. |
 
 ## Translation Gates

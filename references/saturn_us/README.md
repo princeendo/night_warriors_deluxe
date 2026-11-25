@@ -15,17 +15,22 @@ previously empty folder `local/disc_images/nw_saturn_us/`. Treat these files
 as immutable.
 
 Release description: `Night Warriors: Darkstalkers' Revenge (USA), Sega Saturn
-T-1208H V1.001 19960228; Redump-style BIN/CUE supplied by the user
-2026-11-13; release identity as named, not independently verified`.
+T-1208H V1.001 19960228; Redump disc 5836 (http://redump.org/disc/5836/)`.
 
-**Database match: not yet checked** (`ENV-007`). Identity is **SUPPORTED** by
-the header and names only.
+**Database match: CONFIRMED (`ENV-007`, 2026-11-25).** Both tracks match Redump
+disc `5836` (`Night Warriors: Darkstalkers' Revenge`, USA, `T-1208H`, V1.001,
+1996-02-28, ring codes `SATURNT1208H P2H` / `P3H`, volume label
+`VAMPIRE_HUNTER`) across size, CRC-32, MD5, and SHA-1. Redump also catalogs one
+European PAL release (disc `4675`, `T-7009H-50`, V1.001).
 
-| Filename | Size (bytes) | SHA-256 |
-| --- | ---: | --- |
-| `Night Warriors - Darkstalkers' Revenge (USA) (Track 1).bin` | 493741248 | `d0960087520ff305a919dba3b4921edecb5c02d593c73143e0cb9f872c9970da` |
-| `Night Warriors - Darkstalkers' Revenge (USA) (Track 2).bin` | 1766352 | `271844bfb734ab4fd322bc753bfad63b8a6e31d7d24272d52b5d10989065cdbb` |
-| `Night Warriors - Darkstalkers' Revenge (USA).cue` | 281 | `203a53dff34c4adea6a709c822fa485d4325a4bd63aa6b0ea03f1ed7a141fbb2` |
+| Filename | Size (bytes) | CRC-32 | MD5 | SHA-1 | SHA-256 |
+| --- | ---: | --- | --- | --- | --- |
+| `Night Warriors - Darkstalkers' Revenge (USA) (Track 1).bin` | 493741248 | `91921ea9` | `d284efa04e4bccd1a0f859feae7830e5` | `c1c01169d0e4d0acd7e4bfe768eae67c6b90fb1d` | `d0960087520ff305a919dba3b4921edecb5c02d593c73143e0cb9f872c9970da` |
+| `Night Warriors - Darkstalkers' Revenge (USA) (Track 2).bin` | 1766352 | `e75e991c` | `3b0c741e4fd1e326f4b3a69ecf401090` | `ac745b711b27c2488ee26410dadb7da29fd946d5` | `271844bfb734ab4fd322bc753bfad63b8a6e31d7d24272d52b5d10989065cdbb` |
+| `Night Warriors - Darkstalkers' Revenge (USA).cue` | 281 | `eeefc0e2` | `a49df201359ee2a43cf5d1fd13d77d17` | `df0ebbe7119acd59298da7bc0559b85f788a71e1` | `203a53dff34c4adea6a709c822fa485d4325a4bd63aa6b0ea03f1ed7a141fbb2` |
+
+RetroAchievements disc header MD5 (first 512 bytes of Track 1 sector 0 user
+data): `8c7156c2e38f75a9ec54016427967e9e`.
 
 Produced with `tools.disc.hash_source --json` (ignored
 `local/logs/env006-hashes-nw_saturn_us.json`), agreeing with `shasum -a 256`.
