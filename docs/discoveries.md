@@ -680,6 +680,24 @@ the CPU Victor's `g=0` sound in Arcade behave the same way. JP plays the
 same wrong samples. Sound RAM itself is intact. The US Enhanced edition
 replaces the 78-byte lookup so that, with Anakaris on P1, P2's character is
 tried first. Every tested case then plays the requester's own sound, and
-the other matchups and the original editions are unchanged.
+the other matchups are unchanged. Since 2026-11-26 the fix applies in
+every edition (user decision; `EXP-0045`).
 
 Reproduce: `research/experiments/EXP-0044/README.md`.
+
+## D-044: Morrigan's Soul Fist trail is pinned left by an `and` for `or`; fixed in every edition (`AUD-005`, `EXP-0045`)
+
+Holds for: US T-1208H and JP 1M T-1202G (bug), and `build/us_edition` Track 1
+`4d70df42…4451` (fix), in Mednafen.
+
+Before queuing her trail sound (shared types `g=2`, `g=5`), Morrigan's code
+combines the screen position from `0x0603AC44` with flags using `and r4,r5`.
+This happens at `0x06004BE2` and `0x06004DBA` in `PL05.O`, the same offsets
+in `PL05.O2`. The `and` leaves position 0, so the trail voice plays at
+DIPAN `16` (far left) wherever she stands. Every other character's matching
+call uses `or`. With `or r4,r5` (`254B`) in both files, the trail pans from
+her side toward the target (P1 `12` → `06`, P2 `02` → `15`), plays
+centered in mono, and her other sounds are unchanged. The fix is applied
+in every edition (user decision).
+
+Reproduce: `research/experiments/EXP-0045/README.md`.

@@ -104,6 +104,12 @@ def main() -> None:
     parser.add_argument("--slot-frames", type=int, default=0)
     parser.add_argument("--region", choices=IDS, default="us")
     parser.add_argument(
+        "--patch-fight",
+        nargs="*",
+        default=[],
+        help="ADDR:HEX writes made once the fight is loaded (RAM only)",
+    )
+    parser.add_argument(
         "--arcade", action="store_true", help="ARCADE instead of VS (P2 is the CPU)"
     )
     parser.add_argument(
@@ -171,6 +177,9 @@ def main() -> None:
         agent.wait_halted(timeout=300)
         ids = agent.bus_read(p1_id, 1)[0], agent.bus_read(p2_id, 1)[0]
         log.append({"ids": ids})
+        for patch in args.patch_fight:
+            address, _, hex_bytes = patch.partition(":")
+            agent.bus_write(int(address, 16), bytes.fromhex(hex_bytes))
         agent.screenshot(out / "fight.png")
         records: list[object] = []
         watch = ["25A00700-25A007FF"] if args.watch_sound else []

@@ -81,7 +81,11 @@ def main_bytes(addr: int, n: int) -> bytes:
 
 
 def patch_list() -> list[tuple[int, bytes, bytes]]:
-    """(address, US Enhanced bytes, original bytes) in MAIN.BIN's RAM."""
+    """(address, US Enhanced bytes, original-edition bytes) in MAIN.BIN's RAM.
+
+    Entries in ``every`` carry the same bytes for both, so they apply in every
+    edition.
+    """
     st2his = 0x0605B780  # MAIN.BIN's own "ST2HIS.BIN" (the HIS name array)
     assert MAIN.read_bytes()[st2his - MAIN_BASE : st2his - MAIN_BASE + 11] == (
         b"ST2HIS.BIN\0"
@@ -94,10 +98,15 @@ def patch_list() -> list[tuple[int, bytes, bytes]]:
         # Morrigan's Enhanced main-ending script over her Japanese one (EXP-0031)
         (0x0605ADBC, morrigan_enhanced_script()),
         (0x0605B740, struct.pack(">I", 0x0605ADBC)),
-        # AUD-004 (EXP-0044): with Anakaris on P1, shared sounds prefer P2's entry
+    ]
+    every = [
+        # AUD-004 (EXP-0044): with Anakaris on P1, shared sounds prefer P2's
+        # entry. Every edition (user decision 2026-11-26).
         (sound_fix.START, sound_fix.build()),
     ]
-    return [(a, e, main_bytes(a, len(e))) for a, e in enh]
+    return [(a, e, main_bytes(a, len(e))) for a, e in enh] + [
+        (a, e, e) for a, e in every
+    ]
 
 
 def color(a: Assembler, idx_reg: int) -> None:

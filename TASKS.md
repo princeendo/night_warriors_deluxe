@@ -183,6 +183,10 @@ task repeats a sibling task, the note names it for its method only.
   P2's shared sound effects played his copies (a stock bug in both
   releases). US Enhanced now plays each opponent's own sounds. Only a live
   check of Donovan's ice attack remains.
+- **2026-11-26: `AUD-005` done** (`EXP-0045`, D-044): Morrigan's Soul Fist
+  trail was pinned far left by an `and` for `or` in her code. It now follows
+  the fireball. By user decision both sound fixes apply in every edition
+  (`build/us_edition` Track 1 `4d70df42…4451`).
 
 ## Milestones
 
@@ -810,13 +814,13 @@ is not already on the base disc goes on disc).
   Enhanced now tries P2's character first when P1 is Anakaris. Verified in
   VS and Arcade for Demitri (fireball, dash), Pyron (fireball), Sasquatch
   and Huitzil (ice) and the CPU Victor. Anakaris's own sounds and an
-  ordinary matchup are unchanged, and US Original and JP Original keep
-  stock. Open: Donovan's ice attack, not triggered live (motion not found);
+  ordinary matchup are unchanged. Since 2026-11-26 the fix applies in every
+  edition (user decision, `EXP-0045`). Open: Donovan's ice attack, not triggered live (motion not found);
   same lookup and table entry as Sasquatch's and Huitzil's.
 
 ### AUD-005 - Reproduce and correct Morrigan's Soul Fist trail panning
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Dependencies:** EMU-021, EDITION-002.
 - **Acceptance criteria:** Isolate the trail from the voice and BGM in stereo
   captures. Compare the same move on the left and right with the player port
@@ -824,6 +828,13 @@ is not already on the base disc goes on disc).
   retail releases and Deluxe. If the trail is pinned to one channel, trace
   what sets its pan and check that the revised trail follows the intended
   position while the voice, other effects and mono output still work.
+- **Done (`EXP-0045`, D-044, 2026-11-26):** Morrigan's code clears the trail
+  request's screen position with `and r4,r5` where every other character uses
+  `or` (two sites, `PL05.O` and `PL05.O2`, both retail releases), so the trail
+  always plays far left. With `or` the trail follows the fireball on either
+  side, crosses over correctly, is centered in mono, and her voice and other
+  effects are unchanged. User decision: fix in every edition, and extend the
+  `AUD-004` fix to every edition too.
 
 ### APP-001 - Verify Capcom's Appendix code and options in Deluxe
 

@@ -44,6 +44,7 @@ def load(name: str, path: str):
     return mod
 
 
+pan_fix = load("pan_fix", "research/experiments/EXP-0045/pan_fix.py")
 tc = load("tc", "research/experiments/EXP-0038/title_code.py")
 b31 = load("b31", "research/experiments/EXP-0031/build_morrigan_main.py")
 b23, be = b31.b23, b31.be
@@ -83,6 +84,7 @@ def overlay(name: str) -> bytes:
         raise ValueError(f"{name}: no flag literal")
     for i in hits:
         data[i : i + 4] = C
+    pan_fix.apply(name, data)  # AUD-005 (EXP-0045): Morrigan's trail pan
     return bytes(data)
 
 

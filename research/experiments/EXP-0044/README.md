@@ -32,8 +32,9 @@ control changes only P1's fighter (Victor instead of Anakaris) or swaps the
 sides.
 
 The fix replaces the 78-byte shared-sound lookup in US `MAIN.BIN` RAM
-(`0x0603A1C8`-`0x0603A215`) through the Deluxe edition patch list, US
-Enhanced only (`sound_fix.py`):
+(`0x0603A1C8`-`0x0603A215`) through the Deluxe title code's patch list
+(`sound_fix.py`). It was first made for US Enhanced only. On 2026-11-26 the
+user extended it to every edition ("All, plus Anakaris fix"; `EXP-0045`):
 
 | Address | Original (start) | Modified (start) | Purpose | Expected | Observed |
 | --- | --- | --- | --- | --- | --- |
@@ -131,7 +132,7 @@ original plays, as it does with him on P2.
 | `g=21` (Sasquatch, Huitzil; not Anakaris) | bank 2 | bank 2 (unchanged) |
 | Arcade, Anakaris P1 vs. CPU Victor, `g=0` | bank 1 song 9 (`arc-us-long`) | bank 2 song 0 (`arc-dx`) |
 | Victor P1 vs. Demitri P2 battery | `g=13`, `g=14` bank 2 | identical file |
-| Deluxe edition US Original (`E=1`) | — | bank 1 songs 1, 8 (stock, as intended) |
+| Deluxe edition US Original (`E=1`), first build | — | bank 1 songs 1, 8 (stock, before the scope change) |
 
 The `EXP-0042` Appendix check on the final image (`app-regress`, no cart)
 gives the same values as before in both boots.
@@ -139,8 +140,9 @@ gives the same values as before in both boots.
 The RAM patch on the retail image alone leaves every sequence start
 unchanged in two control batteries: Anakaris P1 running the battery against
 Demitri (18 starts) and Victor vs. Demitri (25 starts). The edition switch
-puts the fix bytes at `0x0603A1D6` for US Enhanced (`60508806`) and stock
-bytes for US Original and JP Original (`84D46350`).
+put the fix bytes at `0x0603A1D6` for US Enhanced (`60508806`) and stock
+bytes for US Original and JP Original (`84D46350`) in the first build.
+After the scope change all editions carry the fix (`EXP-0045`).
 
 **Not covered.** The motion battery produced no shared sound for Donovan
 (normal attacks only), so his ice attack was not triggered live. His `g=18`
@@ -183,8 +185,9 @@ always prefers P1's character, and Anakaris carries copies of 17 shared
 types, so with him on P1 the opponent's fireballs, dashes and ice attacks
 play his copies (different samples and pitch). Deluxe US Enhanced now tries
 P2's character first when P1 is Anakaris. That gives every tested opponent
-its own sounds in VS and Arcade, and leaves all other matchups and the
-original editions unchanged.
+its own sounds in VS and Arcade, and leaves all other matchups unchanged.
+First built for US Enhanced only, it applies in every edition since
+2026-11-26 (user decision, `EXP-0045`).
 
 ## Uncertainty and Alternatives
 

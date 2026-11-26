@@ -1671,3 +1671,26 @@ ice), never with Anakaris on P2.
   in a few bank-0 sound starts under identical inputs; not from this fix.
 - `build/us_edition` was rebuilt (Track 1 `33768e29…a2a4`). The test build
   `build/exp0044_sound` was deleted (standing permission, rebuildable).
+
+## 2026-11-26 — `AUD-005`: Morrigan's Soul Fist trail pinned left (`EXP-0045`)
+
+User choice: "Start AUD-005".
+
+- The trail voice (song 3, sample `546D4`/`722D4`) sat at DIPAN `16` with
+  Morrigan on either side; her voice and the impact followed position.
+- Song 3 has no pan command. Its queued position is 0 on both sides, because
+  her overlay ANDs the position from `0x0603AC44` with `0x00030020` before
+  queuing. Every other character ORs. Same typo in JP.
+- RAM test, then built: `or r4,r5` at `0x3BE2` and `0x3DBA` in `PL05.O` and
+  `PL05.O2`. The trail follows the fireball (P1 and P2, crossover), is
+  centered in mono, and is unchanged elsewhere.
+- User decision, verbatim (multiple choice on which editions get the fix):
+  "All, plus Anakaris fix". The Morrigan fix is on disc for every edition,
+  and the `EXP-0044` fix moved to the title code's every-edition list.
+  Checked in US Original: trail follows; Anakaris P1 leaves Demitri's
+  fireball as his own.
+- A first mono run was invalid (the title-time write was undone when VS
+  reloaded the save); it was rerun with the setting written after the fight
+  loaded.
+- `build/us_edition` was rebuilt (Track 1 `4d70df42…4451`). The test build
+  `build/exp0045_pan` was deleted (standing permission, rebuildable).
