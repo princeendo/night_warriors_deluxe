@@ -159,6 +159,12 @@ task repeats a sibling task, the note names it for its method only.
   `QUO-001`, `LOC-001`, `REF-004`/`UI-001`/`COV-001`, `DIFF-002`, `REF-001`,
   and `REF-003` explicitly deferred by the user to post-0.1.0. Ready for tag
   `v0.1.0` and publication on github.com by `princeendo`.
+- **2026-11-26: playtester follow-up.** Mixed-matchup `FULL`, the P1
+  Anakaris audio report, Morrigan's Soul Fist trail panning, and Appendix
+  access are in scope. A 4 MiB requirement is acceptable for full animation.
+  A cart-free configuration is preferred if feasible. The first experiment
+  confirmed that `CUT` and `FULL` load the same reduced sets in the first
+  mixed attract fight on both retail discs (`ANI-002`, `EXP-0040`, D-036).
 
 ## Milestones
 
@@ -706,6 +712,84 @@ is not already on the base disc goes on disc).
 - **Acceptance criteria:** Every dependency is `DONE`; the user gives a recorded GO. Each later scope extension (new class, new donor source, names) is its own dated block under this gate.
 - **2026-11-15, `END-01` epilogues (user decisions, `docs/localization_policy.md`):** source PSP *Chronicle* `HmovieNN_2` English for all 14 (`EXP-0020`); spelling and missing-word slips fixed, each logged; names spelled as the US Saturn has them (Raptor); line breaks free, any cut or rewording asked first. This is the user's GO for this scope. Opened 2026-11-15 when `DOC-003` was done; any other scope (main endings, names, a new donor) needs its own dated block.
 - **2026-11-16, `END-02` Morrigan's main ending (user decisions):** restore only Morrigan's two missing lines and pause page in US Enhanced (`END-004`); English from the PSP *Chronicle* main-ending movie if present, a new translation only with the user's yes; every other US main-ending line unchanged.
+
+## Post-v0.1.0 Playtester Follow-up
+
+### ANI-002 - Reproduce mixed-matchup `FULL` and measure the loader
+
+- **Status:** `IN_PROGRESS`
+- **Dependencies:** EMU-021, DBG-001, EDITION-002.
+- **Objective:** Identify what the stock engine loads for `CUT` and `FULL`
+  in a mixed matchup and a mirror, and account for working memory before
+  changing the allocator.
+- **Acceptance criteria:** Trace actual fighter resource selections on US
+  retail code under both settings, including one mixed matchup and one
+  mirror with demonstrably different asset sets. Check the equivalent JP
+  path on the JP retail image. Record a visual checkpoint, allocation
+  high-water marks for a large pair, and the constraints on using extra RAM.
+- **Progress (`EXP-0040`, D-036):** The retail US and JP attract replays
+  confirmed the same reduced-set loads for Anakaris vs. Rikuo under `CUT`
+  and `FULL`. A static tally puts the largest distinct US pair, Anakaris
+  and Huitzil, at 2,256,056 bytes for their `.BIN` and `.SPR` allocations.
+  The three stock pools together have at most 1,578,860 bytes before other
+  allocations. Next is the mirror control and live allocation peaks.
+
+### ANI-003 - Enable full animation for different fighters
+
+- **Status:** `BLOCKED`
+- **Dependencies:** ANI-002.
+- **Blockers:** Mixed-matchup baseline and allocation evidence.
+- **Objective:** Make Appendix `FULL` work across different fighters when
+  the required memory is available, with a playable cart-free configuration.
+- **Acceptance criteria:** Preserve the shipped `CUT` behavior as a fallback.
+  Prove cart detection and allocator bounds with no expansion, a 1 MiB cart,
+  and a 4 MiB cart. Use the largest measured matchup in both player orders,
+  cover all fighters, and check sustained play, round changes, rematches,
+  Arcade opponent changes, VS, and save/options behavior. Verify a cold boot
+  of the selected build in Mednafen and a real Saturn check before release.
+  Decide whether one auto-detecting build suffices from the results.
+- **Scope:** Start with the 4 MiB target. Qualify 1 MiB only if the measured
+  allocations fit the usable banks. Consider cart-free mixed `FULL` if the
+  measurements point to a viable alternate loading strategy.
+
+### AUD-004 - Reproduce and correct the P1 Anakaris sound issue
+
+- **Status:** `READY`
+- **Dependencies:** EMU-021, EDITION-002.
+- **Acceptance criteria:** In stereo, capture Demitri's dash and fireball
+  with Anakaris on P1, then swap players and repeat with the same moves and
+  stage. Control for player order and sound-bank loading by repeating the
+  move against a different opponent and in a fresh fight. Compare retail US,
+  retail JP and Deluxe before locating the first diverging sound command,
+  sample, or playback parameter. Verify the fix for both Demitri moves,
+  Pyron's fireball, and the reported ice attacks from Sasquatch, Donovan,
+  and Huitzil, including in Arcade and two-controller play. Check Anakaris's
+  own sounds and ordinary matchups. Keep stereo WAVs and any live sound
+  traces local.
+
+### AUD-005 - Reproduce and correct Morrigan's Soul Fist trail panning
+
+- **Status:** `READY`
+- **Dependencies:** EMU-021, EDITION-002.
+- **Acceptance criteria:** Isolate the trail from the voice and BGM in stereo
+  captures. Compare the same move on the left and right with the player port
+  fixed, then change ports with screen position controlled. Compare the
+  retail releases and Deluxe. If the trail is pinned to one channel, trace
+  what sets its pan and check that the revised trail follows the intended
+  position while the voice, other effects and mono output still work.
+
+### APP-001 - Verify Capcom's Appendix code and options in Deluxe
+
+- **Status:** `READY`
+- **Dependencies:** EDITION-002.
+- **Acceptance criteria:** Enter the stock Appendix code on a fresh save on
+  both retail releases and Deluxe. Check appearance, navigation, setting
+  changes and persistence with the Deluxe `EDITION` row present. Check the
+  cart-free setup and the cart setup selected for release. Repair any
+  proven regression. Record release-specific code and menu differences.
+- **Lead (`EXP-0040`):** US `TITLE.O` checks an input sequence before
+  setting the Appendix availability byte at `0x06080A2B`. The current
+  edition menu already has a layout for the unlocked Appendix (`D-034`).
 
 ## Later Milestones (outline only)
 

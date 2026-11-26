@@ -552,3 +552,16 @@ Japanese release removes only that sample. The code path is the same in
 both releases' `PL14.O` apart from relocated literals.
 
 Reproduce: `research/experiments/EXP-0039/README.md`.
+
+## D-036: `FULL` still loads reduced sets for the mixed attract matchup (`ANI-002`, `EXP-0040`)
+
+Holds for: the stock US T-1208H and Japanese 1M T-1202G images, from the
+retail title checkpoints into the Anakaris vs. Rikuo/Aulbath attract fight.
+
+Replaying each checkpoint with the animation byte set to 0 (`CUT`) and 1
+(`FULL`) verified both values at the CPU read. `FULL` reached the fighter
+equality check, then both settings selected the same `P06_` and `P09_`
+resource sets and produced the same fight frame within each release. The
+equality checks are at US `0x06021928` and JP `0x06022194`.
+
+Reproduce: `research/experiments/EXP-0040/README.md`.

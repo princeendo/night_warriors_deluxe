@@ -1497,3 +1497,37 @@ Checks: `./invenv.sh ruff check .` passed; `./invenv.sh ruff format --check .`
 Next action: commit, push `main`, and push tag `v0.1.0` as `princeendo`;
 capture fresh screenshots from `build/us_edition` and draft the Reddit post
 under `build/reddit_0.1.0/post.md`.
+
+## 2026-11-26 — Playtester follow-up and mixed-matchup animation
+
+Scope from the user: investigate `FULL` with different fighters, the P1
+Anakaris audio issue, Morrigan's Soul Fist trail panning, and Capcom's
+Appendix code/options. The user said, “I'm totally fine with requiring a
+4M cart, though it would be cool to have a cart/no-cart version.” Start
+with a 4 MiB implementation if needed and verify a cart-free path. Keep
+the 1 MiB question open until allocations are measured. The user approved
+silent Mednafen cold boots for the animation experiment.
+
+`ANI-002`, `EXP-0040`, D-036: with `00` and `01` written separately to the
+animation byte from the same title checkpoint, both retail loaders drew
+Anakaris vs. Rikuo/Aulbath with `P06_` and `P09_`. The CPU reads both values
+and checks fighter equality for `FULL`. The before/after screenshots match
+within each release. Failed attempts to confirm the speed selection from
+the Deluxe checkpoint were dropped from the evidence. The retail title
+replays give the mixed-matchup control without input.
+
+The stock US loader's `.BIN` plus `.SPR` storage for the largest distinct
+pair (Anakaris and Huitzil) is 2,256,056 bytes. Its three pools have an upper
+bound of 1,578,860 bytes before other use. Both original Track 1 hashes were
+rechecked against the source manifests after the runs.
+
+Recorded `ANI-003`, `AUD-004`, `AUD-005` and `APP-001` with acceptance
+criteria. Next for `ANI-002` is a mirror control and large-pair allocation
+traces. The two sound reports and the Appendix unlock sequence remain
+separate verification tasks. No game patch was built in this session.
+
+Verification: `./invenv.sh ruff check .`,
+`./invenv.sh ruff format --check .`, `./invenv.sh mypy`, and additional
+`mypy` checks on both `EXP-0040` scripts passed. `./invenv.sh pytest -q`
+passed all 142 tests. Experiment commands and evidence hashes are in
+`research/experiments/EXP-0040/README.md`.
