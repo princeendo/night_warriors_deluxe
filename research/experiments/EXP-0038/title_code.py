@@ -27,6 +27,7 @@ import importlib.util
 import struct
 import sys
 from pathlib import Path
+from types import ModuleType
 
 sys.path.insert(0, str(Path.cwd()))
 from tools.sh2.asm import Assembler
@@ -63,6 +64,17 @@ def morrigan_enhanced_script() -> bytes:
     return b31.script()
 
 
+def _load(name: str, path: str) -> ModuleType:
+    spec = importlib.util.spec_from_file_location(name, path)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+sound_fix = _load("sound_fix", "research/experiments/EXP-0044/sound_fix.py")
+
+
 def main_bytes(addr: int, n: int) -> bytes:
     o = addr - MAIN_BASE
     return MAIN.read_bytes()[o : o + n]
@@ -82,6 +94,8 @@ def patch_list() -> list[tuple[int, bytes, bytes]]:
         # Morrigan's Enhanced main-ending script over her Japanese one (EXP-0031)
         (0x0605ADBC, morrigan_enhanced_script()),
         (0x0605B740, struct.pack(">I", 0x0605ADBC)),
+        # AUD-004 (EXP-0044): with Anakaris on P1, shared sounds prefer P2's entry
+        (sound_fix.START, sound_fix.build()),
     ]
     return [(a, e, main_bytes(a, len(e))) for a, e in enh]
 

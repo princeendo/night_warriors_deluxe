@@ -1639,3 +1639,35 @@ injected presses (`EXP-0042` tooling).
 Open: the real-Saturn check with a 4 MiB cart (the user, before release).
 1 MiB is not qualified. The routine runs in every edition and changes
 nothing unless `FULL` is set with a 4 MiB cart.
+
+## 2026-11-26 — `AUD-004`: Anakaris on P1 hijacks the opponent's shared sounds (`EXP-0044`)
+
+User choice: "AUD-004 Anakaris sound". The user supplied the playtester's
+words (asked as a multiple choice, answered with the comment): several 2P
+sound effects are "loaded in strangely" whenever Anakaris is played from 1P
+(Demitri's dash and fireball, Pyron's fireball, Sasquatch/Donovan/Huitzil
+ice), never with Anakaris on P2.
+
+- Disproven first: P1's oversized `ANAKA1.SEQ` overrunning P2's data. Sound
+  RAM is intact; the P2 sequence slot is 1,624 bytes after P1's in every run.
+- Tooling: `vsmove.py` drives VS (and Arcade) with forced fighters and
+  frame-held motions. P2 is driven on pad 2. Forcing IDs after the picks
+  was checked against the files in sound RAM.
+- Reproduced with voice sampling (SA in Anakaris's bank for Demitri's
+  fireball part 2 and dash) on US and JP, then traced to the game's request:
+  the shared-sound lookup `0x0603A1C8` prefers P1's character (table
+  `0x0606C10C`), and Anakaris owns copies of 17 of 27 types.
+- First fix attempts, recorded so they are not retried: (1) infer the
+  requester from the queue's high word: it is always 0, the queue holds no
+  partner ID; (2) infer it from the ID range: works for the fireball, but
+  the dash uses ID `0x75` from either side; (3) a 128-byte helper carved from
+  pool 0: not needed. Final: with Anakaris on P1, try P2's character first
+  (78 bytes in place, US Enhanced via the edition patch list).
+- Verified in VS and Arcade for Demitri, Pyron, Sasquatch, Huitzil and the
+  CPU Victor. Controls are unchanged (retail plus the RAM fix only, in two
+  batteries), and the original editions keep stock bytes. Donovan's motions
+  produced no shared sound; his ice attack is unverified live.
+- Side observation, recorded in `known_unknowns.md`: Deluxe and retail differ
+  in a few bank-0 sound starts under identical inputs; not from this fix.
+- `build/us_edition` was rebuilt (Track 1 `33768e29…a2a4`). The test build
+  `build/exp0044_sound` was deleted (standing permission, rebuildable).

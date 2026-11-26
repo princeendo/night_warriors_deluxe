@@ -663,3 +663,23 @@ and the round timer counts down at the same rate as a no-cart CUT fight.
 With no cart, a 1 MiB cart, or `CUT`, the loaded sets are stock.
 
 Reproduce: `research/experiments/EXP-0043/README.md`.
+
+## D-043: With Anakaris on P1, the opponent's shared sound effects play his copies; Deluxe US Enhanced fixes it (`AUD-004`, `EXP-0044`)
+
+Holds for: US T-1208H and JP 1M T-1202G (bug), and `build/us_edition` Track
+1 `33768e29…a2a4` in the US Enhanced edition (fix), in Mednafen.
+
+For a shared sound (record type `0xFE`, type g in byte 4), the US lookup at
+`0x0603A1C8` checks P1's character in the table `0x0606C10C[g]` first. It
+plays P1's song from bank 1 whenever P1's character has an entry, whoever
+requested it. Anakaris has entries for 17 of the 27 types, all also owned by
+another character. With him on P1, Demitri's P2 fireball and dash request
+bank 1 songs 1 and 8 (Anakaris's samples `462CA`, `4B172`) instead of bank 2
+songs 0 and 2. Pyron's fireball, Sasquatch's and Huitzil's ice sounds, and
+the CPU Victor's `g=0` sound in Arcade behave the same way. JP plays the
+same wrong samples. Sound RAM itself is intact. The US Enhanced edition
+replaces the 78-byte lookup so that, with Anakaris on P1, P2's character is
+tried first. Every tested case then plays the requester's own sound, and
+the other matchups and the original editions are unchanged.
+
+Reproduce: `research/experiments/EXP-0044/README.md`.

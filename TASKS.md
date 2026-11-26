@@ -179,6 +179,10 @@ task repeats a sibling task, the note names it for its method only.
   D-042): with a 4 MiB cart, `FULL` now gives full animation to different
   fighters in Arcade and VS. Without one it behaves as shipped. Only the
   real-Saturn check remains. `AUD-004` and `AUD-005` are `READY`.
+- **2026-11-26: `AUD-004` fixed** (`EXP-0044`, D-043): with Anakaris on P1,
+  P2's shared sound effects played his copies (a stock bug in both
+  releases). US Enhanced now plays each opponent's own sounds. Only a live
+  check of Donovan's ice attack remains.
 
 ## Milestones
 
@@ -786,7 +790,8 @@ is not already on the base disc goes on disc).
 
 ### AUD-004 - Reproduce and correct the P1 Anakaris sound issue
 
-- **Status:** `READY`
+- **Status:** `IN_PROGRESS` (fixed and verified; Donovan's ice attack not
+  yet triggered live)
 - **Dependencies:** EMU-021, EDITION-002.
 - **Acceptance criteria:** In stereo, capture Demitri's dash and fireball
   with Anakaris on P1, then swap players and repeat with the same moves and
@@ -798,6 +803,16 @@ is not already on the base disc goes on disc).
   and Huitzil, including in Arcade and two-controller play. Check Anakaris's
   own sounds and ordinary matchups. Keep stereo WAVs and any live sound
   traces local.
+- **Progress (`EXP-0044`, D-043, 2026-11-26):** reproduced on US and JP
+  retail. The shared-sound lookup (`0x0603A1C8`) always prefers P1's
+  character, and Anakaris owns copies of 17 shared types, so with him on P1
+  the opponent's fireball, dash and ice sounds come from his bank. US
+  Enhanced now tries P2's character first when P1 is Anakaris. Verified in
+  VS and Arcade for Demitri (fireball, dash), Pyron (fireball), Sasquatch
+  and Huitzil (ice) and the CPU Victor. Anakaris's own sounds and an
+  ordinary matchup are unchanged, and US Original and JP Original keep
+  stock. Open: Donovan's ice attack, not triggered live (motion not found);
+  same lookup and table entry as Sasquatch's and Huitzil's.
 
 ### AUD-005 - Reproduce and correct Morrigan's Soul Fist trail panning
 
