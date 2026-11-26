@@ -585,3 +585,62 @@ measured total equals the set's `.BIN` plus `.SPR` storage from `EXP-0040`.
 
 Reproduce: `research/experiments/EXP-0041/README.md`.
 
+
+## D-038: Agent writes reach the game after patch `0002` (cache-coherent writes) (`APP-001`, `EXP-0042`)
+
+Holds for: the Mednafen 1.32.1 agent build with patches `0001` and `0002`
+(binary `7040f6fe…4cdd`), on both releases.
+
+Without `0002`, an agent write of `0800` to the US pressed-pad word
+`0x06076AB8` just before the title task read it gave R0 = 0 at
+`0x06004FDE`: the game read its emulated SH-2 cache. With `0002`, which
+purges the written lines on both CPUs, the same trace read `0800` and the
+title menu opened. V1-V4 (`EXP-0005`) pass again on both releases. V1:
+119 of 119 cold-boot frames equal the `0001`-only build. V2: four regions
+equal the extractor. V3 and V4 also pass.
+
+Reproduce: `research/experiments/EXP-0042/README.md` (`revalidate.sh`).
+
+## D-039: Capcom's Appendix code works and persists on both retail releases and Deluxe v0.1.0 (`APP-001`, `EXP-0042`)
+
+Holds for: US T-1208H, JP 1M T-1202G and Deluxe v0.1.0 (`build/us_edition`
+Track 1 `25e05ec1…f1be`), cold boots with an empty save, no cart (and a
+4 MiB cart on Deluxe).
+
+In OPTION MODE with the cursor on CONFIGURATION (line 8), B, X, Down, A, Y
+(each within 14 frames) sets the unlock byte (US `0x06080A2B`, JP
+`0x06080A7B`). APPENDIX then shows as line 9. A or C opens it (mode 5),
+and Right on ANIMATION sets FULL. Start saves, and a second cold boot with
+the same backup memory restores the unlock, FULL and, on Deluxe, the
+edition. The sequence tables and menus are identical in both releases. JP
+variables sit at US + `0x50`. On Deluxe v0.1.0 the unlocked menu draws
+EDITION at y `0xC8` touching PRESS START TO EXIT at y `0xD0`.
+
+Reproduce: `research/experiments/EXP-0042/README.md` (`app_check.py`).
+
+## D-040: An unlocked Appendix changes the attract demo's BGM option and scenery (`APP-001`, `EXP-0042`)
+
+Holds for: the US T-1208H image, from the retail title checkpoint.
+
+The demo setup reads the unlock byte twice. At `0x060359B4` it sets the BGM
+option `0x06080A26` to 2 (RANDOM) if unlocked, else 0 (HUNTER). At
+`0x06035A8C` it sets the scenery variant `0x06080962` to a pseudo-random
+bit if unlocked, else 0. With only the unlock byte changed, the demo read
+BGM 0 / variant 0 and BGM 2 / variant 1, and variant 1 drew the stage in its
+alternate colours. The two runs' sound recordings are byte-identical.
+
+Reproduce: `research/experiments/EXP-0042/README.md` (`demo-wav-*`).
+
+## D-041: Deluxe now starts with the Appendix unlocked and the exit line one line lower (`APP-001`, `EXP-0042`)
+
+Holds for: `build/us_edition` Track 1 `a87f7f70…ab0d` (`TITLE.O`
+`8ecf3a4b…9756`), rebuilt by `research/experiments/EXP-0038/build_edition.py`.
+
+The title wrapper writes 1 to `0x06080A2B` each title frame, and
+`0x06004C46` holds `00D8` (was `00D0`). From cold boots with an empty save
+and no code entered, the unlock byte is 1 on the first OPTION MODE frame
+and APPENDIX shows. The cursor reaches APPENDIX (9) and EDITION (10).
+EDITION, APPENDIX and FULL work and persist across a reboot. PRESS START TO
+EXIT is drawn one line below EDITION with the usual gap.
+
+Reproduce: `research/experiments/EXP-0042/README.md`.

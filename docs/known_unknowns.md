@@ -21,3 +21,4 @@ belong in `docs/difference_register.md` instead.
 | ~~Why are `PL*.O` and `PL*.O2` different files that differ between regions in the same places?~~ Answered (`EXP-0035`): `.O2` is the same code relinked `+0x8000` for player 2 (13 of 14 pairs pointers only). | | | `DIFF-001` |
 | What is on the Japanese track 2? | About 18 s of audio; the US track 2 is silence. | Listen to it (play it as audio). | `DIFF-001` |
 | ~~What does Donovan's second region guard play?~~ Answered (`EXP-0039`): sample `0x4F2EA` when a punch and the same-strength kick are pressed with his sword planted in the floor; Japanese only. | | | `AUD-003` |
+| What does the line-2 OPTION MODE code (X, X, Right, A, Z) unlock? | D-039: it sets US `0x06080A2A` (JP `0x06080A7A`) with the same checker and success sound as the Appendix code. The same tables are in both releases. | Find the readers of `0x06080A2A`, then enter the code and compare screens. | — |

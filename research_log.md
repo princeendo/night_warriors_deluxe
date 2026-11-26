@@ -1563,3 +1563,46 @@ earlier today. No disc bytes changed, and US Track 1 still hashes to
 Not done: the JP mirror (the JP mixed path matched in `EXP-0040`), and where
 the pools are reset (UNKNOWN). `ANI-003` is now `READY`; its first question
 is whether fighter data works from A-bus cart RAM.
+
+## 2026-11-26 — `APP-001` done: Appendix code, agent cache fix, default unlock (`EXP-0042`)
+
+User choice after `ANI-002`: "APP-001 Appendix check".
+
+- Static: the code is B, X, Down, A, Y on CONFIGURATION (each press within
+  14 frames), and it is identical in US and JP `TITLE.O`. A second code on
+  line 2 (X, X, Right, A, Z) sets `0x06080A2A`; what it unlocks is UNKNOWN.
+  Deluxe v0.1.0 leaves the code untouched.
+- Injected presses reached the logo but not the title menu, as in
+  `EXP-0038`. A trace showed the cause: the agent wrote `0800` to the
+  pressed word before the title task read it, yet the task read 0 from the
+  emulated SH-2 cache. User decision, verbatim: "Patch agent build
+  (Recommended)". Patch `0002` (20 lines, `src/ss/debug.inc`, agent tree
+  only) purges the written lines on both CPUs. The rebuilt binary is
+  `7040f6fe…4cdd`. `revalidate.sh` passed V1-V4 on both releases
+  (09:17-09:24), and the title menu then opened from an injected Start.
+  Writes in earlier experiments were judged by what the CPU read, so they
+  stand.
+- Live, from cold boots with an empty save: the code unlocks, APPENDIX
+  opens, FULL is set and saved, and all of it persists across a reboot on US
+  retail, JP retail and Deluxe v0.1.0 (no cart), and on Deluxe with a 4 MiB
+  cart. Regression on Deluxe: EDITION (y `0xC8`) touches PRESS START TO EXIT
+  (y `0xD0`) once unlocked.
+- User decisions, verbatim: first "Should we move that edition chooser to
+  the appendix instead?". Then, told that the Appendix is hidden without the
+  code and that its screen is full: "Let's keep it in options and also
+  unlock appendix by default."
+- Correction, recorded so it is not repeated: I first told the user that the
+  unlocked attract demo picks HUNTER or CLASSIC music at random, from a static
+  reading. The run disproved it: the demo sets the BGM option to RANDOM and
+  randomizes `0x06080962`, which is the scenery variant (alternate stage
+  colours), and the two runs' audio was byte-identical. The policy note was
+  corrected before commit.
+- Built: `title_code.py` now writes 1 to `0x06080A2B` each title frame, and
+  `0x06004C46` changes `00D0` to `00D8`. `build/us_edition` was rebuilt
+  (Track 1 `a87f7f70…ab0d`, deterministic: a test build to
+  `build/us_edition_app001` had the same hash and was deleted). Cold-boot
+  checked with no cart and with a 4 MiB cart: unlocked with no code entered,
+  everything persists, and the exit line has the usual gap.
+
+Removed (standing permission): `build/us_edition_app001` (rebuildable by the
+command above). v0.1.0's image is rebuildable from tag `v0.1.0`.

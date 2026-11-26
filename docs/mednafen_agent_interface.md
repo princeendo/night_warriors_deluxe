@@ -62,6 +62,17 @@ binary is unchanged. V1-V4 pass on both releases (`docs/discoveries.md`
 D-005). Use `tools/mednafen/agent.py`; build and run commands are in
 `vendor/mednafen/README.md`.
 
+### Cache-coherent writes (`APP-001`, `EXP-0042`, 2026-11-26)
+
+Before this change, `write` and `onhit` changed work RAM but not the emulated
+SH-2 caches, so the game could keep reading a stale cached value (an
+injected pad press was not seen by the title menu). Patch `0002`, approved by
+the user, purges the matching cache lines on both CPUs after each agent write
+to WRAM-L or WRAM-H. This is the only change to the Saturn core, and only in
+the agent build. Rebuilt binary `7040f6fe…4cdd`; V1-V4 pass again on both
+releases. Writes made before this change were checked by their effect on
+the CPU, as before (D-015 notes); they are not affected retroactively.
+
 ---
 
 ## MSHvSF Protocol Reference (copy)

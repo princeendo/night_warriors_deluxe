@@ -170,6 +170,11 @@ task repeats a sibling task, the note names it for its method only.
   forced Anakaris vs. Huitzil `FULL` pair needs 883,644 more bytes and resets
   the console. `ANI-003` (cart-backed `FULL`), `AUD-004`, `AUD-005` and
   `APP-001` are `READY`.
+- **2026-11-26: `APP-001` done** (`EXP-0042`, D-038 to D-041): Capcom's
+  Appendix code works and persists on both retail releases and Deluxe. Deluxe
+  now starts with the Appendix unlocked, and PRESS START TO EXIT sits one line
+  lower (user decision). The agent build gained patch `0002` (cache-coherent
+  writes), so injected pad presses now reach menus. V1-V4 pass again.
 
 ## Milestones
 
@@ -795,7 +800,7 @@ is not already on the base disc goes on disc).
 
 ### APP-001 - Verify Capcom's Appendix code and options in Deluxe
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Dependencies:** EDITION-002.
 - **Acceptance criteria:** Enter the stock Appendix code on a fresh save on
   both retail releases and Deluxe. Check appearance, navigation, setting
@@ -805,6 +810,16 @@ is not already on the base disc goes on disc).
 - **Lead (`EXP-0040`):** US `TITLE.O` checks an input sequence before
   setting the Appendix availability byte at `0x06080A2B`. The current
   edition menu already has a layout for the unlocked Appendix (`D-034`).
+- **Done (`EXP-0042`, D-038 to D-041, 2026-11-26):** the code is B, X, Down,
+  A, Y on CONFIGURATION, each within 14 frames, the same on both retail
+  releases. It unlocks, opens and saves on US, JP and Deluxe v0.1.0 (no cart;
+  4 MiB cart on Deluxe), and persists across a cold boot. The one regression,
+  EDITION touching PRESS START TO EXIT, is repaired. By the user's decision
+  the Appendix is unlocked by default and the exit line is one line lower
+  (`build/us_edition` Track 1 `a87f7f70…ab0d`, cold-boot checked). Unlocked,
+  the attract demo randomizes the scenery variant (D-040). Input injection
+  needed patch `0002` in the agent build (D-038). Open: what the line-2 code
+  (`0x06080A2A`) unlocks. No release cart setup is chosen yet (`ANI-003`).
 
 ## Later Milestones (outline only)
 

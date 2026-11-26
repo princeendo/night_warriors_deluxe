@@ -7,8 +7,10 @@
 which must start at zero), then the code below, and the header entry of the
 title task (slot ``0x4D7``, header offset ``0x18``) pointed at the wrapper.
 
-- **Wrapper** (the task runner jumps here each title frame, r4 = task): call
-  ``apply``, then jump to the stock task ``0x06004FAC`` with r4 and pr intact.
+- **Wrapper** (the task runner jumps here each title frame, r4 = task): set
+  the Appendix unlock byte ``0x06080A2B`` to 1 (user decision 2026-11-26,
+  ``APP-001``/``EXP-0042``), call ``apply``, then jump to the stock task
+  ``0x06004FAC`` with r4 and pr intact.
 - **apply** (uses r0-r3 and r5-r7 only): E = settings block byte ``0x11``
   (``0x060830C5``; 0 US Enhanced, 1 US original, 2 JP original, 3 JP
   Enhanced; above 3 counts as 0). If E equals the last applied value (a byte
@@ -233,6 +235,9 @@ def code() -> bytes:
     a = Assembler(CODE)
     # wrapper
     a.label("wrapper")
+    a.mov_l_label("L_app", 0)  # APP-001 (EXP-0042): Appendix unlocked by default
+    a.mov_imm(1, 1)
+    a.mov_b_store(1, 0)
     a.push_pr()
     a.mov_l_label("L_apply", 0)
     a.jsr(0)
@@ -369,6 +374,9 @@ def static_patches() -> list[tuple[int, bytes, bytes]]:
         # cursor bounds: last index 9/8 -> 10/9 (EDITION)
         (0x0600536A, bytes.fromhex("E109E108"), bytes.fromhex("E10AE109")),
         (0x06005384, bytes.fromhex("E209E208"), bytes.fromhex("E20AE209")),
+        # APP-001 (EXP-0042): PRESS START TO EXIT y 0xD0 -> 0xD8, a line
+        # below EDITION (y 0xC8 with APPENDIX shown)
+        (0x06004C46, bytes.fromhex("00D0"), bytes.fromhex("00D8")),
         # line dispatch: cursor 9 and up go to "dispatch"
         (
             0x060053FE,

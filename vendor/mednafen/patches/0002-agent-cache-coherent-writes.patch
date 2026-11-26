@@ -1,0 +1,20 @@
+--- a/src/ss/debug.inc
++++ b/src/ss/debug.inc
+@@ -238,11 +238,17 @@
+    case ASPACE_WORKRAML:
+ 	Address &= 0xFFFFF;
+ 	ne16_wbo_be<uint8>(WorkRAML, Address, *Buffer);
++	// Agent build: keep both SH-2 caches coherent with debugger writes.
++	CPU[0].Cache_AssocPurge(0x00200000 | Address);
++	CPU[1].Cache_AssocPurge(0x00200000 | Address);
+ 	break;
+ 
+    case ASPACE_WORKRAMH:
+ 	Address &= 0xFFFFF;
+ 	ne16_wbo_be<uint8>(WorkRAMH, Address, *Buffer);
++	// Agent build: keep both SH-2 caches coherent with debugger writes.
++	CPU[0].Cache_AssocPurge(0x06000000 | Address);
++	CPU[1].Cache_AssocPurge(0x06000000 | Address);
+ 	break;
+ 
+    case ASPACE_SCSPRAM:
