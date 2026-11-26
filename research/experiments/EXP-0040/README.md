@@ -107,7 +107,9 @@ for these two files each. Their full sets need 2,256,056 bytes together.
 The stock allocator (`0x06013E9C`–`0x06013F78`) draws from the three pools
 initialized in `0x06012164`–`0x06012198`. WRAM-H contributes at most
 `0x060F0000 - 0x06093714`, WRAM-L at most `0x100000`. The third pool is
-initialized via `0x06013F9E` by taking `0x24E80` bytes from sprite VRAM.
+initialized via `0x06013F9E` by taking `0x24E80` bytes from VDP2 VRAM.
+The US title checkpoint puts the pool at `0x25E5A17C`–`0x25E7EFFC`
+(exclusive upper endpoint).
 The WRAM-only bound is 1,427,692 bytes before any other allocations. The
 third pool raises that bound to 1,578,860 bytes, still 677,196 bytes below
 the fighter total. Pool fragmentation, other match resources and effects

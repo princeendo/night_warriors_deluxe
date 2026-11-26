@@ -47,7 +47,7 @@ def main() -> None:
     total = full[first] + full[second]
     print(f"Largest distinct FULL pair: {first} + {second}, {total:,} bytes")
     print(f"Stock WRAM pools before other allocations: at most {wram_bound:,} bytes")
-    print(f"Stock pools including sprite VRAM: at most {stock_bound:,} bytes")
+    print(f"Stock pools including VDP2 VRAM: at most {stock_bound:,} bytes")
     print(f"Minimum excess over all pools: {total - stock_bound:,} bytes")
 
 
