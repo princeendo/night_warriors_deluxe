@@ -1606,3 +1606,36 @@ User choice after `ANI-002`: "APP-001 Appendix check".
 
 Removed (standing permission): `build/us_edition_app001` (rebuildable by the
 command above). v0.1.0's image is rebuildable from tag `v0.1.0`.
+
+## 2026-11-26 — `ANI-003`: cart-backed `FULL` (`EXP-0043`)
+
+User choice: "ANI-003 cart FULL". Muted Mednafen cold boots, driven by
+injected presses (`EXP-0042` tooling).
+
+- Design from the allocator: three bump pools and a baseline copied once at
+  boot. P1's set fills the pools bottom-up and P2's top-down. Pointing pool 2
+  at the 4 MiB cart gives both sides room with no allocator change. The cart
+  ID and RAM addresses come from the XvSF lead (`CPK.EMM`) and were
+  re-checked here.
+- RAM prototype on the retail image: Anakaris vs. Huitzil loaded both full
+  sets with no out-of-memory call. Huitzil's 1,093,188 bytes are in the cart.
+- Built into the Deluxe title wrapper (`title_code.py` `cart`). First test
+  failed for a dull reason: from a cold boot with no input, the title task
+  never runs (the logo screen), so the routine never ran. The forced runs now
+  press Start once. In play the title task always runs before a match.
+- Results: 4 MiB with FULL gives full sets in both orders and for all 14
+  fighters. 4 MiB with CUT, no cart, and 1 MiB load stock sets (the last two
+  traces are byte-identical). Arcade (rounds by time-over: timer
+  `0x06080977`, vitality P1 `0x06076C67`, P2 `0x0607706B`), opponent
+  changes, continue and rematch, and VS all work. Pace is the same as a
+  no-cart CUT fight.
+- Slips, fixed: a zsh loop that did not split words (no run started), and a
+  rematch run whose picks landed during the select screen's load.
+- `build/us_edition` was rebuilt (Track 1 `8882e154…72df`, identical to the
+  test build). The test build `build/exp0043_cart` was deleted (standing
+  permission, rebuildable). The APP-001 cold-boot check was rerun on the
+  final image.
+
+Open: the real-Saturn check with a 4 MiB cart (the user, before release).
+1 MiB is not qualified. The routine runs in every edition and changes
+nothing unless `FULL` is set with a 4 MiB cart.

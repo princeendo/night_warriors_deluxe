@@ -41,6 +41,13 @@ FLAG, LANG, LANG2 = 0x0608089A, 0x06080882, 0x060808A8
 SLOT_1BE, R12_ORIG = 0x06091E50, 0x26020766
 APPENDIX_FLAG, APPENDIX_STR = 0x06080A2B, 0x06001BE0
 HANDLER_EXIT, APPENDIX_HANDLER = 0x06005622, 0x06005600
+# ANI-003 (EXP-0043): cart-backed FULL animation
+CART_ID, CART_4M = 0x24FFFFFF, 0x5C
+CART_LO, CART_HI = 0x22400000, 0x22800000  # 4 MiB, cache-through
+POOL2, BASE2, SLOTS = 0x06076AE8, 0x06076AD0, 0x0609022C
+FULL_BRANCH = 0x0602192A  # bt 0x0602194C (FULL, same fighter) / bra (any pair)
+CART_TESTS = (0x22400000, 0x22480000, 0x225FFFFC, 0x227FFFFC)
+CART_PATTERN = 0x5AA5C33C
 EDITION_NAMES = ["US ENHANCED", "US ORIGINAL", "JP ORIGINAL", "JP ENHANCED"]
 LABEL_X, VALUE_X = 128, 200  # labels end at x 184 ("TIME LIMIT" at 104); values at 200
 # per E: flag, language, C
@@ -231,6 +238,107 @@ def menu(a: Assembler) -> None:
     a.nop()
 
 
+def cart(a: Assembler) -> None:
+    """ANI-003 (EXP-0043): FULL for any pair when a 4 MiB cart is present.
+
+    Uses r0-r3 and r5-r7 only. The cart ID (``0x24FFFFFF``) must read
+    ``0x5C`` four times, and a non-destructive RAM test at four cache-through
+    addresses must pass (once per ``TITLE.O`` load). Then, once per boot,
+    allocator pool 2 (live and baseline) becomes the 4 MiB cart and both
+    loaded-set slots are cleared, so the next load reloads both sides; and the
+    ``FULL`` same-fighter branch becomes a ``bra``. Without the cart the stock
+    branch is written back, so ``FULL`` and ``CUT`` behave as shipped.
+    """
+    a.label("cart")
+    a.mov_l_label("L_cartid", 3)
+    a.mov_imm(4, 5)
+    a.label("c_id")
+    a.mov_b_load(3, 0)
+    a.extu_b(0, 0)
+    a.op(0x8800 | CART_4M)  # cmp/eq #0x5C,r0
+    a.branch("bf", "c_nocart")
+    a.dt(5)
+    a.branch("bf", "c_id")
+    a.mov_l_label("L_cartok", 1)
+    a.mov_b_load(1, 0)
+    a.op(0x8801)  # cmp/eq #1,r0
+    a.branch("bt", "c_ok")
+    a.tst(0, 0)
+    a.branch("bt", "c_nocart")  # failed earlier
+    # RAM test: save, write address ^ pattern, verify, restore
+    a.mov_l_label("L_tests", 6)
+    a.mov_l_label("L_saves", 7)
+    a.mov_imm(len(CART_TESTS), 5)
+    a.label("t_write")
+    a.mov_l_load(6, 2, post=True)
+    a.mov_l_load(2, 0)
+    a.mov_l_store(0, 7)
+    a.add_imm(4, 7)
+    a.mov_l_label("L_pattern", 0)
+    a.op(0x202A)  # xor r2,r0
+    a.mov_l_store(0, 2)
+    a.dt(5)
+    a.branch("bf", "t_write")
+    a.mov_l_label("L_tests", 6)
+    a.mov_imm(len(CART_TESTS), 5)
+    a.mov_imm(1, 3)
+    a.label("t_check")
+    a.mov_l_load(6, 2, post=True)
+    a.mov_l_label("L_pattern", 0)
+    a.op(0x202A)  # xor r2,r0
+    a.mov_l_load(2, 1)
+    a.cmp_eq(1, 0)
+    a.branch("bt", "t_next")
+    a.mov_imm(0, 3)
+    a.label("t_next")
+    a.dt(5)
+    a.branch("bf", "t_check")
+    a.mov_l_label("L_tests", 6)
+    a.mov_l_label("L_saves", 7)
+    a.mov_imm(len(CART_TESTS), 5)
+    a.label("t_restore")
+    a.mov_l_load(6, 2, post=True)
+    a.mov_l_load(7, 0, post=True)
+    a.mov_l_store(0, 2)
+    a.dt(5)
+    a.branch("bf", "t_restore")
+    a.mov_l_label("L_cartok", 1)
+    a.mov_b_store(3, 1)
+    a.tst(3, 3)
+    a.branch("bt", "c_nocart")
+    a.label("c_ok")
+    a.mov_l_label("L_base2", 1)
+    a.mov_l_load(1, 0)
+    a.mov_l_label("L_cartlo", 2)
+    a.cmp_eq(2, 0)
+    a.branch("bt", "c_full")  # already redirected this boot
+    a.mov_l_label("L_carthi", 3)
+    a.mov_l_store(2, 1)
+    a.op(0x1131)  # mov.l r3,@(4,r1)
+    a.mov_l_label("L_pool2", 1)
+    a.mov_l_store(2, 1)
+    a.op(0x1131)  # mov.l r3,@(4,r1)
+    a.mov_l_label("L_slots", 1)
+    a.mov_imm(-1, 0)
+    a.mov_b_store(0, 1)
+    a.op(0x8011)  # mov.b r0,@(1,r1)
+    a.label("c_full")
+    a.mov_w_label("W_bra", 0)
+    a.branch("bra", "c_store")
+    a.nop()
+    a.label("c_nocart")
+    a.mov_w_label("W_bt", 0)
+    a.label("c_store")
+    a.mov_l_label("L_branch", 1)
+    a.mov_w_store(0, 1)
+    a.rts()
+    a.nop()
+    a.label("W_bra")
+    a.word(0xA00F)
+    a.label("W_bt")
+    a.word(0x890F)
+
+
 def code() -> bytes:
     a = Assembler(CODE)
     # wrapper
@@ -239,6 +347,9 @@ def code() -> bytes:
     a.mov_imm(1, 1)
     a.mov_b_store(1, 0)
     a.push_pr()
+    a.mov_l_label("L_cart", 0)  # ANI-003 (EXP-0043)
+    a.jsr(0)
+    a.nop()
     a.mov_l_label("L_apply", 0)
     a.jsr(0)
     a.nop()
@@ -306,6 +417,7 @@ def code() -> bytes:
     a.label("done")
     a.rts()
     a.nop()
+    cart(a)
     menu(a)
     a.align4()
     for name, value in [
@@ -327,6 +439,18 @@ def code() -> bytes:
         ("L_apphandler", APPENDIX_HANDLER),
         ("L_names", "names"),
         ("L_label", "s_label"),
+        ("L_cart", "cart"),
+        ("L_cartid", CART_ID),
+        ("L_cartok", "cartok"),
+        ("L_tests", "tests"),
+        ("L_saves", "saves"),
+        ("L_pattern", CART_PATTERN),
+        ("L_base2", BASE2),
+        ("L_pool2", POOL2),
+        ("L_cartlo", CART_LO),
+        ("L_carthi", CART_HI),
+        ("L_slots", SLOTS),
+        ("L_branch", FULL_BRANCH),
     ]:
         a.label(name)
         a.long(value)
@@ -340,6 +464,12 @@ def code() -> bytes:
     a.data(bytes(4))
     a.label("last")
     a.data(b"\xff\0\0\0")
+    a.label("cartok")  # 0xFF untested, 1 passed, 0 failed (per TITLE.O load)
+    a.data(b"\xff\0\0\0")
+    a.label("tests")
+    a.data(b"".join(struct.pack(">I", x) for x in CART_TESTS))
+    a.label("saves")
+    a.data(bytes(4 * len(CART_TESTS)))
     a.label("names")
     for i in range(4):
         a.long(f"s_{i}")

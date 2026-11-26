@@ -175,6 +175,10 @@ task repeats a sibling task, the note names it for its method only.
   now starts with the Appendix unlocked, and PRESS START TO EXIT sits one line
   lower (user decision). The agent build gained patch `0002` (cache-coherent
   writes), so injected pad presses now reach menus. V1-V4 pass again.
+- **2026-11-26: `ANI-003` built and checked in Mednafen** (`EXP-0043`,
+  D-042): with a 4 MiB cart, `FULL` now gives full animation to different
+  fighters in Arcade and VS. Without one it behaves as shipped. Only the
+  real-Saturn check remains. `AUD-004` and `AUD-005` are `READY`.
 
 ## Milestones
 
@@ -757,7 +761,7 @@ is not already on the base disc goes on disc).
 
 ### ANI-003 - Enable full animation for different fighters
 
-- **Status:** `READY`
+- **Status:** `IN_PROGRESS` (only the real-Saturn check remains)
 - **Dependencies:** ANI-002 (done).
 - **Objective:** Make Appendix `FULL` work across different fighters when
   the required memory is available, with a playable cart-free configuration.
@@ -771,6 +775,14 @@ is not already on the base disc goes on disc).
 - **Scope:** Start with the 4 MiB target. Qualify 1 MiB only if the measured
   allocations fit the usable banks. Consider cart-free mixed `FULL` if the
   measurements point to a viable alternate loading strategy.
+- **Progress (`EXP-0043`, D-042, 2026-11-26):** one auto-detecting build
+  (`build/us_edition` Track 1 `8882e154…72df`). With a 4 MiB cart, the title
+  wrapper moves allocator pool 2 into the cart and opens the `FULL` branch.
+  Confirmed in Mednafen from cold boots: the largest pair in both orders,
+  every fighter's full set, Arcade rounds, opponent changes, continue and
+  rematch, VS, saved `FULL`, and the stock pace. No cart, 1 MiB and `CUT`
+  load stock sets. 1 MiB is not qualified (it needs two more pools). Open:
+  a real-Saturn check with a 4 MiB cart before release (the user).
 
 ### AUD-004 - Reproduce and correct the P1 Anakaris sound issue
 

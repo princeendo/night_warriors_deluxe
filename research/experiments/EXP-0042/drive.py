@@ -10,8 +10,9 @@ Steps, in order:
 - ``press:HEX``: one press. After the game next stores the P1 pad words
   (``--writer``), overwrite the raw and the pressed word with HEX. The game
   computes the release itself on the next frame. ``press:HEX@PC`` hooks PC
-  instead, for this press.
+  instead, for this press. ``press2:HEX`` presses on pad 2 (words + 4).
 - ``read:NAME:ADDR:LEN``: append ``NAME frame=F ADDR=hex`` to ``reads.txt``.
+- ``dump:NAME:ADDR:HEXLEN``: write memory to ``NAME.bin``.
 - ``write:ADDR:HEX``: write bytes now.
 - ``readers:N``: log reads of the P1 pad words for N frames.
 
@@ -58,17 +59,18 @@ def run_steps(
         kind, _, rest = step.partition(":")
         if kind == "shot":
             agent.screenshot(out / f"{rest}.png")
-        elif kind == "press":
+        elif kind in ("press", "press2"):
             word, _, at = rest.partition("@")
             value = int(word, 16).to_bytes(2, "big")
             hook = int(at, 16) if at else writer
+            words = pad + (4 if kind == "press2" else 0)
             if hook is None:
                 raise RuntimeError("press needs a writer or @PC")
             if at:
                 agent.breakpoints("pc", [f"{hook:08X}-{hook:08X}"])
             else:
-                agent.breakpoints("write", [f"{pad + 2:08X}-{pad + 3:08X}"])
-            agent.onhit_write(hook, pad, value + value)
+                agent.breakpoints("write", [f"{words + 2:08X}-{words + 3:08X}"])
+            agent.onhit_write(hook, words, value + value)
             agent.frames(1)
             agent.wait_halted()
             agent.command("bp write", "bp pc", "onhit clear")
@@ -78,6 +80,10 @@ def run_steps(
             frame = agent.status()["frame"]
             with (out / "reads.txt").open("a") as reads:
                 reads.write(f"{name} frame={frame} {address}={data.hex()}\n")
+        elif kind == "dump":
+            name, address, length = rest.split(":")
+            data = agent.bus_read(int(address, 16), int(length, 16))
+            (out / f"{name}.bin").write_bytes(data)
         elif kind == "write":
             address, _, hex_bytes = rest.partition(":")
             agent.bus_write(int(address, 16), bytes.fromhex(hex_bytes))

@@ -644,3 +644,22 @@ EDITION, APPENDIX and FULL work and persist across a reboot. PRESS START TO
 EXIT is drawn one line below EDITION with the usual gap.
 
 Reproduce: `research/experiments/EXP-0042/README.md`.
+
+## D-042: With a 4 MiB cart, Deluxe gives full animation to different fighters (`ANI-003`, `EXP-0043`)
+
+Holds for: `build/us_edition` Track 1 `8882e154…72df` (`TITLE.O`
+`c3d7459c…2fb34`), in Mednafen 1.32.1, from cold boots.
+
+Each title frame, the Deluxe wrapper checks for a 4 MiB cart: the ID
+`0x24FFFFFF` reads `0x5C` four times and a non-destructive RAM test passes.
+Then, once per boot, it points allocator pool 2 (live `0x06076AE8`,
+baseline `0x06076AD0`) at `0x22400000`-`0x22800000` and clears the
+loaded-set slots, and it sets `0x0602192A` to `A00F`. With `FULL`, every
+tested mixed pair then loads two full sets (indexes 0-13) with no
+out-of-memory call: Anakaris/Huitzil in both orders, and six pairs
+covering the other twelve fighters. P2's set lies in cart RAM. Arcade
+(round and opponent changes, continue and rematch) and VS keep full sets,
+and the round timer counts down at the same rate as a no-cart CUT fight.
+With no cart, a 1 MiB cart, or `CUT`, the loaded sets are stock.
+
+Reproduce: `research/experiments/EXP-0043/README.md`.
