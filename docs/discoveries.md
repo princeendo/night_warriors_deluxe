@@ -565,3 +565,23 @@ resource sets and produced the same fight frame within each release. The
 equality checks are at US `0x06021928` and JP `0x06022194`.
 
 Reproduce: `research/experiments/EXP-0040/README.md`.
+
+## D-037: `FULL` fits one full set, not two: a mirror loads `P06`, the forced Anakaris vs. Huitzil pair runs out of memory (`ANI-002`, `EXP-0041`)
+
+Holds for: the stock US T-1208H image (Track 1 `d0960087…70da`), from the
+retail title checkpoint with the attract fighters forced in RAM (IDs written
+at `0x06035908` to `0x06076FD7` and `0x060773DB`).
+
+An Anakaris mirror loads `P06_` once under `CUT` (684,404 pool bytes) and
+`P06` once under `FULL` (1,162,868), and both screenshots show Anakaris
+against Anakaris. Anakaris vs. Huitzil under `CUT` loads `P06_` and `P11_`
+(1,367,788 bytes). The allocator's three bump pools at `0x06076AD8` (WRAM-H,
+WRAM-L, VDP2 carve) give the fighter loads 1,372,412 bytes: 172,668 +
+1,048,576 + 151,168. With the equality branch at `0x0602192A` forced in RAM
+(`89 0F` to `A0 0F`), `FULL` requests `P06` and `P11` (2,256,056 bytes). A
+112,784-byte request then fails at `0x06013F68` ("Out Of Memory", handler
+`0x0601B078`), and the console resets to the Saturn BIOS CD player. Each
+measured total equals the set's `.BIN` plus `.SPR` storage from `EXP-0040`.
+
+Reproduce: `research/experiments/EXP-0041/README.md`.
+

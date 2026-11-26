@@ -1531,3 +1531,35 @@ Verification: `./invenv.sh ruff check .`,
 `mypy` checks on both `EXP-0040` scripts passed. `./invenv.sh pytest -q`
 passed all 142 tests. Experiment commands and evidence hashes are in
 `research/experiments/EXP-0040/README.md`.
+
+## 2026-11-26 — `ANI-002` done: mirror control and large-pair allocations (`EXP-0041`)
+
+User request: start the new playtester follow-up tasks. `ANI-002` was the one
+`IN_PROGRESS` experiment, so it went first. Muted Mednafen runs from the US
+retail title checkpoint, under the consent the user gave for this experiment
+earlier today. No disc bytes changed, and US Track 1 still hashes to
+`d0960087…70da` after the runs.
+
+- The attract code writes both one-based fighter IDs at `0x06035908`.
+  Forcing them there (halt on the P2 write, step, overwrite, check the
+  readback) gave an Anakaris mirror and Anakaris vs. Huitzil. The CPU's own
+  reads in the loader confirmed the forced values.
+- Mirror: `CUT` loads `P06_` once (684,404 bytes), `FULL` loads `P06` once
+  (1,162,868 bytes). Both screenshots show Anakaris against Anakaris.
+- The fighter pools hold 1,372,412 bytes. Anakaris vs. Huitzil `CUT` uses
+  1,367,788. With the equality branch at `0x0602192A` forced in RAM
+  (`890F` to `A00F`), `FULL` requests `P06` and `P11`, fails on a 112,784-byte
+  request at `0x06013F68` ("Out Of Memory"), and the console resets to the BIOS
+  CD player.
+- Only 3 of 91 distinct pairs fit both full sets in the stock pools, each with
+  Morrigan. The largest pair needs 883,644 more bytes. The largest single
+  request is 112,784 bytes. Mednafen's 1 MiB cart is two 512 KiB banks.
+- Process error, corrected: the first forced runs left the ID write
+  breakpoint armed when the script switched to halt mode, so their "pools
+  before" snapshot came from frame 321, not the loader entry. The script now
+  halts, steps, verifies and clears it first. The four runs were deleted and
+  rerun; loads and fighter totals were unchanged.
+
+Not done: the JP mirror (the JP mixed path matched in `EXP-0040`), and where
+the pools are reset (UNKNOWN). `ANI-003` is now `READY`; its first question
+is whether fighter data works from A-bus cart RAM.

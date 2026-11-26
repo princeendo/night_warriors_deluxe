@@ -2,7 +2,7 @@
 
 Task: ANI-002
 
-Status: IN_PROGRESS
+Status: DONE
 
 Confidence: CONFIRMED for the mixed demo in both releases. SUPPORTED for the loader's
 capacity bound.
@@ -164,8 +164,8 @@ The estimate gives a bound on the current loader. A revised loader could use
 other memory or stream some resources. The pinned emulator models the 1 MiB
 cart as two 512 KiB banks (`ss/cart/extram.cpp`). Total bytes alone cannot
 establish that the allocations fit either that layout or a 4 MiB design.
-Full mirrors, live allocation peaks for the largest pairs, Arcade and VS
-remain to be checked.
+The mirror control and the live allocations for Anakaris vs. Huitzil are in
+`EXP-0041` (D-037). Arcade and VS remain to be checked under `ANI-003`.
 
 ## Reproduction
 

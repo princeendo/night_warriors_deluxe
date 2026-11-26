@@ -165,6 +165,11 @@ task repeats a sibling task, the note names it for its method only.
   A cart-free configuration is preferred if feasible. The first experiment
   confirmed that `CUT` and `FULL` load the same reduced sets in the first
   mixed attract fight on both retail discs (`ANI-002`, `EXP-0040`, D-036).
+- **2026-11-26: `ANI-002` done** (`EXP-0041`, D-037): `FULL` fits one full
+  set in the 1,372,412-byte fighter pools, so it works only in mirrors. A
+  forced Anakaris vs. Huitzil `FULL` pair needs 883,644 more bytes and resets
+  the console. `ANI-003` (cart-backed `FULL`), `AUD-004`, `AUD-005` and
+  `APP-001` are `READY`.
 
 ## Milestones
 
@@ -717,7 +722,7 @@ is not already on the base disc goes on disc).
 
 ### ANI-002 - Reproduce mixed-matchup `FULL` and measure the loader
 
-- **Status:** `IN_PROGRESS`
+- **Status:** `DONE`
 - **Dependencies:** EMU-021, DBG-001, EDITION-002.
 - **Objective:** Identify what the stock engine loads for `CUT` and `FULL`
   in a mixed matchup and a mirror, and account for working memory before
@@ -732,13 +737,23 @@ is not already on the base disc goes on disc).
   and `FULL`. A static tally puts the largest distinct US pair, Anakaris
   and Huitzil, at 2,256,056 bytes for their `.BIN` and `.SPR` allocations.
   The three stock pools together have at most 1,578,860 bytes before other
-  allocations. Next is the mirror control and live allocation peaks.
+  allocations.
+- **Done (`EXP-0041`, D-037, 2026-11-26):** with the attract fighters forced
+  in US RAM, an Anakaris mirror loads `P06_` once under `CUT` (684,404 pool
+  bytes) and `P06` once under `FULL` (1,162,868), both shown on screen. The
+  fighter pools hold 1,372,412 bytes (WRAM-H 172,668, all 1,048,576 of WRAM-L,
+  VDP2 151,168). Anakaris vs. Huitzil under `CUT` uses 1,367,788. With the
+  equality branch forced, `FULL` requests 2,256,056, fails on a 112,784-byte
+  request ("Out Of Memory") and resets to the BIOS CD player. Constraints:
+  the pair needs 883,644 more bytes, the largest request is 112,784, and the
+  1 MiB cart is two 512 KiB banks (`0x02400000`, `0x02600000`). A-bus RAM
+  suitability is UNKNOWN. JP mirror not run (JP mixed path matched in
+  `EXP-0040`).
 
 ### ANI-003 - Enable full animation for different fighters
 
-- **Status:** `BLOCKED`
-- **Dependencies:** ANI-002.
-- **Blockers:** Mixed-matchup baseline and allocation evidence.
+- **Status:** `READY`
+- **Dependencies:** ANI-002 (done).
 - **Objective:** Make Appendix `FULL` work across different fighters when
   the required memory is available, with a playable cart-free configuration.
 - **Acceptance criteria:** Preserve the shipped `CUT` behavior as a fallback.
