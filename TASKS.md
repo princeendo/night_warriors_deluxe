@@ -195,6 +195,10 @@ task repeats a sibling task, the note names it for its method only.
 - **2026-11-27: JP Enhanced is playable in Mednafen.** `END-005` adds
   six Japanese pages across Morrigan, Bishamon, Rikuo and Huitzil and
   exposes the fourth edition in OPTION MODE (`EXP-0046`, D-046).
+- **2026-11-27: the Enhanced editions have a saved NAMES preference.**
+  `LOC-001` confirmed both preference directions in OPTION MODE and a
+  saved Japanese HUD label with an English victory quote in US Enhanced
+  (`EXP-0048`, D-047).
 
 ## Milestones
 
@@ -892,7 +896,7 @@ tasks" just in time). The method for each is in the three sibling documents.
 | END-003 | M1 for END-02/03 | Now a full task (above). |
 | AUD-002 | M2-M3 for AUD-01/02/03/05 | Now a full task (above): Morrigan's voices. The rest of the roster (Donovan, Sasquatch) is later. |
 | QUO-001 | M1-M5 for QUO-01 | Victory quotes: inventory per release, selection conditions, donor English. |
-| LOC-001 | M7 | Names in each edition (NAM-02/03; deferred from `DOC-002`); whether both releases' name art is on both discs; toggle decided early (`docs/lessons_from_xvsf.md`, lesson 9). |
+| LOC-001 | M7 | **Done (2026-11-27, EXP-0048, D-047):** saved EDITION / US / JAPANESE preference for the stock fighter-name surfaces in the Enhanced editions. Both Original editions use the edition names. The text audit records supporting names inside their scripts. |
 | UI-001 | M8 | Title, attract, menus, credits, boot warnings: each surface the register marks different. |
 | COV-001 | M8 | Coverage register: every row resolved (`docs/coverage_exceptions.md`). |
 | SPECIAL-001 | M9, user approval | Unused or unreachable assets, debug features, hidden content. |

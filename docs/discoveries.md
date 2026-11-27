@@ -729,3 +729,14 @@ checkpoint. The control uses the original Japanese table on the same
 checkpoint. Only JP Enhanced selects the added script bank.
 
 Evidence, inputs, byte changes, and reproduction: [EXP-0046](../research/experiments/EXP-0046/README.md).
+
+## D-047: The name preference can switch fighter labels independently of edition
+
+Deluxe uses settings byte `0x060830C7` and resolves a separate name-region
+flag at `0x060830C8`. Japanese name tiles appeared on the US Enhanced HUD
+after a cold boot with the save retained and the quote rendered in
+English. Switching to US Original preserved the saved preference and
+resolved the stock US name flag. JP Enhanced accepted the US name flag
+while its Japanese region and language values remained zero.
+
+Evidence and reproduction: [EXP-0048](../research/experiments/EXP-0048/README.md).

@@ -1722,3 +1722,15 @@ verified in Mednafen. Track 1 v3 `6f93cccf…8498`. Next: names toggle
 and matched quote and UI audits on the retail references.
 Ruff lint and format passed, pytest passed all 142 tests, and mypy passed
 on 57 files. Rikuo’s closing stock-page captures are byte-identical.
+
+## 2026-11-27 — Saved names preference (`LOC-001`, `EXP-0048`)
+
+The title wrapper now resolves a separate region flag for the existing
+fighter-name readers. OPTION MODE saves the preference in byte `0x13`.
+The initial layout hid the exit hint at y `0xE0`. The correction used
+12-pixel spacing and kept the hint at y `0xD8`. The matching candidate
+`60f3d607…4361` passed the menu, original-edition isolation, persistence,
+HUD and quote checks in `check_names.py`. Next: the user approved adding
+translated Japanese quotes to US Enhanced, so `QUO-001` includes a build.
+Ruff lint and format passed, pytest passed all 142 tests, and mypy passed
+on 57 files.

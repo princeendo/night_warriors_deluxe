@@ -38,6 +38,19 @@ BASE, MAIN_BASE = 0x06001000, 0x06012000
 CODE = 0x06009568
 TASK, TASK_SLOT_HEADER = 0x06004FAC, 0x18
 E_ADDR, C_ADDR = 0x060830C5, 0x060830C6
+NAME_OPTION, NAME_FLAG = 0x060830C7, 0x060830C8
+NAME_OPTIONS = ("EDITION", "US", "JAPANESE")
+# Name-only region readers: round HUD, results, loading, VS/Arcade wins, cast.
+NAME_FLAG_LITERALS = (
+    0x0601A198,
+    0x0601A250,
+    0x0601F244,
+    0x06034188,
+    0x060342F0,
+    0x06042D30,
+    0x06042F60,
+    0x060446E4,
+)
 FLAG, LANG, LANG2 = 0x0608089A, 0x06080882, 0x060808A8
 SLOT_1BE, R12_ORIG = 0x06091E50, 0x26020766
 APPENDIX_FLAG, APPENDIX_STR = 0x06080A2B, 0x06001BE0
@@ -106,6 +119,11 @@ def patch_list() -> list[tuple[int, bytes, bytes, bytes]]:
         original = main_bytes(addr, len(enhanced))
         patches.append((addr, enhanced, original, original))
     patches.extend((a, e, e, e) for a, e in every)
+    for addr in NAME_FLAG_LITERALS:
+        if main_bytes(addr, 4) != struct.pack(">I", FLAG):
+            raise ValueError(f"{addr:#x}: unexpected name-region literal")
+        pointer = struct.pack(">I", NAME_FLAG)
+        patches.append((addr, pointer, pointer, pointer))
     for addr, replacement in jp_enhanced.patches(MAIN.read_bytes()):
         original = main_bytes(addr, len(replacement))
         patches.append((addr, original, original, replacement))
@@ -137,6 +155,36 @@ def draw_line(a: Assembler, string_label: str | None, x: int) -> None:
     a.add_imm(8, 15)
 
 
+def resolve_name_region(a: Assembler) -> None:
+    """Resolve the saved name preference without changing the region flag."""
+    a.label("resolve_name_region")
+    a.mov_l_label("L_flag", 1)
+    a.mov_b_load(1, 2)
+    a.mov_l_label("L_E", 1)
+    a.mov_b_load(1, 0)
+    a.tst(0, 0)
+    a.branch("bt", "n_preference")
+    a.op(0x8803)  # cmp/eq #3,r0: JP Enhanced
+    a.branch("bf", "n_store")
+    a.label("n_preference")
+    a.mov_l_label("L_N", 1)
+    a.mov_b_load(1, 0)
+    a.op(0x8801)  # US name preference
+    a.branch("bf", "n_check_jp")
+    a.mov_imm(2, 2)
+    a.branch("bra", "n_store")
+    a.nop()
+    a.label("n_check_jp")
+    a.op(0x8802)  # Japanese name preference
+    a.branch("bf", "n_store")
+    a.mov_imm(0, 2)
+    a.label("n_store")
+    a.mov_l_label("L_nameflag", 1)
+    a.mov_b_store(2, 1)
+    a.rts()
+    a.nop()
+
+
 def menu(a: Assembler) -> None:
     """The EDITION line: drawing (from 0x06004B84) and input (from 0x06005400).
 
@@ -153,6 +201,7 @@ def menu(a: Assembler) -> None:
     a.push_pr()
     a.op(0x2F86)  # mov.l r8,@-r15
     a.op(0x2F96)  # mov.l r9,@-r15
+    a.op(0x2FA6)  # mov.l r10,@-r15
     a.mov_l_label("L_app", 0)
     a.mov_b_load(0, 0)
     a.tst(0, 0)
@@ -160,8 +209,8 @@ def menu(a: Assembler) -> None:
     a.mov_imm(9, 8)
     color(a, 8)
     a.mov(6, 8)
-    a.mov_imm(0x5C, 9)
-    a.shll(9)  # y 0xB8
+    a.mov_imm(0x5A, 9)
+    a.shll(9)  # y 0xB4
     a.mov_l_label("L_appstr", 7)
     a.op(0x2FE6)
     a.mov_imm(0, 2)
@@ -173,15 +222,16 @@ def menu(a: Assembler) -> None:
     a.nop()
     a.add_imm(8, 15)
     a.mov_imm(10, 8)
-    a.mov_imm(0x64, 9)
-    a.shll(9)  # y 0xC8
+    a.mov_imm(0x60, 9)
+    a.shll(9)  # y 0xC0
     a.branch("bra", "d_edition")
     a.nop()
     a.label("d_locked")
     a.mov_imm(9, 8)
-    a.mov_imm(0x5C, 9)
-    a.shll(9)  # y 0xB8
+    a.mov_imm(0x5A, 9)
+    a.shll(9)  # y 0xB4
     a.label("d_edition")
+    a.mov(8, 10)
     color(a, 8)
     a.mov(6, 8)
     draw_line(a, "L_label", LABEL_X)
@@ -197,6 +247,35 @@ def menu(a: Assembler) -> None:
     a.mov_l_label("L_names", 1)
     a.op(0x071E)  # mov.l @(r0,r1),r7
     draw_line(a, None, VALUE_X)
+    a.add_imm(1, 10)
+    a.add_imm(12, 9)
+    color(a, 10)
+    a.mov(6, 8)
+    a.mov_l_label("L_E", 1)
+    a.mov_b_load(1, 0)
+    a.tst(0, 0)
+    a.branch("bt", "d_pref")
+    a.op(0x8803)
+    a.branch("bt", "d_pref")
+    a.mov_imm(1, 8)  # Original editions use the edition default.
+    a.branch("bra", "d_picked")
+    a.mov_imm(0, 10)  # delay slot
+    a.label("d_pref")
+    a.mov_l_label("L_N", 1)
+    a.mov_b_load(1, 10)
+    a.extu_b(10, 10)
+    a.mov_imm(len(NAME_OPTIONS), 1)
+    a.cmp_hs(1, 10)
+    a.branch("bf", "d_picked")
+    a.mov_imm(0, 10)
+    a.label("d_picked")
+    draw_line(a, "L_name_label", LABEL_X)
+    a.mov(10, 0)
+    a.op(0x4008)  # shll2 r0
+    a.mov_l_label("L_name_values", 1)
+    a.op(0x071E)  # mov.l @(r0,r1),r7
+    draw_line(a, None, VALUE_X)
+    a.op(0x6AF6)  # mov.l @r15+,r10
     a.op(0x69F6)  # mov.l @r15+,r9
     a.op(0x68F6)  # mov.l @r15+,r8
     a.pop_pr()
@@ -212,11 +291,15 @@ def menu(a: Assembler) -> None:
     a.branch("bt", "x_appendix")
     a.op(0x880A)  # cmp/eq #10,r0
     a.branch("bt", "x_edition")
+    a.op(0x880B)
+    a.branch("bt", "x_names")
     a.branch("bra", "x_exit")
     a.nop()
     a.label("x_locked")
     a.op(0x8809)  # cmp/eq #9,r0
     a.branch("bt", "x_edition")
+    a.op(0x880A)
+    a.branch("bt", "x_names")
     a.label("x_exit")
     a.mov_l_label("L_exit", 1)
     a.op(0x412B)  # jmp @r1
@@ -226,15 +309,27 @@ def menu(a: Assembler) -> None:
     a.op(0x412B)
     a.nop()
     a.label("x_edition")
+    a.mov_l_label("L_E", 1)
+    a.branch("bra", "x_cycle")
+    a.mov_imm(len(EDITION_NAMES), 5)  # delay slot
+    a.label("x_names")
+    a.mov_l_label("L_E", 1)
+    a.mov_b_load(1, 0)
+    a.tst(0, 0)
+    a.branch("bt", "x_edit_names")
+    a.op(0x8803)
+    a.branch("bf", "x_exit")
+    a.label("x_edit_names")
+    a.mov_l_label("L_N", 1)
+    a.mov_imm(len(NAME_OPTIONS), 5)
+    a.label("x_cycle")
     a.mov_w_r0_disp(2, 14)
     a.op(0x600D)  # extu.w r0,r0
     a.tst(10, 0)
     a.branch("bt", "x_exit")
-    a.mov_l_label("L_E", 1)
     a.mov_b_load(1, 2)
     a.extu_b(2, 2)
-    a.mov_imm(len(EDITION_NAMES), 3)
-    a.cmp_hs(3, 2)  # invalid saved value counts as 0
+    a.cmp_hs(5, 2)  # invalid saved value counts as 0
     a.branch("bf", "x_e_ok")
     a.mov_imm(0, 2)
     a.label("x_e_ok")
@@ -245,15 +340,15 @@ def menu(a: Assembler) -> None:
     a.add_imm(-1, 2)
     a.op(0x4211)  # cmp/pz r2
     a.branch("bt", "x_right")
-    a.mov_imm(len(EDITION_NAMES) - 1, 2)
+    a.mov(5, 2)
+    a.add_imm(-1, 2)
     a.label("x_right")
     a.mov_imm(-128, 3)
     a.shll8(3)  # ...8000: right
     a.tst(3, 0)
     a.branch("bt", "x_store")
     a.add_imm(1, 2)
-    a.mov_imm(len(EDITION_NAMES), 3)
-    a.op(0x3233)  # cmp/ge r3,r2
+    a.cmp_hs(5, 2)
     a.branch("bf", "x_store")
     a.mov_imm(0, 2)
     a.label("x_store")
@@ -379,6 +474,9 @@ def code() -> bytes:
     a.mov_l_label("L_apply", 0)
     a.jsr(0)
     a.nop()
+    a.mov_l_label("L_resolve_names", 0)
+    a.jsr(0)
+    a.nop()
     a.pop_pr()
     a.mov_l_label("L_task", 0)
     a.op(0x402B)  # jmp @r0
@@ -448,12 +546,16 @@ def code() -> bytes:
     a.rts()
     a.nop()
     cart(a)
+    resolve_name_region(a)
     menu(a)
     a.align4()
     for name, value in [
         ("L_apply", "apply"),
         ("L_task", TASK),
         ("L_E", E_ADDR),
+        ("L_N", NAME_OPTION),
+        ("L_nameflag", NAME_FLAG),
+        ("L_resolve_names", "resolve_name_region"),
         ("L_last", "last"),
         ("L_values", "values"),
         ("L_flag", FLAG),
@@ -469,6 +571,8 @@ def code() -> bytes:
         ("L_apphandler", APPENDIX_HANDLER),
         ("L_names", "names"),
         ("L_label", "s_label"),
+        ("L_name_label", "s_name_label"),
+        ("L_name_values", "name_values"),
         ("L_cart", "cart"),
         ("L_cartid", CART_ID),
         ("L_cartok", "cartok"),
@@ -503,9 +607,13 @@ def code() -> bytes:
     a.label("names")
     for i in range(4):
         a.long(f"s_{i}")
-    for name, text in [("s_label", "EDITION")] + [
-        (f"s_{i}", t) for i, t in enumerate(EDITION_NAMES)
-    ]:
+    a.label("name_values")
+    for i in range(len(NAME_OPTIONS)):
+        a.long(f"s_name_{i}")
+    strings = [("s_label", "EDITION"), ("s_name_label", "NAMES")]
+    strings += [(f"s_{i}", text) for i, text in enumerate(EDITION_NAMES)]
+    strings += [(f"s_name_{i}", text) for i, text in enumerate(NAME_OPTIONS)]
+    for name, text in strings:
         a.label(name)
         a.data(text.encode() + b"\0")
     out = a.assemble()
@@ -531,11 +639,10 @@ def static_patches() -> list[tuple[int, bytes, bytes]]:
         (0x06004B84, bytes.fromhex("60302008"), bytes.fromhex("430B7F08")),
         (0x06004B88, bytes.fromhex("8D0E7F08"), bytes.fromhex("A00E0009")),
         (0x06004C54, struct.pack(">I", APPENDIX_FLAG), struct.pack(">I", lab["draw"])),
-        # cursor bounds: last index 9/8 -> 10/9 (EDITION)
-        (0x0600536A, bytes.fromhex("E109E108"), bytes.fromhex("E10AE109")),
-        (0x06005384, bytes.fromhex("E209E208"), bytes.fromhex("E20AE209")),
-        # APP-001 (EXP-0042): PRESS START TO EXIT y 0xD0 -> 0xD8, a line
-        # below EDITION (y 0xC8 with APPENDIX shown)
+        # cursor bounds: last index 9/8 -> 11/10 (NAMES)
+        (0x0600536A, bytes.fromhex("E109E108"), bytes.fromhex("E10BE10A")),
+        (0x06005384, bytes.fromhex("E209E208"), bytes.fromhex("E20BE20A")),
+        # Space the bottom rows by 12 pixels within the text renderer's bounds.
         (0x06004C46, bytes.fromhex("00D0"), bytes.fromhex("00D8")),
         # line dispatch: cursor 9 and up go to "dispatch"
         (
