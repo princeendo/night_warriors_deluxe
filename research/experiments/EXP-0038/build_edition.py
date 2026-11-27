@@ -20,6 +20,8 @@ From the stock US image (no earlier build's static patches):
   read C (literal ``0x0600D0B8``).
 - ``ST2USA.BIN``: Morrigan's two new records (EXP-0031), harmless elsewhere.
 
+- ``ST1USA.BIN``: append the US Enhanced victory quote variants after the
+  stock records, keeping all stock records addressable by the same IDs.
 - ``ST2JPN.BIN``: append the new JP Enhanced ending records, preserving all
   records used by the retail Japanese scripts.
 
@@ -164,6 +166,7 @@ def files() -> dict[str, bytes]:
         "TITLE.O": tc.title_o(),
         "ST2HIS.BIN": english_file(),
         "ENDING.O": ending(),
+        "ST1USA.BIN": tc.us_quotes.english_file(b23.encode),
         "ST2JPN.BIN": tc.jp_enhanced.ending_file(),
         "ST2USA.BIN": apply((EXTRACTED / "ST2USA.BIN").read_bytes(), st2usa),
     }
@@ -187,6 +190,8 @@ def main() -> int:
             "ST2HIS.BIN;1",
             "--relocate",
             "ST2JPN.BIN;1",
+            "--relocate",
+            "ST1USA.BIN;1",
         ]
         return patch_image.main([*args, "--out-dir", out_dir])
 

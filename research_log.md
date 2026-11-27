@@ -1734,3 +1734,21 @@ HUD and quote checks in `check_names.py`. Next: the user approved adding
 translated Japanese quotes to US Enhanced, so `QUO-001` includes a build.
 Ruff lint and format passed, pytest passed all 142 tests, and mypy passed
 on 57 files.
+
+## 2026-11-27 — Victory quote inventory and new US Enhanced variants (`QUO-001`, `EXP-0049`)
+
+The two retail table sets match per language. The Japanese selector
+chooses from 323 record destinations across the mirror and three
+vitality conditions. The English selector uses 56. The exact
+boundaries were replayed on both retail discs. The user approved adding
+translated Japanese variants to US Enhanced, so the build now adds one
+for each fighter and condition alongside the existing US line.
+`check_enhanced.py --all` selected and rendered 56 new records and a
+stock control from a cold-boot Arcade checkpoint. Each output was reviewed.
+The combined candidate's Track 1 SHA-256 is
+`d74e7476e73b24b2a21f0f3824795cfc9bb5ded698d8ed6678a7a83c72555d6d`.
+`tools.disc.sector --workers 4` verified all 209,924 sectors with zero
+invalid. The combined build also retained the saved names preference
+and English quote playback in the names regression.
+Ruff lint and format passed. Pytest passed all 142 tests, and mypy
+passed on 57 source files.

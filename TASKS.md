@@ -199,6 +199,12 @@ task repeats a sibling task, the note names it for its method only.
   `LOC-001` confirmed both preference directions in OPTION MODE and a
   saved Japanese HUD label with an English victory quote in US Enhanced
   (`EXP-0048`, D-047).
+- **2026-11-27: US Enhanced adds victory-quote variants for all 14
+  fighters.** `QUO-001` found 323 selectable Japanese records and 56
+  English. The user approved translations for more variety. The build
+  adds 56, one per fighter and mirror/vitality condition alongside the
+  existing US record. Verified the selectors and rendered all 56 in
+  Mednafen (`EXP-0049`, D-048).
 
 ## Milestones
 
@@ -895,7 +901,7 @@ tasks" just in time). The method for each is in the three sibling documents.
 | END-002 | M3-M5 for END-01 | Now a full task (above). |
 | END-003 | M1 for END-02/03 | Now a full task (above). |
 | AUD-002 | M2-M3 for AUD-01/02/03/05 | Now a full task (above): Morrigan's voices. The rest of the roster (Donovan, Sasquatch) is later. |
-| QUO-001 | M1-M5 for QUO-01 | Victory quotes: inventory per release, selection conditions, donor English. |
+| QUO-001 | M1-M5 for QUO-01 | **Done (2026-11-27, EXP-0049, D-048):** mapped both retail inventories and verified the condition boundaries. US Enhanced keeps all stock quotes and adds one new translation from the Japanese Saturn record in every fighter/condition group. All 56 new records checked on the combined build. |
 | LOC-001 | M7 | **Done (2026-11-27, EXP-0048, D-047):** saved EDITION / US / JAPANESE preference for the stock fighter-name surfaces in the Enhanced editions. Both Original editions use the edition names. The text audit records supporting names inside their scripts. |
 | UI-001 | M8 | Title, attract, menus, credits, boot warnings: each surface the register marks different. |
 | COV-001 | M8 | Coverage register: every row resolved (`docs/coverage_exceptions.md`). |

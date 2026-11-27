@@ -87,6 +87,7 @@ def _load(name: str, path: str) -> ModuleType:
 
 sound_fix = _load("sound_fix", "research/experiments/EXP-0044/sound_fix.py")
 jp_enhanced = _load("jp_enhanced", "research/experiments/EXP-0046/jp_enhanced.py")
+us_quotes = _load("us_quotes", "research/experiments/EXP-0049/us_enhanced_quotes.py")
 
 
 def main_bytes(addr: int, n: int) -> bytes:
@@ -109,6 +110,7 @@ def patch_list() -> list[tuple[int, bytes, bytes, bytes]]:
         (0x0605ADBC, morrigan_enhanced_script()),
         (0x0605B740, struct.pack(">I", 0x0605ADBC)),
     ]
+    enh.extend(us_quotes.patches(MAIN.read_bytes()))
     every = [
         # AUD-004 (EXP-0044): with Anakaris on P1, shared sounds prefer P2's
         # entry. Every edition (user decision 2026-11-26).

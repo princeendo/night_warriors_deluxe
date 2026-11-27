@@ -740,3 +740,20 @@ resolved the stock US name flag. JP Enhanced accepted the US name flag
 while its Japanese region and language values remained zero.
 
 Evidence and reproduction: [EXP-0048](../research/experiments/EXP-0048/README.md).
+
+## D-048: The stock victory quote selector has four conditions and varies its Japanese decisions
+
+Both retail programs contain the same two language-specific selector
+tables. They use winner/opponent equality first, then the winner field
+at offset `0x3C0` with cutoffs at 30 and 114. The Japanese selector takes
+one of eight table slots via the stock random byte. The English selector
+has a single slot per condition. Their reachable record counts are
+323 and 56. Matched Arcade controls on both discs reproduced the
+boundary and mirror branches.
+
+US Enhanced now uses the eight-way selector with the English renderer.
+It adds one translation per fighter/condition and keeps the existing US
+record in each group. Every translated ID was selected and displayed in
+the combined build. The other editions retain their previous selection.
+
+Evidence and reproduction: [EXP-0049](../research/experiments/EXP-0049/README.md).
