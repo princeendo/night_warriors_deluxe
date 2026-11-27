@@ -1694,3 +1694,17 @@ User choice: "Start AUD-005".
   loaded.
 - `build/us_edition` was rebuilt (Track 1 `4d70df42…4451`). The test build
   `build/exp0045_pan` was deleted (standing permission, rebuildable).
+
+## 2026-11-27 — Next release scope and `DIFF-002` (`EXP-0047`)
+
+The user reopened `END-005`, `QUO-001`, `LOC-001` and the text and UI
+audits for the next release. They will test the combined build on a real
+Saturn once those changes are incorporated.
+
+`./invenv.sh python research/experiments/EXP-0047/text_scan.py` inventories
+the six ST files on the two retail discs and identifies the 116 changed
+`ST1USA.BIN` bytes as line-Y positions. The relative search locates five
+of six representative UI labels as inline ASCII at shift zero. The sixth,
+MODE SELECT, uses graphic IDs already traced in D-015. `REF-004` is ready
+since `EMU-021` is done. Ruff lint and format passed, pytest passed all
+142 tests, and mypy passed on 57 files.

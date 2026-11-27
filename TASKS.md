@@ -187,6 +187,11 @@ task repeats a sibling task, the note names it for its method only.
   trail was pinned far left by an `and` for `or` in her code. It now follows
   the fireball. By user decision both sound fixes apply in every edition
   (`build/us_edition` Track 1 `4d70df42…4451`).
+- **2026-11-27: the next-release scope now includes JP Enhanced, victory
+  quotes, the names toggle, and the text and UI audits.** The user will
+  verify the combined build on a physical Saturn after those changes are
+  incorporated. `DIFF-002` identified the six ST text containers, the font
+  and representative UI strings (`EXP-0047`, D-045).
 
 ## Milestones
 
@@ -473,10 +478,10 @@ is not already on the base disc goes on disc).
 
 ### REF-004 - Inventory the text, audio and presentation surfaces of both releases
 
-- **Status:** `BLOCKED`
+- **Status:** `READY`
 - **Milestone:** M1
-- **Dependencies:** EMU-021.
-- **Blockers:** EMU-021.
+- **Dependencies:** EMU-021 (done).
+- **Blockers:** None.
 - **Objective:** List every place either release shows text or plays a voice, and capture each in both releases under matched settings, so the register's rows can be compared.
 - **Acceptance criteria:** `docs/text_surfaces.md` holds a table of surfaces (screen, when shown, sample screenshot path and hash per release, same/different) from screenshots the agent reviewed, built from several captures of each release: a cold boot left on the attract loop, title and menus (Appendix included), one arcade run through at least two fights with a continue, a win screen, one ending with its credits. Every register row it touches is updated with both regions' evidence.
 - **Notes:** XvSF's single session missed five surfaces (`docs/lessons_from_xvsf.md`, lesson 6); Cyberbots' kept every state and still missed endings and versus mode (`docs/lessons_from_cyberbots.md`, lesson 3). Keep every state (`--keep-states 0`). Match the settings named by the web research before comparing (animation options, Appendix).
@@ -496,13 +501,14 @@ is not already on the base disc goes on disc).
 
 ### DIFF-002 - Locate where each release keeps its text
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Milestone:** M1 (static analysis only)
 - **Dependencies:** ENV-003.
 - **Blockers:** None.
 - **Objective:** Find the storage and encoding of in-game text in both releases.
 - **Acceptance criteria:** Candidate containers are tested (`ST?JPN`/`ST?USA`/`ST?HIS.BIN` and their offset tables; `MOJI.CHR`/`MOJI.TBL` as a font; graphics files for text drawn as art); for each, the evidence for or against is recorded; relative search (the method that found Cyberbots' arcade English, `EXP-0008`) is run on the US files for a few English strings known from the US release.
-- **Notes:** A kana-run scan found no plain Shift-JIS in the program files (`references/saturn_us/README.md`). That only excludes plain Shift-JIS in those files. Confirmation needs a RAM search at runtime (`DBG-004`).
+- **Notes:** A kana-run scan found no plain Shift-JIS in the program files (`references/saturn_us/README.md`). That excludes plain Shift-JIS for the strings searched. D-011 and D-021 identify the engine's Japanese and Latin codes.
+- **Done (2026-11-27, `EXP-0047`, D-045):** documented the observed text routes, headers, hashes, MOJI, and image-based labels. The US relative scan finds representative menu and HUD strings at shift zero. The two English-format quote files contain the same text and pointers, with only 116 changed Y bytes. Spanish dialogue exists in both regions; normal use of it has not been observed.
 
 ### DIFF-003 - Choose the first difference and its milestone unit
 

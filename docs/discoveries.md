@@ -701,3 +701,17 @@ centered in mono, and her other sounds are unchanged. The fix is applied
 in every edition (user decision).
 
 Reproduce: `research/experiments/EXP-0045/README.md`.
+
+## D-045: US quote line spacing differs between discs, and program files also hold ASCII UI labels
+
+Holds for the US T-1208H V1.001 and Japanese 1M T-1202G V1.000 images.
+Both have `ST1USA.BIN` with the same 128 table pointers and the same glyph
+words at every destination. The 116 differing bytes are exclusively the
+low bytes of line Y positions, with shifts of −4, −8 or −12 in the US
+copy. These files hold the English-format inventory. The Japanese default
+loads `ST1JPN.BIN` instead (D-011, EXP-0018). The program also stores
+inline ASCII menu and fight labels. `TITLE.O:0xB78` holds SOUND MODE,
+`MAIN.BIN:0x409F0` holds NOW LOADING, and `MAIN.BIN:0x42A68` holds
+CONTINUE on the US disc. A relative byte scan finds each at shift zero.
+
+Evidence and reproduction: [EXP-0047](../research/experiments/EXP-0047/README.md).
