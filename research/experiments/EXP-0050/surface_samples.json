@@ -1,0 +1,232 @@
+[
+  {
+    "path": "local/emu003/jp1/frames/008.png",
+    "bytes": 102507,
+    "sha256": "d8d593a73d60ec91a71d336eb688e9f82e0dc6309f8c6642ce8cb1dda61eb2bd"
+  },
+  {
+    "path": "local/emu003/jp1/frames/029.png",
+    "bytes": 1768,
+    "sha256": "8a22a8d24c8866d0c4863f219a57a85c83b285cca2a838e5f497eea2856d7789"
+  },
+  {
+    "path": "local/emu003/jp1/frames/065.png",
+    "bytes": 22083,
+    "sha256": "216118a852117d9bd957752e99b6a08a35790a6c4a3c12c4cc2bc9377f1858a3"
+  },
+  {
+    "path": "local/emu003/jp1/frames/092.png",
+    "bytes": 31636,
+    "sha256": "e76a2c023eb66fe8d873a8d6df1aa58e0cd026543007deae949de2fa9b862fc3"
+  },
+  {
+    "path": "local/emu004/jp-none/frames/038.png",
+    "bytes": 2041,
+    "sha256": "db3cf88cfd8d0d65acae4ee8998c5e84a2b86586728896c1c6843e939c50c09c"
+  },
+  {
+    "path": "local/exp0042/app-jp-none/boot1/01-option-locked.png",
+    "bytes": 14913,
+    "sha256": "7d0f79b9b7a45e0150bbceda6277e22490bd26c5e8482b3390e1f3bc2eb85aa5"
+  },
+  {
+    "path": "local/exp0042/app-jp-none/boot1/02-configuration.png",
+    "bytes": 14587,
+    "sha256": "9d1a02fad2969e3b9f6e269a7286c50750a460cf569f4cb46bc2f8cec3dc26a6"
+  },
+  {
+    "path": "local/exp0042/app-jp-none/boot1/07-appendix.png",
+    "bytes": 14758,
+    "sha256": "95c3ab3605a02af5d343e236c1d9b4511034546375483ba3d707658e9b25e210"
+  },
+  {
+    "path": "local/exp0049/live-jp/title-menu.png",
+    "bytes": 14462,
+    "sha256": "32380fdb4a59615294109b1332ce7cd9a924f80e61325af6de9e800f145ebdcb"
+  },
+  {
+    "path": "local/exp0049/live-jp/select.png",
+    "bytes": 19711,
+    "sha256": "c07fb8ec7e30eca51fd2987a665f74f4a2f7f8904927d4c2b06754524a271a6a"
+  },
+  {
+    "path": "local/exp0049/live-jp/mode.png",
+    "bytes": 19778,
+    "sha256": "5c6e109c737f1ff0a8e054896e5fa8e3effdcfb135399186bd43b5bfc22ea5d4"
+  },
+  {
+    "path": "local/exp0049/live-jp/load.png",
+    "bytes": 16341,
+    "sha256": "28fc4136b2a98169d7307b292b8aa4690f0b8a36d94ec69824524fb5698bc589"
+  },
+  {
+    "path": "local/exp0049/live-jp/first-fight.png",
+    "bytes": 30302,
+    "sha256": "d7fa20117371f4609af0537faa06c6b116cfa38d4a1feac31d0ca21011f9192d"
+  },
+  {
+    "path": "local/exp0049/live-jp/continue.png",
+    "bytes": 15297,
+    "sha256": "299a429b6d0c2b1c491d0a88a60a9f9707b816249dfc7c360c2ef6e04f4d6e68"
+  },
+  {
+    "path": "local/exp0049/live-jp/reselect.png",
+    "bytes": 19410,
+    "sha256": "1ffa884caaa1777abfe261c3ac44b14379e70b4ca6ebc341a7b658e402ad123e"
+  },
+  {
+    "path": "local/exp0049/live-jp/rematch.png",
+    "bytes": 29882,
+    "sha256": "58be553dfd2bb4f9579119d67705923f99019f106fe03106073214074ee7ddba"
+  },
+  {
+    "path": "local/exp0049/live-jp/second-fight.png",
+    "bytes": 31780,
+    "sha256": "f11b7bbeb66f51a7892085bd78d0ba817431b02df07a9f051d6407d47f613b7c"
+  },
+  {
+    "path": "local/exp0049/live-jp/quote.png",
+    "bytes": 17183,
+    "sha256": "a92dbfb258abe98b9ee02af5e1acb607c17f4ac39e33ea012bd19e7ae493e544"
+  },
+  {
+    "path": "local/exp0049/main-jp/ending.png",
+    "bytes": 7218,
+    "sha256": "938e56b61f502d76d834b3550b95ca07ae5a87b12376cd9083e307bfc60fafd0"
+  },
+  {
+    "path": "local/exp0049/end-jp/epilogue.png",
+    "bytes": 13258,
+    "sha256": "045f9f71fa36b2133deb7682504004c7f1a0671fd6dcfa02bbec34fcab1c2583"
+  },
+  {
+    "path": "local/exp0049/end-jp/cast-first.png",
+    "bytes": 14566,
+    "sha256": "eb1405749c1e6b97a0f3beaebe9593a8891d77b973862ae38caff21e93772548"
+  },
+  {
+    "path": "local/exp0049/end-jp/cast-second.png",
+    "bytes": 15201,
+    "sha256": "ec7f8d80da8c567d711e39f33610f031fcf03d3f13c1cbf03ae66c8e14daea40"
+  },
+  {
+    "path": "local/exp0049/live-jp/quote-selection.json",
+    "bytes": 577,
+    "sha256": "9bbac174614f495a231f2959d424502bac9460d178e86a6fc7e3d8bc0be03cb6"
+  },
+  {
+    "path": "local/emu003/us1/frames/008.png",
+    "bytes": 111104,
+    "sha256": "d20e823bd24c2afa39af53e7bcf57a53e619ab9162f4bfbc5f54e8f9591dd793"
+  },
+  {
+    "path": "local/emu003/us1/frames/029.png",
+    "bytes": 1768,
+    "sha256": "8a22a8d24c8866d0c4863f219a57a85c83b285cca2a838e5f497eea2856d7789"
+  },
+  {
+    "path": "local/emu003/us1/frames/065.png",
+    "bytes": 20990,
+    "sha256": "d6617a8984dff59fe3eaea6876d27d48f95253a7fc352eaad2b11db88854177a"
+  },
+  {
+    "path": "local/emu003/us1/frames/092.png",
+    "bytes": 33190,
+    "sha256": "83425269b160e1433e90705e4d5e757334e123c4a1fd7a7abe7f30806889bf5c"
+  },
+  {
+    "path": "local/emu004/us-none/frames/039.png",
+    "bytes": 4372,
+    "sha256": "14334aa4d7e7d3407a59d9a29299a60d3c34041f5e4a61a63f7bbfb9a96ef883"
+  },
+  {
+    "path": "local/exp0042/app-us-none/boot1/01-option-locked.png",
+    "bytes": 14487,
+    "sha256": "d860b95756f9c21a4e94a659bf91356708daf05b4b02ab0a8e08e2c934905e91"
+  },
+  {
+    "path": "local/exp0042/app-us-none/boot1/02-configuration.png",
+    "bytes": 14171,
+    "sha256": "7429746e41480e05c759ca46e64ac8d6653ca3855998a634c077da34c36105c5"
+  },
+  {
+    "path": "local/exp0042/app-us-none/boot1/07-appendix.png",
+    "bytes": 14297,
+    "sha256": "1d1b006652e3aa1524f48ea37488d59a850ab70314ec0f13c03a3fcb1386453f"
+  },
+  {
+    "path": "local/exp0049/live-us/title-menu.png",
+    "bytes": 14059,
+    "sha256": "9b69cc3f6e6d54b829db1a7f6236dfa8d920e15152f7775d443a89172edb8c3e"
+  },
+  {
+    "path": "local/exp0049/live-us/select.png",
+    "bytes": 19984,
+    "sha256": "ac651830cd3699703d5e5e43725fd1a3717104f4d3b097523b8b4a20a43b48b0"
+  },
+  {
+    "path": "local/exp0049/live-us/mode.png",
+    "bytes": 19757,
+    "sha256": "4b880266b1750cb31abd81ac3ddd061f3078021633732858bf7db08b970df141"
+  },
+  {
+    "path": "local/exp0049/live-us/load.png",
+    "bytes": 16884,
+    "sha256": "2c43500a431889225bf59ffbea7df13a3ac3e1909c75df5e6fedb82e01b3812e"
+  },
+  {
+    "path": "local/exp0049/live-us/first-fight.png",
+    "bytes": 29267,
+    "sha256": "bd3199706d536891012a4c0e33f30c3bb06070dea165aa4f589930de160b7d3f"
+  },
+  {
+    "path": "local/exp0049/live-us/continue.png",
+    "bytes": 15984,
+    "sha256": "0e2fbc735072e3795572f08899b95be5aae992a850b629c8737b4cab96a83594"
+  },
+  {
+    "path": "local/exp0049/live-us/reselect.png",
+    "bytes": 20122,
+    "sha256": "a243fa91f155f8e04d9c667405391b66022a782b50336707c972d7be37371541"
+  },
+  {
+    "path": "local/exp0049/live-us/rematch.png",
+    "bytes": 29963,
+    "sha256": "b57eed7626677ca2970923fd3c4501a480f1514839c859ed5cc32afd811635d7"
+  },
+  {
+    "path": "local/exp0049/live-us/second-fight.png",
+    "bytes": 30941,
+    "sha256": "755e234cc72f860b4a0ef3366a5649bf75bf7d18bce4e39c168e7fb4e9c6f045"
+  },
+  {
+    "path": "local/exp0049/live-us/quote.png",
+    "bytes": 17904,
+    "sha256": "30156fdb548193c248a3d899353c1ec06b780154fd08f27472253633ec7289ae"
+  },
+  {
+    "path": "local/exp0049/main-us/ending.png",
+    "bytes": 7742,
+    "sha256": "9d65039b7aab491cf75ba272e92d05965d064b6080404efa63b5cbdbfb6293a0"
+  },
+  {
+    "path": "local/exp0049/end-us/epilogue.png",
+    "bytes": 7093,
+    "sha256": "834cc3ee2a5dffa77b032ea1f0c46fce55398a3bedb99e07724a5f58310cf571"
+  },
+  {
+    "path": "local/exp0049/end-us/cast-first.png",
+    "bytes": 14639,
+    "sha256": "f2e186273118c83cf8c8ae12037f425285b3c78da0a1e6d8f045dcb844c426c8"
+  },
+  {
+    "path": "local/exp0049/end-us/cast-second.png",
+    "bytes": 15308,
+    "sha256": "80f7adadd9a666e7797a351785b0fe1dc05118116c06fd8cbbf11dc4c4b4fe9a"
+  },
+  {
+    "path": "local/exp0049/live-us/quote-selection.json",
+    "bytes": 577,
+    "sha256": "108c1176aaf8566d96125c0ed6bd860345f5f4dde8ed88435624548f1720b66a"
+  }
+]

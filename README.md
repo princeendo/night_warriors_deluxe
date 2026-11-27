@@ -78,6 +78,12 @@ The steps, tested patchers, and expected Track 1 SHA-256 hash are in
 
 ## Build the Patch
 
+The build follows the checked-out source. Use tag `v0.1.0` to reproduce the
+published v0.1.0 checksums. The current source adds JP Enhanced, an
+Enhanced names option, and new US Enhanced quote variants. The build
+candidate and hardware verification status are in [TASKS.md](TASKS.md).
+The paired retail comparison is in [the surface audit](docs/text_surfaces.md).
+
 The release image is built from the untouched US source image, with game data
 kept under the ignored paths below.
 

@@ -205,6 +205,20 @@ task repeats a sibling task, the note names it for its method only.
   adds 56, one per fighter and mirror/vitality condition alongside the
   existing US record. Verified the selectors and rendered all 56 in
   Mednafen (`EXP-0049`, D-048).
+- **2026-11-27: retail text and UI comparison captured.** Paired boots,
+  options/Appendix, Arcade loss and continue, two fights, main ending,
+  epilogue and cast roll are recorded in `docs/text_surfaces.md`
+  (`REF-004`, `UI-001`, `EXP-0050`). The MODE SELECT label differs
+  (`AUTO GUARD` / `AUTOMATIC`). `COV-001` remains open for the wider
+  regional merge, with the missing evidence listed in
+  `docs/coverage_exceptions.md`.
+- **2026-11-27: combined hardware candidate built.** `build/next_release_candidate`
+  Track 1 SHA-256 `d74e7476…5d6d`. Cold-boot checks on that image cover all
+  new quotes, persistence and selection of fighter names, and the
+  Rikuo JP Enhanced ending. The disc-sector check found zero invalid
+  sectors. The user's next check is the combined image on a real Saturn.
+  The 4 MiB timing check (`ANI-003`) and Donovan's ice cue (`AUD-004`)
+  remain open.
 
 ## Milestones
 
@@ -491,13 +505,16 @@ is not already on the base disc goes on disc).
 
 ### REF-004 - Inventory the text, audio and presentation surfaces of both releases
 
-- **Status:** `READY`
+- **Status:** `DONE`
 - **Milestone:** M1
 - **Dependencies:** EMU-021 (done).
 - **Blockers:** None.
 - **Objective:** List every place either release shows text or plays a voice, and capture each in both releases under matched settings, so the register's rows can be compared.
 - **Acceptance criteria:** `docs/text_surfaces.md` holds a table of surfaces (screen, when shown, sample screenshot path and hash per release, same/different) from screenshots the agent reviewed, built from several captures of each release: a cold boot left on the attract loop, title and menus (Appendix included), one arcade run through at least two fights with a continue, a win screen, one ending with its credits. Every register row it touches is updated with both regions' evidence.
 - **Notes:** XvSF's single session missed five surfaces (`docs/lessons_from_xvsf.md`, lesson 6); Cyberbots' kept every state and still missed endings and versus mode (`docs/lessons_from_cyberbots.md`, lesson 3). Keep every state (`--keep-states 0`). Match the settings named by the web research before comparing (animation options, Appendix).
+- **Done (2026-11-27, `EXP-0050`):** the required paired captures and hashes
+  are recorded in `docs/text_surfaces.md`. Individual audio triggers and
+  other unclassified behavior remain in the coverage exceptions.
 
 ## Phase E: Differences, Checkpoints And Memory Analysis
 
@@ -903,7 +920,7 @@ tasks" just in time). The method for each is in the three sibling documents.
 | AUD-002 | M2-M3 for AUD-01/02/03/05 | Now a full task (above): Morrigan's voices. The rest of the roster (Donovan, Sasquatch) is later. |
 | QUO-001 | M1-M5 for QUO-01 | **Done (2026-11-27, EXP-0049, D-048):** mapped both retail inventories and verified the condition boundaries. US Enhanced keeps all stock quotes and adds one new translation from the Japanese Saturn record in every fighter/condition group. All 56 new records checked on the combined build. |
 | LOC-001 | M7 | **Done (2026-11-27, EXP-0048, D-047):** saved EDITION / US / JAPANESE preference for the stock fighter-name surfaces in the Enhanced editions. Both Original editions use the edition names. The text audit records supporting names inside their scripts. |
-| UI-001 | M8 | Title, attract, menus, credits, boot warnings: each surface the register marks different. |
-| COV-001 | M8 | Coverage register: every row resolved (`docs/coverage_exceptions.md`). |
+| UI-001 | M8 | **Done (2026-11-27, EXP-0050, D-049):** reviewed the matched title, attract, menus, boot presentation, gameplay text, ending and credits. The captured regional differences are in the surface inventory and register. |
+| COV-001 | M8 | **IN_PROGRESS.** The surface audit is recorded. Remaining rows, test gaps and out-of-scope references are in `docs/coverage_exceptions.md`; full regional coverage remains open. |
 | SPECIAL-001 | M9, user approval | Unused or unreachable assets, debug features, hidden content. |
 | REL-001 | after M5 | **Done (2026-11-25, v0.1.0 prepared):** `make_patch`, `make_zips`, `check_zips` and unit tests copied from Cyberbots (`bac6fde`) and parameterized for Night Warriors Deluxe (xdelta-only per user decision 2026-11-25). Patch `night_warriors_deluxe.Track1.xdelta` (54,362 bytes, SHA-256 `01f3aeab…fa82`, RA MD5 `8c7156c2…7e9e` unchanged) and zip `night_warriors_deluxe_0.1.0_xdelta.zip` (49,807 bytes, SHA-256 `92b8c26c…30e0`) built twice byte-identically and verified with `check_zips --expect 25e05ec1…f1be`. Release docs in `release/`; remaining backlog tasks (`END-005`, `QUO-001`, `LOC-001`, `REF-004`/`UI-001`/`COV-001`, `DIFF-002`, `REF-001`, `REF-003`) explicitly deferred by user decision 2026-11-25. Patches stay under `build/` as Release assets only (`AGENTS.md` rule 21). |

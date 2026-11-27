@@ -757,3 +757,15 @@ record in each group. Every translated ID was selected and displayed in
 the combined build. The other editions retain their previous selection.
 
 Evidence and reproduction: [EXP-0049](../research/experiments/EXP-0049/README.md).
+
+## D-049: The MODE SELECT alternative is labeled AUTO GUARD in JP and AUTOMATIC in US
+
+Paired cold-boot Arcade selection captures show SPEED SELECT with NORMAL
+and TURBO in both references. The next screen, MODE SELECT, has NORMAL
+plus AUTO GUARD on the Japanese T-1202G 1M disc and AUTOMATIC on US
+T-1208H. The stock region-selected graphics were traced in D-015. This
+check establishes the displayed labels. The same audit captured
+English continue prompts with quotes in each release's language and
+the GALLON / JON TALBAIN distinction in the stock cast rolls.
+
+Evidence and reproduction: [EXP-0050](../research/experiments/EXP-0050/README.md).

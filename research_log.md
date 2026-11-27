@@ -1752,3 +1752,25 @@ invalid. The combined build also retained the saved names preference
 and English quote playback in the names regression.
 Ruff lint and format passed. Pytest passed all 142 tests, and mypy
 passed on 57 source files.
+
+## 2026-11-27 — Paired text and UI surfaces and the hardware candidate (`EXP-0050`)
+
+`retail_run.py` and `retail_endings.py` cold-booted each retail disc
+through the matched menu and two-fight Arcade routes, including
+Continue, and forced the ending from that same run's checkpoint.
+`docs/text_surfaces.md` and the capture metadata include the reviewed
+screens and source identities. MODE SELECT reads AUTO GUARD in JP and
+AUTOMATIC in US. The cast shows GALLON and JON TALBAIN. Supporting
+character names were confirmed against the mapped dialogue records.
+The remaining coverage work is listed in `docs/coverage_exceptions.md`.
+
+The combined candidate was built under `build/next_release_candidate`.
+Using that exact image, `check_names.py` passed the reboot and HUD
+check. `check_endings.py` replayed Rikuo with the stock table and JP
+Enhanced. The enhanced A3 and A4 screenshots have the same SHA-256
+as in EXP-0046 v3. The user plans the real Saturn check once the
+combined image is ready. Next remaining checks are 4 MiB behavior
+on the console and the outstanding Donovan cue. The build is still
+a hardware candidate.
+Ruff lint and format passed. Pytest passed 142 tests and mypy passed on
+57 source files.
