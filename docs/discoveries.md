@@ -715,3 +715,17 @@ inline ASCII menu and fight labels. `TITLE.O:0xB78` holds SOUND MODE,
 CONTINUE on the US disc. A relative byte scan finds each at shift zero.
 
 Evidence and reproduction: [EXP-0047](../research/experiments/EXP-0047/README.md).
+
+## D-046: JP Enhanced selects a separate script bank and six new Japanese ending pages
+
+The US-based Deluxe build offers E=3 in OPTION MODE. With E=3 the title
+wrapper selects the Japanese region and language, writes a 508-byte
+table and script bank into the part of RAM used by the unused US scripts,
+and points the Japanese table literal at it. Ten Japanese script
+pointers retain their stock destinations. Four point to new scripts
+which use previously unused entries in the enlarged `ST2JPN.BIN`.
+All six pages displayed on the expected art from a cold-boot Arcade
+checkpoint. The control uses the original Japanese table on the same
+checkpoint. Only JP Enhanced selects the added script bank.
+
+Evidence, inputs, byte changes, and reproduction: [EXP-0046](../research/experiments/EXP-0046/README.md).

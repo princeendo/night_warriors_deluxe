@@ -18,7 +18,7 @@ title task (slot ``0x4D7``, header offset ``0x18``) pointed at the wrapper.
   Otherwise write the flag ``0x0608089A``, language ``0x06080882`` and
   ``0x060808A8``, the content byte C ``0x060830C6`` (block byte ``0x12``),
   slot ``0x1BE`` (``0x06091E50``) = ``0x26020766``, and the ``MAIN.BIN`` patch
-  list, choosing each entry's US Enhanced or original bytes.
+  list, choosing the bytes for US Enhanced, original, or JP Enhanced.
 """
 
 from __future__ import annotations
@@ -51,8 +51,8 @@ CART_TESTS = (0x22400000, 0x22480000, 0x225FFFFC, 0x227FFFFC)
 CART_PATTERN = 0x5AA5C33C
 EDITION_NAMES = ["US ENHANCED", "US ORIGINAL", "JP ORIGINAL", "JP ENHANCED"]
 LABEL_X, VALUE_X = 128, 200  # labels end at x 184 ("TIME LIMIT" at 104); values at 200
-# per E: flag, language, C
-VALUES = [(2, 1, 0), (2, 1, 2), (0, 0, 0), (0, 0, 0)]
+# per E: flag, language, C, and the index into each MAIN.BIN patch entry
+VALUES = [(2, 1, 0, 0), (2, 1, 2, 1), (0, 0, 0, 1), (0, 0, 0, 2)]
 
 
 def morrigan_enhanced_script() -> bytes:
@@ -73,6 +73,7 @@ def _load(name: str, path: str) -> ModuleType:
 
 
 sound_fix = _load("sound_fix", "research/experiments/EXP-0044/sound_fix.py")
+jp_enhanced = _load("jp_enhanced", "research/experiments/EXP-0046/jp_enhanced.py")
 
 
 def main_bytes(addr: int, n: int) -> bytes:
@@ -80,12 +81,8 @@ def main_bytes(addr: int, n: int) -> bytes:
     return MAIN.read_bytes()[o : o + n]
 
 
-def patch_list() -> list[tuple[int, bytes, bytes]]:
-    """(address, US Enhanced bytes, original-edition bytes) in MAIN.BIN's RAM.
-
-    Entries in ``every`` carry the same bytes for both, so they apply in every
-    edition.
-    """
+def patch_list() -> list[tuple[int, bytes, bytes, bytes]]:
+    """(address, US Enhanced, original, JP Enhanced) bytes in MAIN.BIN RAM."""
     st2his = 0x0605B780  # MAIN.BIN's own "ST2HIS.BIN" (the HIS name array)
     assert MAIN.read_bytes()[st2his - MAIN_BASE : st2his - MAIN_BASE + 11] == (
         b"ST2HIS.BIN\0"
@@ -104,9 +101,15 @@ def patch_list() -> list[tuple[int, bytes, bytes]]:
         # entry. Every edition (user decision 2026-11-26).
         (sound_fix.START, sound_fix.build()),
     ]
-    return [(a, e, main_bytes(a, len(e))) for a, e in enh] + [
-        (a, e, e) for a, e in every
-    ]
+    patches = []
+    for addr, enhanced in enh:
+        original = main_bytes(addr, len(enhanced))
+        patches.append((addr, enhanced, original, original))
+    patches.extend((a, e, e, e) for a, e in every)
+    for addr, replacement in jp_enhanced.patches(MAIN.read_bytes()):
+        original = main_bytes(addr, len(replacement))
+        patches.append((addr, original, original, replacement))
+    return patches
 
 
 def color(a: Assembler, idx_reg: int) -> None:
@@ -143,7 +146,7 @@ def menu(a: Assembler) -> None:
     slot (index 9 at y 0xB8 locked, 10 at y 0xC8 unlocked).
     dispatch: reached for cursor values 9 and up (r0 = cursor; r10 = the
     left/right mask, r13 = 1, r14 = the pad words); APPENDIX keeps index 9
-    when unlocked; on EDITION, left/right cycle E over 0-2, then r11 = r9 = 1
+    when unlocked; on EDITION, left/right cycle E over 0-3, then r11 = r9 = 1
     as the other lines do (redraw), and all leave through 0x06005622.
     """
     a.label("draw")
@@ -230,8 +233,8 @@ def menu(a: Assembler) -> None:
     a.mov_l_label("L_E", 1)
     a.mov_b_load(1, 2)
     a.extu_b(2, 2)
-    a.mov_imm(3, 3)
-    a.cmp_hs(3, 2)  # E >= 3 (hidden or junk) counts as 0
+    a.mov_imm(len(EDITION_NAMES), 3)
+    a.cmp_hs(3, 2)  # invalid saved value counts as 0
     a.branch("bf", "x_e_ok")
     a.mov_imm(0, 2)
     a.label("x_e_ok")
@@ -242,14 +245,14 @@ def menu(a: Assembler) -> None:
     a.add_imm(-1, 2)
     a.op(0x4211)  # cmp/pz r2
     a.branch("bt", "x_right")
-    a.mov_imm(2, 2)
+    a.mov_imm(len(EDITION_NAMES) - 1, 2)
     a.label("x_right")
     a.mov_imm(-128, 3)
     a.shll8(3)  # ...8000: right
     a.tst(3, 0)
     a.branch("bt", "x_store")
     a.add_imm(1, 2)
-    a.mov_imm(3, 3)
+    a.mov_imm(len(EDITION_NAMES), 3)
     a.op(0x3233)  # cmp/ge r3,r2
     a.branch("bf", "x_store")
     a.mov_imm(0, 2)
@@ -411,11 +414,10 @@ def code() -> bytes:
     a.mov_b_load(1, 2, post=True)  # C
     a.mov_l_label("L_C", 3)
     a.mov_b_store(2, 3)
+    a.mov_b_load(1, 7)  # patch column for this edition
     a.mov_l_label("L_slot", 3)
     a.mov_l_label("L_r12", 2)
     a.mov_l_store(2, 3)
-    a.tst(0, 0)  # T = (E == 0): US Enhanced
-    a.op(0x0729)  # movt r7
     a.mov_l_label("L_list", 1)
     a.label("loop")
     a.mov_l_load(1, 5, post=True)  # address
@@ -425,7 +427,11 @@ def code() -> bytes:
     a.mov_l_load(1, 3, post=True)  # padded length
     a.mov(1, 2)
     a.tst(7, 7)
-    a.branch("bf", "copy")  # r7 != 0: the US Enhanced bytes come first
+    a.branch("bt", "copy")
+    a.add(3, 2)
+    a.mov_imm(2, 0)
+    a.cmp_eq(7, 0)
+    a.branch("bf", "copy")
     a.add(3, 2)
     a.label("copy")
     a.mov_b_load(2, 0, post=True)
@@ -433,6 +439,7 @@ def code() -> bytes:
     a.add_imm(1, 5)
     a.dt(6)
     a.branch("bf", "copy")
+    a.add(3, 1)
     a.add(3, 1)
     a.add(3, 1)
     a.branch("bra", "loop")
@@ -478,12 +485,12 @@ def code() -> bytes:
         a.label(name)
         a.long(value)
     a.label("values")
-    a.data(b"".join(bytes([f, lang, c, 0]) for f, lang, c in VALUES))
+    a.data(b"".join(bytes(values) for values in VALUES))
     a.label("list")
-    for addr, enh, orig in patch_list():
+    for addr, enh, orig, jp in patch_list():
         pad = (len(enh) + 3) & ~3
         a.data(struct.pack(">III", addr, len(enh), pad))
-        a.data(enh.ljust(pad, b"\0") + orig.ljust(pad, b"\0"))
+        a.data(b"".join(data.ljust(pad, b"\0") for data in (enh, orig, jp)))
     a.data(bytes(4))
     a.label("last")
     a.data(b"\xff\0\0\0")

@@ -192,6 +192,9 @@ task repeats a sibling task, the note names it for its method only.
   verify the combined build on a physical Saturn after those changes are
   incorporated. `DIFF-002` identified the six ST text containers, the font
   and representative UI strings (`EXP-0047`, D-045).
+- **2026-11-27: JP Enhanced is playable in Mednafen.** `END-005` adds
+  six Japanese pages across Morrigan, Bishamon, Rikuo and Huitzil and
+  exposes the fourth edition in OPTION MODE (`EXP-0046`, D-046).
 
 ## Milestones
 
@@ -686,12 +689,17 @@ is not already on the base disc goes on disc).
 
 ### END-005 - US-only main-ending content in Japanese, for JP Enhanced
 
-- **Status:** `BACKLOG`
+- **Status:** `DONE`
 - **Milestone:** M7
 - **Dependencies:** EDITION-003, GATE-TRANSLATION (a new Japanese translation needs the user's source and approval).
 - **Objective:** Give JP Enhanced the lines and pages the US main endings add, in Japanese, in the Japanese script and `ST2JPN` text, timed to the pictures.
 - **Acceptance criteria:** (1) The exact US-only lines per character listed from `EXP-0030`, with which are additions and which are rewrites of Japanese lines (only additions qualify unless the user decides otherwise). (2) Japanese text from a source the user approves, marked as a new translation. (3) Encoded in the Japanese text codes (`MOJI`, D-011), inserted and retimed as `EXP-0031` did, shown forced and from a cold boot in JP Enhanced.
-- **Notes:** Felicia's US ending is a different story rather than added lines; how much of it counts is for the user in (1).
+- **Done (2026-11-27, `EXP-0046`, D-046):** the user approved new
+  Japanese translations of the four sets of additions, keeping Felicia's
+  Japanese ending. JP Enhanced is now selectable and shows all six new
+  pages in Mednafen from a cold-boot Arcade checkpoint. The existing
+  Japanese text and the stock table path remain available in JP Original.
+  Hardware verification is planned for the combined candidate.
 
 ## Phase G: M2, the Same Change From a Disc Image
 

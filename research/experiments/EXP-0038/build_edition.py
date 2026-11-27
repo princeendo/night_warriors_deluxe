@@ -20,8 +20,11 @@ From the stock US image (no earlier build's static patches):
   read C (literal ``0x0600D0B8``).
 - ``ST2USA.BIN``: Morrigan's two new records (EXP-0031), harmless elsewhere.
 
+- ``ST2JPN.BIN``: append the new JP Enhanced ending records, preserving all
+  records used by the retail Japanese scripts.
+
 ``ST1JPN.BIN`` and ``MAIN.BIN`` stay stock; the title code writes the
-``MAIN.BIN`` changes in RAM for US Enhanced. OUT_DIR defaults to
+``MAIN.BIN`` changes in RAM. OUT_DIR defaults to
 ``build/us_edition``.
 """
 
@@ -161,6 +164,7 @@ def files() -> dict[str, bytes]:
         "TITLE.O": tc.title_o(),
         "ST2HIS.BIN": english_file(),
         "ENDING.O": ending(),
+        "ST2JPN.BIN": tc.jp_enhanced.ending_file(),
         "ST2USA.BIN": apply((EXTRACTED / "ST2USA.BIN").read_bytes(), st2usa),
     }
     for c in ("05", "10", "14"):
@@ -176,7 +180,14 @@ def main() -> int:
         for name, data in files().items():
             (Path(tmp) / name).write_bytes(data)
             args += ["--file", name + ";1", "--data", str(Path(tmp) / name)]
-        args += ["--relocate", "TITLE.O;1", "--relocate", "ST2HIS.BIN;1"]
+        args += [
+            "--relocate",
+            "TITLE.O;1",
+            "--relocate",
+            "ST2HIS.BIN;1",
+            "--relocate",
+            "ST2JPN.BIN;1",
+        ]
         return patch_image.main([*args, "--out-dir", out_dir])
 
 

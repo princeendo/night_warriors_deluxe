@@ -1708,3 +1708,17 @@ of six representative UI labels as inline ASCII at shift zero. The sixth,
 MODE SELECT, uses graphic IDs already traced in D-015. `REF-004` is ready
 since `EMU-021` is done. Ruff lint and format passed, pytest passed all
 142 tests, and mypy passed on 57 files.
+
+## 2026-11-27 — JP Enhanced endings (`END-005`, `EXP-0046`)
+
+The user approved new Japanese translations of the US-only additions for
+Morrigan, Bishamon, Rikuo and Huitzil, with Felicia's original Japanese
+ending retained. `EXP-0046` records the donor entries, generated script
+bank, byte changes and capture commands. The v2 Huitzil fix moves both
+new pages before the original standby page, avoiding a results-card
+overlap. V3 increased the lead-in to Rikuo's first new page from 10 to
+84 frames, which cleared seven missing glyphs. Both corrections were
+verified in Mednafen. Track 1 v3 `6f93cccf…8498`. Next: names toggle
+and matched quote and UI audits on the retail references.
+Ruff lint and format passed, pytest passed all 142 tests, and mypy passed
+on 57 files. Rikuo’s closing stock-page captures are byte-identical.
