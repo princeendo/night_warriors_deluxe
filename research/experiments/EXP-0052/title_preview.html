@@ -14,6 +14,13 @@
   main { max-width: 720px; margin: auto; }
   header { display: grid; gap: 12px; margin-bottom: 20px; }
   h1 { font-size: 22px; margin: 0; }
+  .heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
   .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
   label {
     display: flex;
@@ -38,7 +45,15 @@
 </style>
 <main>
   <header>
-    <h1>DELUXE title designs</h1>
+    <div class="heading">
+      <h1>DELUXE title designs</h1>
+      <label>Designs
+        <select id="design-set">
+          <option value="aligned">Logo-aligned</option>
+          <option value="earlier">Earlier designs</option>
+        </select>
+      </label>
+    </div>
     <div class="controls">
       <label>Region
         <select id="region">
@@ -140,41 +155,212 @@
     });
   }
 
-  const designs = [
+  const earlierDesigns = [
     { label: "A · Gold signature", x: 264, y: 144, width: 64, height: 16, draw: drawGoldSignature },
     { label: "B · Silver lettering", x: 258, y: 145, width: 64, height: 16, draw: drawSilverLetters },
     { label: "C · Crimson plate", x: 252, y: 142, width: 80, height: 20, draw: drawCrimsonPlate },
     { label: "D · Centered footer", x: 126, y: 217, width: 100, height: 16, draw: drawCenteredLetters },
   ];
 
+  const paintedGlyphs = {
+    D: [
+      "########..", ".########.", "..###..###", "..###...##", "..###...##", "..###...##",
+      "..###...##", "..###..###", "..#######.", "########..", "######....",
+    ],
+    E: [
+      "#########.", ".########.", "..###...#.", "..###.#...", "..#####...", "..#####...",
+      "..###.#...", "..###...#.", "..###..##.", ".########.", "#########.",
+    ],
+    L: [
+      "#######...", ".#####....", "..###.....", "..###.....", "..###.....", "..###.....",
+      "..###.....", "..###...#.", "..###..##.", ".########.", "#########.",
+    ],
+    U: [
+      "######.####", ".####...##.", "..###...##.", "..###...##.", "..###...##.", "..###...##.",
+      "..###...##.", "..###...##.", "..####.###.", "...######..", "....####...",
+    ],
+    X: [
+      "######.####", ".####...##.", "..####.##..", "...#####...", "....###....", "....###....",
+      "...#####...", "...##.###..", "..##..####.", ".###...####", "#####.#####",
+    ],
+  };
+
+  const cutGlyphs = {
+    D: [
+      ".######..", ".#######.", ".###..###", ".##....##", ".##....##", ".##...###",
+      ".##...###", ".##..###.", ".######..", "######...",
+    ],
+    E: [
+      "..#######", ".#######.", ".###.....", ".###.....", ".######..", ".#####...",
+      ".###.....", ".###.....", ".#######.", "#######..",
+    ],
+    L: [
+      "..###....", ".###.....", ".###.....", ".###.....", ".###.....", ".###.....",
+      ".###.....", ".###.....", ".#######.", "#######..",
+    ],
+    U: [
+      ".###...##", ".###..###", ".###..###", ".###..###", ".###..###", ".###..###",
+      ".###..###", ".#######.", ".#######.", "..#####..",
+    ],
+    X: [
+      "####...##", ".###..###", "..######.", "...####..", "...###...", "...###...",
+      "..#####..", ".###.###.", "###...###", "##.....##",
+    ],
+  };
+
+  function drawLettering(context, alphabet, { x, y, advance, lean, layers }) {
+    for (const layer of layers) {
+      [..."DELUXE"].forEach((letter, index) => {
+        const rows = alphabet[letter];
+        rows.forEach((row, line) => {
+          const colors = layer.colors;
+          context.fillStyle = colors[Math.floor(line * colors.length / rows.length)];
+          [...row].forEach((pixel, column) => {
+            if (pixel === "#") {
+              const rake = Math.floor((rows.length - 1 - line) * lean);
+              const left = x + advance * index + column + rake;
+              context.fillRect(left + layer.x, y + line + layer.y, layer.size, layer.size);
+            }
+          });
+        });
+      });
+    }
+  }
+
+  function drawPaintedSerif(canvas) {
+    drawLettering(canvas.getContext("2d"), paintedGlyphs, {
+      x: 4, y: 3, advance: 12, lean: 0.36,
+      layers: [
+        { x: -1, y: -1, size: 3, colors: ["#542126"] },
+        { x: 0, y: 0, size: 2, colors: ["#9e3024", "#d75224"] },
+        { x: 0, y: 0, size: 1, colors: ["#fff1d9", "#ffdb9e", "#f5b95b"] },
+      ],
+    });
+  }
+
+  function drawChiseledSilver(canvas) {
+    const context = canvas.getContext("2d");
+    drawLettering(context, cutGlyphs, {
+      x: 5, y: 3, advance: 11, lean: 0.34,
+      layers: [
+        { x: -1, y: -1, size: 3, colors: ["#172038"] },
+        { x: 0, y: 0, size: 2, colors: ["#49659a", "#394875"] },
+        { x: 0, y: 0, size: 1, colors: ["#f2fbff", "#aecef1", "#e1ecfb"] },
+      ],
+    });
+    context.fillStyle = "#4b78a8";
+    context.fillRect(73, 7, 7, 1);
+    context.fillRect(76, 5, 1, 5);
+    context.fillStyle = "#e1ecfb";
+    context.fillRect(75, 7, 3, 1);
+    context.fillRect(76, 6, 1, 3);
+  }
+
+  function drawCrimsonSlash(canvas) {
+    const context = canvas.getContext("2d");
+    for (let row = 0; row < 18; row++) {
+      const left = Math.floor((17 - row) * 0.7);
+      const width = 82 + Math.floor(row / 3);
+      context.fillStyle = "#481329";
+      context.fillRect(left + 1, row + 2, width, 1);
+      context.fillStyle = row < 3 ? "#e17637" : "#a52b29";
+      context.fillRect(left, row, width, 1);
+      if (row > 0 && row < 17) {
+        context.fillStyle = row < 7 ? "#871d33" : "#661527";
+        context.fillRect(left + 2, row, width - 4, 1);
+      }
+    }
+    drawLettering(context, cutGlyphs, {
+      x: 14, y: 3, advance: 11, lean: 0.09,
+      layers: [
+        { x: 0, y: 0, size: 2, colors: ["#381526"] },
+        { x: 0, y: 0, size: 1, colors: ["#fff4d1", "#ffda94"] },
+      ],
+    });
+  }
+
+  const brushLetters = [
+    [5, 4, "M1 22 8 2Q18-2 22 4Q25 10 18 17Q12 23 1 22ZM8 17Q13 17 17 11Q21 5 13 6Z"],
+    [24, 7, "M0 20 7 1 22 0 19 5 11 6 9 9 17 8 15 12 7 13 6 16 17 14 15 19Z"],
+    [41, 8, "M1 19 9 1 15 0 8 14 17 13 15 17Z"],
+    [56, 7, "M7 1 13 0 7 13Q6 15 9 14Q12 13 13 10L18 1 23 0 17 14Q15 18 8 19Q2 20 2 16Z"],
+    [74, 7, "M0 19 10 9 7 2 13 1 15 6 21 0 26 0 17 10 21 17 15 18 12 13 5 19Z"],
+    [95, 5, "M0 20 8 2 24 0 21 5 12 7 11 10 18 8 16 12 9 14 7 17 23 13 18 19Z"],
+  ];
+
+  function drawBrushGold(canvas) {
+    const context = canvas.getContext("2d");
+    // Draw the strokes at a narrower aspect, then rotate the whole mark as one image.
+    context.translate(1, 1);
+    context.scale(0.88, 1);
+    context.lineJoin = "round";
+    for (const [x, y, shape] of brushLetters) {
+      context.save();
+      context.translate(x, y);
+      const outline = new Path2D(shape);
+      context.strokeStyle = "#331838";
+      context.lineWidth = 4;
+      context.stroke(outline);
+      context.strokeStyle = "#bf4e28";
+      context.lineWidth = 1.5;
+      context.stroke(outline);
+      const gold = context.createLinearGradient(0, 0, 0, 21);
+      gold.addColorStop(0, "#fff6d6");
+      gold.addColorStop(0.3, "#ffe18a");
+      gold.addColorStop(0.68, "#ffba45");
+      gold.addColorStop(1, "#e77725");
+      context.fillStyle = gold;
+      context.fill(outline, "evenodd");
+      context.restore();
+    }
+  }
+
+  const alignedDesigns = [
+    { label: "F · Chiseled silver", x: 245, y: 129, width: 84, height: 17, draw: drawChiseledSilver, align: true },
+    { label: "H · Brush gold", x: 224, y: 119, width: 112, height: 34, draw: drawBrushGold, align: true },
+    { label: "E · Painted serif", x: 244, y: 128, width: 84, height: 17, draw: drawPaintedSerif, align: true },
+    { label: "G · Crimson slash", x: 242, y: 128, width: 96, height: 20, draw: drawCrimsonSlash, align: true },
+  ];
+  // Fit of the red lower edge over x = 252–330 in the native captures.
+  const logoSlope = { us: -0.111611, jp: -0.128092 };
+
   const screens = document.getElementById("screens");
   const region = document.getElementById("region");
   const surface = document.getElementById("surface");
   const enhanced = document.getElementById("enhanced");
+  const designSet = document.getElementById("design-set");
   const params = new URLSearchParams(location.search);
   region.value = params.get("region") === "jp" ? "jp" : "us";
   surface.value = params.get("screen") === "menu" ? "title-menu" : "title";
+  designSet.value = params.get("set") === "earlier" ? "earlier" : "aligned";
 
-  for (const design of designs) {
-    const figure = document.createElement("figure");
-    const label = document.createElement("figcaption");
-    label.textContent = design.label;
-    const screen = document.createElement("div");
-    screen.className = "screen";
-    const image = new Image(352, 240);
-    const tag = document.createElement("canvas");
-    tag.width = design.width;
-    tag.height = design.height;
-    tag.style.left = `${design.x / 352 * 100}%`;
-    tag.style.top = `${design.y / 240 * 100}%`;
-    tag.style.width = `${design.width / 352 * 100}%`;
-    tag.style.height = `${design.height / 240 * 100}%`;
-    tag.setAttribute("role", "img");
-    tag.setAttribute("aria-label", "Deluxe");
-    design.draw(tag);
-    screen.append(image, tag);
-    figure.append(label, screen);
-    screens.append(figure);
+  function displayDesigns() {
+    const designs = designSet.value === "earlier" ? earlierDesigns : alignedDesigns;
+    screens.replaceChildren();
+    for (const design of designs) {
+      const figure = document.createElement("figure");
+      const caption = document.createElement("figcaption");
+      caption.textContent = design.label;
+      const screen = document.createElement("div");
+      screen.className = "screen";
+      const image = new Image(352, 240);
+      const tag = document.createElement("canvas");
+      tag.width = design.width;
+      tag.height = design.height;
+      tag.style.left = `${design.x / 352 * 100}%`;
+      tag.style.width = `${design.width / 352 * 100}%`;
+      tag.style.height = `${design.height / 240 * 100}%`;
+      tag.dataset.top = design.y;
+      tag.dataset.align = Boolean(design.align);
+      tag.hidden = !enhanced.checked;
+      tag.setAttribute("role", "img");
+      tag.setAttribute("aria-label", "Deluxe");
+      design.draw(tag);
+      screen.append(image, tag);
+      figure.append(caption, screen);
+      screens.append(figure);
+    }
+    updateCapture();
   }
 
   function updateCapture() {
@@ -184,15 +370,22 @@
       image.src = `../../../local/exp0049/live-${region.value}/${surface.value}.png`;
       image.alt = `${title} ${screen}`;
     }
+    for (const tag of screens.querySelectorAll("canvas")) {
+      const align = tag.dataset.align === "true";
+      const top = Number(tag.dataset.top) - (align && region.value === "jp" ? 3 : 0);
+      tag.style.top = `${top / 240 * 100}%`;
+      tag.style.transform = align ? `rotate(${Math.atan(logoSlope[region.value])}rad)` : "";
+    }
   }
 
   region.addEventListener("change", updateCapture);
   surface.addEventListener("change", updateCapture);
+  designSet.addEventListener("change", displayDesigns);
   enhanced.addEventListener("change", () => {
     for (const tag of screens.querySelectorAll("canvas")) {
       tag.hidden = !enhanced.checked;
     }
   });
-  updateCapture();
+  displayDesigns();
 </script>
 </html>

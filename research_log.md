@@ -1921,3 +1921,20 @@ check verified that the region and screen controls loaded the expected
 352×240 captures, the Enhanced toggle hid and restored all four tags, and
 Design A's bitmap matched `59ab485`. Layout and capture coordinates are in
 `EXP-0052`. The selection remains open.
+
+## 2026-11-27 — DELUXE lettering aligned to the regional logos
+
+Colin clarified that parallel means geometrically parallel and supplied
+the *Street Fighter Alpha 2 Gold* screen as a reference for placing the
+edition name against the main logo. Added E–H with rotation based on the
+lower red edge of the relevant regional wordmark. The original brush
+lettering in H overlaps the lower-right edge. Colin also liked how F's
+chiseled silver blends with the stock art. The preview places F beside H.
+The selection remains open.
+
+Measured the slopes with `./invenv.sh python` using the PNG decoder in
+`EXP-0026/pick_text_frame.py` and the fit criteria in `EXP-0052`. The
+opening and menu captures agree within each region. Chrome rendered all
+four aligned views. The local browser check passed all 32 design, region
+and screen combinations, including applied angles, bounds and Enhanced
+toggle behavior across design-set changes.

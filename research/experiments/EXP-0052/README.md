@@ -86,8 +86,8 @@ identifies the graphics output to trace back to the game's draw routine.
 ## Design preview
 
 Colin named the original mockup **Design A** and requested alternatives.
-`title_preview.html` compares the four designs on the same region and
-screen. The Enhanced toggle controls whether the label appears.
+`title_preview.html` offers two sets of four designs, each on the same
+region and screen. The Enhanced toggle controls whether the label appears.
 
 | Design | Tag treatment | Native overlay origin and size |
 | --- | --- | --- |
@@ -95,11 +95,28 @@ screen. The Enhanced toggle controls whether the label appears.
 | B · Silver lettering | Cooler italic block letters in the same part of the composition | `(258,145)`, 64×16 |
 | C · Crimson plate | Ivory letters on a dark red plate with a copper outline | `(252,142)`, 80×20 |
 | D · Centered footer | Spaced gold lettering and short horizontal rules below the subtitle or menu | `(126,217)`, 100×16 |
+| E · Painted serif | Gold-painted serif letters with a dark red edge | `(244,128)`, 84×17 |
+| F · Chiseled silver | Angular silver-blue letters with a small glint | `(245,129)`, 84×17 |
+| G · Crimson slash | Cream letters on a tapered red banner | `(242,128)`, 96×20 |
+| H · Brush gold | Hand-drawn gold letters overlapping the lower-right edge of the wordmark | `(224,119)`, 112×34 |
 
-The browser check verified that Design A's overlay pixels match commit
-`59ab485` and that all 16 combinations of design, region and screen fit
-within the 352×240 captures. Design D uses the lower edge of the picture.
-Its legibility on a CRT with overscan remains unverified.
+E–H rotate the whole overlay by the fitted angle of the lower red edge of
+the regional wordmark. For each x in 252–330, take the lowest y in 78–165
+with red above 110 and above 1.7 times both green and blue. Regress y on x
+over the 79 points. The opening and menu captures agree to six decimals
+for each region. The fitted slopes are −0.111611 US (−6.3685°) and
+−0.128092 JP (−7.2994°). JP overlays are raised three pixels to follow the
+position of its wordmark. The table gives the US coordinates before rotation.
+
+Colin supplied the *Street Fighter Alpha 2 Gold* title as a reference for
+placing an edition name against a main logo. Design H uses newly drawn
+lettering. Colin also liked how F blends with the existing art. F and H
+appear together in the first row of the aligned comparison.
+
+The earlier browser check matched Design A's overlay pixels to commit
+`59ab485`. The current check verified capture selection, overlay bounds
+and applied slopes in all 32 combinations. Design D's legibility on a CRT
+with overscan remains unverified.
 
 ## Uncertainty and Alternatives
 
@@ -120,24 +137,25 @@ from OPTION MODE.
 ```
 
 Open `title_preview.html` with the retail capture paths above available.
-Pick the region and screen to compare. Changing Enhanced edition hides or
-shows the four tags. The local browser check is
-`local/exp0052/comparison-check.html`.
+Pick the region, screen and design set to compare. Changing Enhanced edition
+hides or shows the four tags. The local browser check is
+`local/exp0052/aligned-check.html`.
 
 ```bash
 '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' \
   --headless --disable-gpu --no-first-run \
-  --user-data-dir="$PWD/local/exp0052/chrome-us-comparison" --window-size=800,680 \
-  --hide-scrollbars --screenshot="$PWD/local/exp0052/designs-us-title.png" \
+  --user-data-dir="$PWD/local/exp0052/chrome-us-aligned" --window-size=800,700 \
+  --hide-scrollbars --screenshot="$PWD/local/exp0052/aligned-us-title.png" \
   "file://$PWD/research/experiments/EXP-0052/title_preview.html?region=us&screen=title"
 ```
 
-For other captures, use `region=jp` or `screen=menu` as needed and change
-the screenshot filename. SHA-256 for captures under `local/exp0052/`:
+For other captures, use `region=jp`, `screen=menu` or `set=earlier` as
+needed and change the screenshot filename. SHA-256 for aligned captures
+under `local/exp0052/`:
 
 | Screenshot | SHA-256 |
 | --- | --- |
-| `designs-us-title.png` | `2435ded977602ac3f32999c5614f9a34c04358baaa2f1c7fd471f945b8e79f32` |
-| `designs-us-menu.png` | `1e8988cab3f727281318174f8119cdb3faa964179baba56816065eb4eb121617` |
-| `designs-jp-title.png` | `303b6db658c7404ce25951476ae15799bb10eb2cd0f3754ef105b5c36111f3c2` |
-| `designs-jp-menu.png` | `f8b30a4d020db20c1aabd11ea821d8bb5b2ba095f0b5a347bf3f339c7d95fdc0` |
+| `aligned-us-title.png` | `2afcf6b32c399d2d774eb2518f26bb40ffa38fceb1970c6e71e22c5713c5fa2e` |
+| `aligned-us-menu.png` | `e7ba0ed5056597615c62cf38b36499460aace79a850246efb66da64e2ff6e9a9` |
+| `aligned-jp-title.png` | `e55f948b025bd12e0ee965601617daf00c0d7c6074bfb16a9eafba2feff547ad` |
+| `aligned-jp-menu.png` | `f0b12d9a1332d2eec453d7d9630ef4c60e4213fe734a96770959ae7363dd20dc` |
