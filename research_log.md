@@ -1952,3 +1952,37 @@ check passed 48 combinations across all three design sets. Compared the
 352×240 Design F crop before and after with `./invenv.sh python` and
 `EXP-0026/pick_text_frame.py`. The RGB bytes matched for all four captures.
 The stock VDP1 command writer and asset source are still open.
+
+## 2026-11-27 — Native title rendering and softer silver
+
+Traced the title wordmark writer and finalizer in the retail checkpoints.
+Submitted the native Design F texture as one sprite in a control replay.
+The JP renderer IDs also resolve on the US disc. Calling them at the
+retail JP origins drew Vampire Hunter in the US replay (D-051).
+
+Colin flagged the tag's brightness and its overlap in OPTION MODE. The
+disc test gates it to the opening title and title menu and softens the
+silver and glint. On the US title menu, the 306 altered pixels were
+confined to the tag. Their mean RGB intensity dropped from 230.4 to
+179.7. All four Options views had zero tag commands. Continued from the
+isolated native build after the normal JP restart returned to the earlier
+US edition.
+
+## 2026-11-28 — Regional title saves
+
+With both regional save files present, the previous candidate booted from
+`N_WARRIORS_` while the newer Japanese selection was in `V_HUNTER_01`.
+Preserved the stock regional write and mirrored the edition byte to the
+US startup settings for Japanese selections. The five cold boots cycle
+through US Enhanced (fresh), US Original, JP Original, JP Enhanced and
+US Enhanced (saved), with real Options saves and no forced edition writes.
+They verified the regional settings blocks and the native title/menu
+sprites (D-052).
+
+Commands and manifests are in `EXP-0052`. `check_tag.py` passed on
+`build/exp0052_title_persist_v2`. The sector check reported zero header
+errors across 209,924 sectors. `./invenv.sh pytest -q` passed 142 tests.
+Ruff lint, format check and mypy passed for the experiment scripts.
+The candidate also booted into a live Arcade round. The standard edition
+builder reproduced the earlier release candidate's hashes. The next build
+check is a physical Saturn.

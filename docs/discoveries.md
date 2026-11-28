@@ -780,3 +780,33 @@ images. The first wordmark command sits at VDP1 VRAM offset `0x0BA0` in both
 captures. The finding covers the captured opening title.
 
 Evidence and reproduction: [EXP-0052](../research/experiments/EXP-0052/README.md).
+
+## D-051: The US disc can draw either retail title wordmark and the Enhanced tag
+
+The US title renderer builds its VDP1 list in WRAM-H. A watch on the first
+wordmark command at `0x06084CA8` reaches the sprite writer at
+`0x0601BC3E`. The finalizer at `0x0601AFDC` copies that list to VDP1.
+The US disc supplies both regional wordmarks through the shared
+`TTLDATA.BIN` and `TTL.SPR` assets.
+
+The EXP-0052 build selects the regional wordmark in the opening title and
+title menu. Design F is a separate sprite in the Enhanced editions. The
+muted palette affects only the tag's pixels. OPTION MODE uses the stock
+settings view. Cold boots and Options switches verified all four combinations.
+
+Evidence and reproduction: [EXP-0052](../research/experiments/EXP-0052/README.md).
+
+## D-052: JP edition saves need an edition byte in the US startup record
+
+The US base loads `N_WARRIORS_` at startup because its initial language
+byte is English. The stock writer selects `V_HUNTER_01` when the current
+language is Japanese. With US Original in the US file and JP Original
+in the JP file, the previous candidate booted US Original.
+
+EXP-0052 keeps the stock regional settings write and mirrors the edition
+byte into the US startup record when saving a Japanese edition. The
+five-boot Mednafen check saved and reloaded all four editions through
+OPTION MODE. During the JP saves, the rest of the US settings block
+matched byte for byte. Saving US Enhanced preserved the JP settings block.
+
+Evidence and reproduction: [EXP-0052](../research/experiments/EXP-0052/README.md).

@@ -176,11 +176,11 @@ def files() -> dict[str, bytes]:
     return out
 
 
-def main() -> int:
-    out_dir = sys.argv[1] if len(sys.argv) > 1 else "build/us_edition"
+def build(out_dir: str, replacements: dict[str, bytes]) -> int:
+    """Build the edition image with the supplied release or experiment files."""
     args = ["--source-dir", str(SOURCE), "--manifest", str(MANIFEST), "--track", TRACK]
     with tempfile.TemporaryDirectory(dir="build") as tmp:
-        for name, data in files().items():
+        for name, data in replacements.items():
             (Path(tmp) / name).write_bytes(data)
             args += ["--file", name + ";1", "--data", str(Path(tmp) / name)]
         args += [
@@ -194,6 +194,11 @@ def main() -> int:
             "ST1USA.BIN;1",
         ]
         return patch_image.main([*args, "--out-dir", out_dir])
+
+
+def main() -> int:
+    out_dir = sys.argv[1] if len(sys.argv) > 1 else "build/us_edition"
+    return build(out_dir, files())
 
 
 if __name__ == "__main__":
