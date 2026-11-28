@@ -247,6 +247,11 @@ task repeats a sibling task, the note names it for its method only.
   Victor's reduced animation set. His full set matches across regions.
   Which in-game frames use the altered reduced data remains open.
 
+- **2026-11-28: Training Mode projectile proof complete** (`TRN-001`,
+  `EXP-0057`, D-057). A four-byte RAM test kept Victor in the same round
+  through two otherwise lethal Demitri fireballs in cart-free Deluxe VS
+  under `CUT`. Throw and multi-hit coverage is next (`TRN-002`).
+
 ## Milestones
 
 This project merges two releases rather than translating one, so the sibling
@@ -947,6 +952,40 @@ is not already on the base disc goes on disc).
   the attract demo randomizes the scenery variant (D-040). Input injection
   needed patch `0002` in the agent build (D-038). Open: what the line-2 code
   (`0x06080A2A`) unlocks. No release cart setup is chosen yet (`ANI-003`).
+
+## Training Mode
+
+### TRN-001 - Prove that the fight can recover from a lethal hit
+
+- **Status:** `DONE` (2026-11-28, `EXP-0057`, D-057)
+- **Dependencies:** EMU-021, DBG-001, and the VS setup confirmed in EXP-0043
+  and EXP-0044 (available).
+- **Objective:** Find a combat hook that can keep an idle VS opponent in
+  play after a hit that would normally end the round.
+- **Acceptance criteria:** Use a reproducible Deluxe VS checkpoint with `CUT`
+  and no cart. Compare the same attack with healthy and lethal vitality,
+  identify the relevant stock code, and test a minimal RAM-only intervention.
+  Show that the lethal control enters a round-end path and that an intervention
+  lets the dummy recover and accept another hit in the same round. Preserve
+  the screenshots, traces, addresses, and original and changed bytes.
+- **Result:** At one vitality, the stock control triggered KO on the first
+  fireball. The RAM trial registered two fireballs 195 frames apart, kept
+  Victor at one vitality, and let him return to idle. The healthy control
+  took the same damage with and without the trial edit.
+
+### TRN-002 - Qualify the combat hook for Training Mode
+
+- **Status:** `READY`
+- **Dependencies:** TRN-001 (done).
+- **Acceptance criteria:** Start with a lethal throw against the same dummy.
+  Check lethal chip damage, successive hits in a combo, and both player
+  sides. Trace any other round-end path and establish whether it needs a
+  separate Training-only guard. Demonstrate that normal VS can still finish
+  when the training rule is disabled.
+- **Prototype after combat qualification:** One-controller fighter
+  selection, an idle dummy, no time limit, a position reset and an exit path.
+  Verify the complete flow from a cold boot in a derived image under `CUT`
+  with no cart. Leave release selection for the playable build.
 
 ## Later Milestones (outline only)
 

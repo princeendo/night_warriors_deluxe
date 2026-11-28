@@ -863,3 +863,20 @@ archives have 1,094 byte-identical payload blocks in the same order,
 out of 1,099 JP and 1,102 US blocks.
 
 Evidence and reproduction: [EXP-0056](../research/experiments/EXP-0056/README.md).
+
+## D-057: The US VS projectile KO path can restore vitality and keep the round live
+
+Holds for: `build/exp0053_deluxe_title` in Mednafen, US Enhanced, Demitri
+versus Victor, `CUT`, no cart (`TRN-001`, `EXP-0057`).
+
+The aligned vitality words are `0x06076C66` and `0x0607706A`, at `+0x46`
+in each player object. On the tested projectile path, `0x06022992`
+writes the damage result and `0x06022996` tests its sign. The stock
+negative path set the KO bytes at `0x06080981`–`0x06080982` and stopped
+the timer. Replacing `9015 04EE` at `0x0602299A` with `A029 0EB5` in RAM
+restored one vitality in the branch delay slot and resumed at `0x060229F0`.
+Two otherwise lethal medium fireballs registered and Victor returned to
+idle between them, with the KO bytes clear and the round timer running.
+With healthy starting vitality, both runs took 16 and then 15 damage.
+
+Reproduce: [EXP-0057](../research/experiments/EXP-0057/README.md).

@@ -2053,3 +2053,26 @@ passed. The compared inputs match their ISO listings in both regions.
 checks passed for `tools`, `tests`, and `EXP-0056`. Mypy passed on
 the repository configuration and the experiment script separately.
 `git diff --check` passed.
+
+## 2026-11-28 — First Training Mode combat proof (TRN-001)
+
+Colin asked to begin a native Training Mode using VS combat. In EXP-0057,
+`probe.py` created a cart-free Deluxe VS checkpoint with Demitri on P1 and
+an idle Victor on P2. A vitality watchpoint identified the aligned store
+and the first KO branch. From that checkpoint, four paired replays covered
+healthy and lethal vitality with stock code and with a four-byte RAM edit.
+The lethal stock replay visibly entered KO after one fireball. The edited
+replay registered two otherwise lethal fireballs in the same round. Both
+healthy runs retained ordinary projectile damage. No disc bytes changed.
+
+The first exploratory seed followed the EXP-0043 timeout script and crossed
+into the next field. The paired trials corrected it and set only the signed
+vitality word. The experiment records the capture hashes, traces, and
+reproduction commands. TRN-001 closes. TRN-002 starts with a lethal throw
+from a matched VS checkpoint, then qualifies the hook for the other combat
+paths before the playable prototype.
+
+`./invenv.sh pytest -q` passed 142 tests. Ruff lint and formatting passed for
+`tools`, `tests`, and EXP-0057. Repository mypy passed, and mypy also passed
+for `probe.py` with the two helper directories on its import path.
+`git diff --check` passed.
