@@ -228,7 +228,13 @@ task repeats a sibling task, the note names it for its method only.
   (`UI-002`, `EXP-0052`, D-051, D-052). The experimental build selects the
   retail logo and puts a softened Design F under it in Enhanced. OPTION
   MODE hides the tag. Five cold boots verified the default and all four saved
-  selections through the normal menu. Physical Saturn timing remains open.
+  selections through the normal menu.
+- **2026-11-28: DELUXE branding and JP entrance updated**
+  (`UI-002`, `EXP-0053`, D-053). `build/exp0053_deluxe_title` draws the
+  saved region's wordmark from its first animation frame. Design F
+  appears in all editions and stays visible behind the OPTION MODE text
+  at reduced intensity. Verified five cold boots, settings persistence
+  and title redraw in Mednafen. Physical Saturn timing remains open.
 
 ## Milestones
 
@@ -952,7 +958,7 @@ tasks" just in time). The method for each is in the three sibling documents.
 | QUO-001 | M1-M5 for QUO-01 | **Done (2026-11-27, EXP-0049, D-048):** mapped both retail inventories and verified the condition boundaries. US Enhanced keeps all stock quotes and adds one new translation from the Japanese Saturn record in every fighter/condition group. All 56 new records checked on the combined build. |
 | LOC-001 | M7 | **Done (2026-11-27, EXP-0048, D-047):** saved EDITION / US / JAPANESE preference for the stock fighter-name surfaces in the Enhanced editions. Both Original editions use the edition names. The text audit records supporting names inside their scripts. |
 | UI-001 | M8 | **Done (2026-11-27, EXP-0050, D-049):** reviewed the matched title, attract, menus, boot presentation, gameplay text, ending and credits. The captured regional differences are in the surface inventory and register. |
-| UI-002 | M8 | **DONE (2026-11-28, EXP-0052, D-050–D-052).** `build/exp0052_title_persist_v2` uses the active regional logo and softened Design F in Enhanced. Verified the no-save default, all four saved editions after restart, title redraw from OPTION MODE, and clearance of the subtitle and menu. The tag is hidden in OPTION MODE. Physical Saturn timing remains open. |
+| UI-002 | M8 | **DONE (2026-11-28, EXP-0052–EXP-0053, D-050–D-053).** `build/exp0053_deluxe_title` animates the chosen wordmark from its first frame, displays Design F in every edition, and dims it behind the OPTION MODE text. Verified the no-save default, all four saved editions, and title redraw from Options. Physical Saturn timing remains open. |
 | COV-001 | M8 | **IN_PROGRESS; explicitly deferred from v0.2.0 by the user (2026-11-27).** The surface audit is recorded. Remaining rows, test gaps and out-of-scope references are in `docs/coverage_exceptions.md`; full regional coverage remains open. |
 | SPECIAL-001 | M9, user approval | Unused or unreachable assets, debug features, hidden content. |
 | REL-001 | after M5 | **Done (2026-11-25, v0.1.0 prepared):** `make_patch`, `make_zips`, `check_zips` and unit tests copied from Cyberbots (`bac6fde`) and parameterized for Night Warriors Deluxe (xdelta-only per user decision 2026-11-25). Patch `night_warriors_deluxe.Track1.xdelta` (54,362 bytes, SHA-256 `01f3aeab…fa82`, RA MD5 `8c7156c2…7e9e` unchanged) and zip `night_warriors_deluxe_0.1.0_xdelta.zip` (49,807 bytes, SHA-256 `92b8c26c…30e0`) built twice byte-identically and verified with `check_zips --expect 25e05ec1…f1be`. Release docs in `release/`; remaining backlog tasks (`END-005`, `QUO-001`, `LOC-001`, `REF-004`/`UI-001`/`COV-001`, `DIFF-002`, `REF-001`, `REF-003`) explicitly deferred by user decision 2026-11-25. Patches stay under `build/` as Release assets only (`AGENTS.md` rule 21). |

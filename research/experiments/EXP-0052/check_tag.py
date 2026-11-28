@@ -3,11 +3,20 @@
 from __future__ import annotations
 
 import argparse
+import struct
 import sys
 from hashlib import sha256
 from pathlib import Path
 
-from build_tag import EDITION, SETTINGS, SETTINGS_SIZE, TEXTURE_OFFSET
+from build_tag import (
+    DRAW_SPRITES,
+    EDITION,
+    JP_WORDMARK,
+    SETTINGS,
+    SETTINGS_SIZE,
+    TEXTURE_OFFSET,
+    US_WORDMARK,
+)
 from chiseled_silver import texture
 
 sys.path.insert(0, str(Path.cwd()))
@@ -34,6 +43,34 @@ def press(agent: Agent, out: Path, key: str, frames: int = 10) -> None:
     run(agent, out, f"press:{key}", str(frames))
 
 
+def opening(agent: Agent, out: Path, edition: int) -> None:
+    """Trace the first logo submissions, including the entrance animation."""
+    run(agent, out, "3760")
+    agent.bpmode("log")
+    agent.breakpoints("pc", [f"{DRAW_SPRITES:08X}-{DRAW_SPRITES:08X}"])
+    run(agent, out, "44")
+    agent.screenshot(out / "opening-first.png")
+    run(agent, out, "96")
+    agent.breakpoints("pc")
+    wordmarks: dict[int, list[tuple[int, int]]] = {}
+    for line in agent.events():
+        fields = dict(field.split("=", 1) for field in line.split() if "=" in field)
+        if fields.get("PC") != f"{DRAW_SPRITES:08X}":
+            continue
+        sprite = int(fields["R4"], 16)
+        if sprite in (*US_WORDMARK, *JP_WORDMARK):
+            frame = int(fields["frame"])
+            wordmarks.setdefault(frame, []).append((sprite, int(fields["R5"], 16)))
+    expected = JP_WORDMARK if edition >= 2 else US_WORDMARK
+    assert len(wordmarks) >= 90, (edition, len(wordmarks))
+    assert all(
+        tuple(sprite for sprite, _ in calls) == expected for calls in wordmarks.values()
+    )
+    first, *_, last = wordmarks.values()
+    assert first[0][1] != last[0][1], "missing logo entrance animation"
+    print("Opening wordmark trace", edition, min(wordmarks), max(wordmarks), expected)
+
+
 def capture(
     agent: Agent, out: Path, name: str, edition: int, *, options: bool = False
 ) -> None:
@@ -46,18 +83,28 @@ def capture(
     agent.screenshot(path)
     digest = sha256(path.read_bytes()).hexdigest()
     print(name, "edition", edition, "tag commands", len(tag), digest)
-    visible = not options and edition in (0, 3)
-    assert len(tag) == int(visible), name
-    if not options:
-        first = next(
-            (sprite for sprite in commands if sprite.command_address == LOGO_COMMAND),
-            None,
-        )
-        assert first is not None, name
-        assert (first.width, first.height, first.x, first.y) == LOGO_SHAPE[region], name
-    if visible:
-        data = texture(region)
-        assert vram[TEXTURE_OFFSET : TEXTURE_OFFSET + len(data)] == data, name
+    assert len(tag) == 1, name
+    marker = tag[0]
+    assert (marker.x, marker.y) == (259, 113 if region == "jp" else 116), name
+    first = next(
+        sprite for sprite in commands if sprite.command_address == LOGO_COMMAND
+    )
+    assert (first.width, first.height, first.x, first.y) == LOGO_SHAPE[region], name
+    data = texture(region)
+    if options:
+        dimmed = []
+        for (pixel,) in struct.iter_unpack(">H", data):
+            opacity = pixel & 0x8000
+            channels = [((pixel >> shift) & 31) // 4 for shift in (10, 5, 0)]
+            red, green, blue = channels
+            dimmed.append(struct.pack(">H", opacity | red << 10 | green << 5 | blue))
+        data = b"".join(dimmed)
+        foreground = [
+            sprite for sprite in commands if sprite.color_word in (0x7000, 0x7010)
+        ]
+        assert foreground, name
+        assert marker.command_address < foreground[0].command_address, name
+    assert vram[TEXTURE_OFFSET : TEXTURE_OFFSET + len(data)] == data, name
 
 
 def to_menu(agent: Agent, out: Path) -> None:
@@ -107,7 +154,7 @@ def boot_and_switch(cue: Path, out: Path, home: Path, edition: int) -> None:
     process, agent = launch(cue, out, home, "backup")
     try:
         start(agent, None)
-        run(agent, out, "3900")
+        opening(agent, out, edition)
         capture(agent, out, "opening", edition)
         to_menu(agent, out)
         capture(agent, out, "title-menu", edition)

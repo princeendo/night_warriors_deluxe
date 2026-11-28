@@ -810,3 +810,19 @@ OPTION MODE. During the JP saves, the rest of the US settings block
 matched byte for byte. Saving US Enhanced preserved the JP settings block.
 
 Evidence and reproduction: [EXP-0052](../research/experiments/EXP-0052/README.md).
+
+## D-053: The stock title sprite call selects the logo before its entrance
+
+The caller at `0x0601C0B2` sends each stock wordmark ID and its changing
+origin to the sprite writer at `0x0601B7A2`. In EXP-0052, a saved JP
+Enhanced boot submitted the US IDs from frame 3785 and first added JP IDs
+at frame 3875. Routing the calls using the loaded edition selects the JP
+IDs from frame 3785 in both Japanese editions. The opening motion follows
+the original per-frame origin.
+
+The revised hook submits the Design F sprite after the wordmark and
+before the OPTION MODE labels. The quarter-intensity tile remained
+visible in every Options capture. In the paired US Options screenshots,
+the changes were contained within the tag and preserved the menu text.
+
+Evidence and reproduction: [EXP-0053](../research/experiments/EXP-0053/README.md).

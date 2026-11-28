@@ -249,6 +249,9 @@ Mednafen's internal backup memory.
 
 ## Reproduction
 
+Reproduce the native image and validation below from commit `90c0037`.
+See [EXP-0053](../EXP-0053/README.md) for the current title renderer and check.
+
 ```bash
 ./invenv.sh python research/experiments/EXP-0052/inspect_sprites.py
 ```

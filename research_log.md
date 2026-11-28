@@ -1986,3 +1986,22 @@ Ruff lint, format check and mypy passed for the experiment scripts.
 The candidate also booted into a live Arcade round. The standard edition
 builder reproduced the earlier release candidate's hashes. The next build
 check is a physical Saturn.
+
+## 2026-11-28 — Regional logo entrance and release branding
+
+The previous build displayed Night Warriors for the first 90 frames of
+the opening wordmark on a saved JP Enhanced boot. The trace confirmed
+that the finalizer hook waited for the settled signature. Moved the
+selection to the sprite-writer call so the saved region controls the
+first animation frame. Kept Design F in all editions and quartered
+its RGB555 channels in OPTION MODE. In the paired US Options captures
+every changed pixel had been black before the dim tag was added.
+
+`EXP-0053` records the byte changes and reproduction commands.
+`check_tag.py` passed the opening traces, rendering and persistence
+checks on five cold boots using `build/exp0053_deluxe_title`. The
+`tools.disc.iso9660 --check` scan of Track 1 found zero header errors
+across 209,924 sectors. `./invenv.sh pytest -q` passed 142 tests.
+Ruff lint, format check and mypy passed for the two edited Python
+scripts. A separate JP Enhanced cold boot reached the first Arcade
+round. The physical Saturn title check remains open.

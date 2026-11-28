@@ -1,4 +1,4 @@
-"""Build the experimental edition-aware title screen from the US retail image."""
+"""Build the experimental regional Deluxe title screen from the US retail image."""
 
 from __future__ import annotations
 
@@ -16,8 +16,7 @@ from tools.sh2.asm import Assembler
 
 MAIN_BASE = 0x06012000
 TITLE_BASE = 0x06001000
-FINALIZER_POINTER = 0x06013D0C
-FINALIZER = 0x0601AFDC
+SPRITE_POINTER = 0x0601C184
 DISPATCHER = 0x06045638
 DISPATCHER_LIMIT = 0x060456B8
 TITLE_MARKER = 0x0600B000
@@ -36,21 +35,13 @@ MARKER = 0x444C5831  # DLX1
 EDITION = 0x060830C5
 TITLE_MODE = 0x06080864
 CURSOR = 0x0608C188
-LOGO = 0x06084CA8
-US_LOGO_END = LOGO + 28 * 32
-TAIL_LENGTH = 0x0600DFE0
-TAIL_SCRATCH = 0x0600E000
-TAIL_LIMIT = 0x800
 STAGE_LIMIT = 0x06087108
 TEXTURE_OFFSET = 0x3000
 VDP1_VRAM = 0x25C00000
 DRAW_SPRITES = 0x0601B7A2
-# The retail JP title passes sprite ID and origin to the same renderer.
-JP_WORDMARK = (
-    (0x0080381E, 0xE0, 0x80),
-    (0x0080380E, 0xA0, 0x58),
-    (0x00803825, 0x30, 0),
-)
+# Native sprite writer inputs from the two retail title traces.
+US_WORDMARK = (0x00803806, 0x00803805)
+JP_WORDMARK = (0x0080381E, 0x0080380E, 0x00803825)
 
 
 def literal_table(assembler: Assembler, entries: dict[str, int | str]) -> None:
@@ -61,162 +52,127 @@ def literal_table(assembler: Assembler, entries: dict[str, int | str]) -> None:
 
 
 def dispatcher() -> bytes:
-    """Call title-only code when the experimental title overlay is resident."""
+    """Route only the original title wordmark calls to the title overlay."""
     a = Assembler(DISPATCHER)
+    a.mov_l_label("us_first", 1)
+    a.cmp_eq(1, 4)
+    a.branch("bt", "check_title")
+    a.mov_l_label("us_second", 1)
+    a.cmp_eq(1, 4)
+    a.branch("bf", "stock")
+    a.label("check_title")
     for address, expected in (("header", "title_header"), ("marker", "magic")):
         a.mov_l_label(address, 0)
         a.mov_l_load(0, 2)
         a.mov_l_label(expected, 3)
         a.cmp_eq(3, 2)
         a.branch("bf", "stock")
-    a.push_pr()
-    a.mov_l_label("render", 0)
-    a.jsr(0)
+    a.mov_l_label("route", 0)
+    a.op(0x402B)  # jmp @r0, forward the original fifth argument on the stack
     a.nop()
-    a.pop_pr()
     a.label("stock")
-    a.mov_l_label("finalize", 0)
+    a.mov_l_label("sprite_writer", 0)
     a.op(0x402B)  # jmp @r0
     a.nop()
     literal_table(
         a,
         {
+            "us_first": US_WORDMARK[0],
+            "us_second": US_WORDMARK[1],
             "header": TITLE_BASE,
             "title_header": 0x4D4,
             "marker": TITLE_MARKER,
             "magic": MARKER,
-            "render": RENDER,
-            "finalize": FINALIZER,
+            "route": RENDER,
+            "sprite_writer": DRAW_SPRITES,
         },
     )
     return a.assemble()
 
 
-def draw_jp_wordmark(a: Assembler) -> None:
-    """Replace the US commands and preserve the subtitle/menu commands after them."""
-    a.label("swap_logo")
-    a.push_pr()
-    a.mov_l_label("cursor", 6)
-    a.mov_l_load(6, 3)
-    a.mov_l_label("us_logo_end", 2)
-    a.op(0x3328)  # sub r2,r3
-    a.op(0x4309)  # shlr2 r3, tail length in longwords
-    a.mov_l_label("tail_length", 0)
-    a.mov_l_store(3, 0)
-    a.mov_l_label("tail_scratch", 4)
-    a.tst(3, 3)
-    a.branch("bt", "reset_cursor")
-    a.label("save_tail")
-    a.mov_l_load(2, 0, post=True)
-    a.mov_l_store(0, 4)
-    a.dt(3)
-    a.branch("bf/s", "save_tail")
-    a.add_imm(4, 4)
-    a.label("reset_cursor")
-    a.mov_l_label("logo_cursor", 0)
-    a.mov_l_store(0, 6)
-
-    def draw(part: int) -> None:
-        a.mov_l_label(f"jp_id{part}", 4)
-        a.mov_w_label(f"jp_x{part}", 5)
-        a.mov_w_label(f"jp_y{part}", 6)
-        a.mov_imm(0, 7)
-        a.op(0x2F76)  # fifth argument: mov.l r7,@-r15
-        a.mov_l_label("sprite_writer", 0)
-        a.jsr(0)
-        a.nop()
-        a.add_imm(4, 15)
-
-    draw(0)
-    draw(1)
-    a.mov_l_label("tail_length", 0)
-    a.mov_l_load(0, 3)
-    a.mov_l_label("cursor", 6)
-    a.mov_l_load(6, 4)
-    a.mov_l_label("tail_scratch", 2)
-    a.tst(3, 3)
-    a.branch("bt", "jp_underline")
-    a.label("restore_tail")
-    a.mov_l_load(2, 0, post=True)
-    a.mov_l_store(0, 4)
-    a.dt(3)
-    a.branch("bf/s", "restore_tail")
-    a.add_imm(4, 4)
-    a.mov_l_store(4, 6)
-    a.label("jp_underline")
-    draw(2)
-    a.pop_pr()
-    a.rts()
+def draw_sprite(a: Assembler) -> None:
+    # The caller's fifth argument stays in r10 across both stock calls.
+    a.op(0x2FA6)  # mov.l r10,@-r15
+    a.mov_l_label("sprite_writer", 0)
+    a.jsr(0)
     a.nop()
+    a.add_imm(4, 15)
 
 
 def render() -> bytes:
-    """Use stock wordmarks and append the tag only on the two Enhanced titles."""
+    """Draw the active wordmark and insert DELUXE before the stock foreground."""
     tiles = {region: texture(region) for region in ("us", "jp")}
     a = Assembler(RENDER)
     a.mov_l_label("edition", 0)
     a.mov_b_load(0, 0)
-    a.op(0x8801)  # cmp/eq #1,r0, US Original needs no changes
-    a.branch("bt", "done")
-    a.mov_l_label("mode", 0)
-    a.mov_w_load(0, 0)
-    a.op(0x8802)  # cmp/eq #2,r0, title menu
-    a.branch("bt", "logo_frame")
-    a.op(0x880A)  # cmp/eq #10,r0, opening title
-    a.branch("bf", "done")
-    a.label("logo_frame")
-    a.mov_l_label("cursor", 6)
-    a.mov_l_load(6, 3)
-    a.mov_l_label("minimum", 0)
-    a.cmp_hs(0, 3)
-    a.branch("bf", "done")
-    a.mov_l_label("limit", 0)
-    a.cmp_hs(0, 3)
-    a.branch("bt", "done")
+    a.mov_imm(2, 1)
+    a.cmp_hs(1, 0)
+    a.branch("bf", "us_edition")
+    a.mov_imm(4, 2)
+    a.cmp_hs(2, 0)
+    a.branch("bf", "test_sprite")
+    a.label("us_edition")
+    a.mov_imm(0, 0)
+    a.label("test_sprite")
+    a.mov_l_label("us_first", 1)
+    a.cmp_eq(1, 4)
+    a.branch("bf", "draw_second")
 
-    a.mov_l_label("logo_words", 2)
-    a.mov_l_load(2, 0, post=True)
-    a.mov_l_label("logo_mode", 1)
-    a.cmp_eq(1, 0)
-    a.branch("bf", "done")
-    a.mov_w_r0_disp(2, 2)  # CMDSIZE at LOGO+10
-    a.mov_w_label("logo_size", 1)
-    a.cmp_eq(1, 0)
-    a.branch("bf", "done")
-    a.add_imm(4, 2)
-    a.mov_l_load(2, 0)
-    a.mov_l_label("logo_xy", 1)
-    a.cmp_eq(1, 0)
-    a.branch("bf", "done")
-
-    a.mov_l_label("edition", 0)
-    a.mov_b_load(0, 0)
     a.tst(0, 0)
-    a.branch("bt", "select_us_tag")
-    a.op(0x8802)  # cmp/eq #2,r0, JP Original
-    a.branch("bt", "jp_logo")
-    a.op(0x8803)  # cmp/eq #3,r0, JP Enhanced
-    a.branch("bf", "done")
-    a.label("jp_logo")
-    a.push_pr()
-    a.mov_l_label("jp_swap", 0)
-    a.jsr(0)
+    a.branch("bt", "draw_first")
+    a.mov_l_label("jp_first", 4)
+    a.add_imm(0x20, 5)
+    a.add_imm(0x30, 6)
+    a.label("draw_first")
+    a.mov_l_label("sprite_writer", 0)
+    a.op(0x402B)  # jmp @r0, preserve all stock call arguments
     a.nop()
-    a.pop_pr()
-    a.mov_l_label("edition", 0)
-    a.mov_b_load(0, 0)
-    a.op(0x8803)  # cmp/eq #3,r0
-    a.branch("bf", "done")
-    a.mov_l_label("cursor", 6)
-    a.mov_l_load(6, 3)
+
+    a.label("draw_second")
+    # Keep the native origin, flags, and fifth argument over the sprite calls.
+    a.mov_l_load(15, 1)
+    a.push_pr()
+    for register in (8, 9, 10, 11, 12, 13):
+        a.op(0x2F06 | (register << 4))  # mov.l Rm,@-r15
+    a.mov(5, 8)
+    a.mov(6, 9)
+    a.mov(1, 10)
+    a.mov(0, 11)
+    a.mov(7, 13)
+    a.tst(11, 11)
+    a.branch("bt", "stock_second")
+    a.mov_l_label("jp_second", 4)
+    a.add_imm(-0x20, 5)
+    a.add_imm(8, 6)
+    a.label("stock_second")
+    draw_sprite(a)
+    a.mov(0, 12)  # return value of the primary call
+    a.tst(11, 11)
+    a.branch("bt", "select_us_tag")
+    a.mov_l_label("jp_third", 4)
+    a.mov(8, 5)
+    a.add_imm(-0x80, 5)
+    a.add_imm(-0x10, 5)
+    a.mov(9, 6)
+    a.add_imm(-0x50, 6)
+    a.mov(13, 7)
+    draw_sprite(a)
     a.mov_l_label("jp_tag", 2)
     a.mov_l_label("jp_tile", 5)
+    a.add_imm(0x21, 9)
     a.branch("bra", "tag_ready")
     a.nop()
     a.label("select_us_tag")
     a.mov_l_label("us_tag", 2)
     a.mov_l_label("us_tile", 5)
+    a.add_imm(0x24, 9)
+
     a.label("tag_ready")
+    a.mov_l_label("cursor", 6)
+    a.mov_l_load(6, 3)
+    a.mov_l_label("stage_limit", 0)
+    a.cmp_hs(0, 3)
+    a.branch("bt", "done")
     a.mov_imm(8, 1)
     a.label("send_command")
     a.mov_l_load(2, 0, post=True)
@@ -225,55 +181,73 @@ def render() -> bytes:
     a.branch("bf/s", "send_command")
     a.add_imm(4, 3)
     a.mov_l_store(3, 6)
+    a.add_imm(-20, 3)  # return to CMDXA and finish the per-frame origin
+    a.add_imm(0x43, 8)
+    a.mov_w_store(8, 3)
+    a.add_imm(2, 3)
+    a.mov_w_store(9, 3)
 
     a.mov(5, 2)
     a.mov_l_label("vram", 3)
     a.mov_w_label("tile_words", 1)
+    a.mov_l_label("mode", 0)
+    a.mov_w_load(0, 0)
+    a.op(0x8803)  # cmp/eq #3,r0, OPTION MODE
+    a.branch("bt", "dim")
     a.label("send_texture")
     a.mov_l_load(2, 0, post=True)
     a.mov_l_store(0, 3)
     a.dt(1)
     a.branch("bf/s", "send_texture")
     a.add_imm(4, 3)
+    a.branch("bra", "done")
+    a.nop()
+
+    a.label("dim")
+    a.mov_l_label("rgb_mask", 4)
+    a.mov_l_label("opaque_mask", 5)
+    a.label("send_dim_texture")
+    a.mov_l_load(2, 0, post=True)
+    a.mov(0, 6)
+    a.op(0x2049)  # and r4,r0, isolate the upper bits of each RGB555 channel
+    a.op(0x4009)  # shlr2 r0, quarter the intensity of each channel
+    a.op(0x2659)  # and r5,r6, retain opacity of both pixels
+    a.or_(6, 0)
+    a.mov_l_store(0, 3)
+    a.dt(1)
+    a.branch("bf/s", "send_dim_texture")
+    a.add_imm(4, 3)
     a.label("done")
+    a.mov(12, 0)
+    for register in (13, 12, 11, 10, 9, 8):
+        a.mov_l_load(15, register, post=True)
+    a.pop_pr()
     a.rts()
     a.nop()
-    draw_jp_wordmark(a)
+
     a.label("tile_words")
     a.word(len(tiles["us"]) // 4)
-    a.label("logo_size")
-    a.word(0x1430)
-    for i, (_, x, y) in enumerate(JP_WORDMARK):
-        a.label(f"jp_x{i}")
-        a.word(x)
-        a.label(f"jp_y{i}")
-        a.word(y)
     literal_table(
         a,
         {
             "edition": EDITION,
             "mode": TITLE_MODE,
             "cursor": CURSOR,
-            "minimum": US_LOGO_END,
-            "limit": US_LOGO_END + TAIL_LIMIT,
-            "logo_words": LOGO + 4,
-            "logo_mode": 0x00807080,
-            "logo_xy": 0x00D00050,
+            "stage_limit": STAGE_LIMIT - 32,
+            "us_first": US_WORDMARK[0],
+            "jp_first": JP_WORDMARK[0],
+            "jp_second": JP_WORDMARK[1],
+            "jp_third": JP_WORDMARK[2],
             "us_tag": "us_tag_data",
             "us_tile": "us_tile_data",
             "jp_tag": "jp_tag_data",
             "jp_tile": "jp_tile_data",
-            "jp_swap": "swap_logo",
-            "logo_cursor": LOGO,
-            "us_logo_end": US_LOGO_END,
-            "tail_scratch": TAIL_SCRATCH,
-            "tail_length": TAIL_LENGTH,
             "sprite_writer": DRAW_SPRITES,
             "vram": VDP1_VRAM + TEXTURE_OFFSET,
-            **{f"jp_id{i}": part[0] for i, part in enumerate(JP_WORDMARK)},
+            "rgb_mask": 0x739C739C,
+            "opaque_mask": 0x80008000,
         },
     )
-    assert US_LOGO_END + TAIL_LIMIT + (85 - 28 + 1) * 32 < STAGE_LIMIT
     for region, tile in tiles.items():
         a.label(f"{region}_tag_data")
         a.data(command(region, TEXTURE_OFFSET))
@@ -289,7 +263,7 @@ def patch_title(stock: bytes) -> bytes:
     if not (
         len(stock) <= start
         and TITLE_MARKER + len(code) <= SAVE_OPTIONS
-        and SAVE_OPTIONS + len(save) <= TAIL_LENGTH
+        and SAVE_OPTIONS + len(save) <= SAVE_SCRATCH
     ):
         raise ValueError("title tag exceeds title-time free RAM")
     output = bytearray(stock.ljust(start, b"\0") + code)
@@ -382,10 +356,10 @@ def save_options() -> bytes:
 
 def patch_main(stock: bytes) -> bytes:
     data = bytearray(stock)
-    entry = FINALIZER_POINTER - MAIN_BASE
+    entry = SPRITE_POINTER - MAIN_BASE
     start = DISPATCHER - MAIN_BASE
     code = dispatcher()
-    assert data[entry : entry + 4] == struct.pack(">I", FINALIZER)
+    assert data[entry : entry + 4] == struct.pack(">I", DRAW_SPRITES)
     assert DISPATCHER + len(code) <= DISPATCHER_LIMIT
     assert not any(data[start : start + len(code)])
     data[entry : entry + 4] = struct.pack(">I", DISPATCHER)

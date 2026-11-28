@@ -32,6 +32,7 @@ on these discs is found by experiment.
 | US Enhanced quote variety (2026-11-27, `QUO-001`) | "Add translated Japanese variants to US Enhanced" | Use new English translations from the Japanese Saturn quote records in US Enhanced alongside the existing US English. This set adds one per fighter and condition. Each Original edition keeps its retail selection. JP Enhanced keeps the Japanese selector. |
 | Edition-specific title screen (2026-11-27, `UI-002`) | “I like the "Regional logos and tag" version.” | Show Night Warriors in the US editions and Vampire Hunter in the JP editions. Add a small **DELUXE** tag beneath the retail logo in both Enhanced editions. Use the active edition at startup and when returning from OPTION MODE. The existing US Enhanced default applies when no edition is saved. |
 | DELUXE tag artwork (2026-11-27, `UI-002`) | “Yeah, let's stay with version F.” | Use Design F, Chiseled Silver, in both Enhanced editions. Rotate it to follow the baseline of the active regional wordmark. |
+| DELUXE release branding (2026-11-28, `UI-002`) | “I want the "Deluxe" to show up because it's describing the release version, not the setting.” | Use Design F with the active regional logo in all four editions. Select the active region before the opening wordmark enters. Keep DELUXE visible at reduced brightness behind the OPTION MODE text. |
 
 ## Deferred To Evidence
 
