@@ -1,5 +1,11 @@
 # EXP-0030: What Each Main Ending Says in Each Release
 
+Follow-up (2026-11-28, D-056): Demitri and Pyron draw from the
+startup-loaded `P00.BIN` pages. The rendered retail JP and US page
+bodies match the corresponding `ST2JPN.BIN` and `ST2USA.BIN` entries
+compared here. The selector and self-relative page indexing are recorded
+in [EXP-0056](../EXP-0056/README.md).
+
 Task: END-003 (criteria 2-4)
 Status: DONE
 Confidence: CONFIRMED (records, page mapping); SUPPORTED (each comparison is

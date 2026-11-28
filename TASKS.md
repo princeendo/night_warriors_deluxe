@@ -240,6 +240,12 @@ task repeats a sibling task, the note names it for its method only.
   silent (`EXP-0054`, D-054). Both ISO descriptors name the same three
   descriptive files. JP contains the metadata and US leaves all three
   empty (`EXP-0055`, D-055). The wider coverage audit remains open.
+- **2026-11-28: `FILE-05` data identified** (`COV-001`, `EXP-0056`, D-056).
+  Both retail editions draw Demitri's and Pyron's ending pages from the
+  shared `P00.BIN` archive. The earlier US and JP `ST2` comparisons used
+  byte-identical copies of the selected pages. The two `P03_` files are
+  Victor's reduced animation set. His full set matches across regions.
+  Which in-game frames use the altered reduced data remains open.
 
 ## Milestones
 

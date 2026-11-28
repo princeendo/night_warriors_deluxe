@@ -2028,3 +2028,28 @@ passed 142 tests. `./invenv.sh ruff check tools tests`,
 `./invenv.sh ruff format --check tools tests`, `./invenv.sh mypy`, and
 `git diff --check` passed. Next unblocked coverage check: classify
 `FILE-05` using the existing fighter asset loader evidence.
+
+## 2026-11-28 — Shared ending text and Victor's reduced set (COV-001)
+
+`EXP-0056` followed both regions' startup loads and main-ending
+selectors and confirmed that Demitri and Pyron read `P00.BIN`.
+The archived retail US Demitri checkpoint has the active end-of-page
+cursor in that file. The JP and US copies drawn by the retail
+selectors match the `ST2` copies used in `EXP-0030`. Across the two
+discs, the `P00.BIN` changes affect seven English pages and their
+pointers. Japanese and Spanish pages match.
+
+Both fighter filename tables select `P03_` for Victor's reduced
+set. The two regions' full sets match. The reduced BIN has 46
+changed bytes and the SPR has 1,094 matching payload blocks in order
+(1,099 JP and 1,102 US total). The comparison identifies the assets
+and exact difference range. Which displayed frames use the altered
+records remains open. The next check is a matched Victor replay
+with the reduced set and a traced sprite block selection.
+
+`./invenv.sh python research/experiments/EXP-0056/audit_assets.py`
+passed. The compared inputs match their ISO listings in both regions.
+`./invenv.sh pytest -q` passed 142 tests. Ruff lint and formatting
+checks passed for `tools`, `tests`, and `EXP-0056`. Mypy passed on
+the repository configuration and the experiment script separately.
+`git diff --check` passed.

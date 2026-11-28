@@ -847,3 +847,19 @@ summary and the English title and subtitle in those files. The US disc
 retains the directory entries at zero length.
 
 Evidence and reproduction: [EXP-0055](../research/experiments/EXP-0055/README.md).
+
+## D-056: Demitri and Pyron use shared ending pages, and the Victor changes are in his reduced set
+
+Holds for both retail releases. The main-ending renderer selects the
+startup-loaded `P00.BIN` slots for Demitri and Pyron. The Japanese pages
+on both discs and the English pages selected by US retail match the
+corresponding `ST2` copies byte for byte. Seven English pages and their
+table account for the `P00.BIN` differences. The US Demitri ending
+checkpoint confirms the active page cursor in `P00.BIN`.
+
+Fighter ID 3 loads the `P03_` BIN and SPR files in the reduced path.
+The two full-set files match across regions. The two reduced sprite
+archives have 1,094 byte-identical payload blocks in the same order,
+out of 1,099 JP and 1,102 US blocks.
+
+Evidence and reproduction: [EXP-0056](../research/experiments/EXP-0056/README.md).

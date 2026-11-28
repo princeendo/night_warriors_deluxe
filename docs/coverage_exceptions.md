@@ -13,7 +13,7 @@ tracks the disposition and evidence for each row.
 | Shared sound effects | Both sound fixes are on the build; `AUD-004` closed by user decision (2026-11-27) on emulator evidence. | None. |
 | Track 2 and ISO descriptive files | JP Track 2 has a spoken data-disc warning. US Track 2 is silent (D-054). Both discs name the same ISO descriptive files. The JP files contain metadata and the US files are empty (D-055). | The comparison covers disc content. The Track 1-only patch uses the US audio track. |
 | Manuals | The paired manuals are an optional reference (REF-003). | BIO-01 awaits a scope decision and a manual pair. |
-| Other program/data differences | Same-action comparisons exist for the surfaces named in the register. | FILE-05 and the remaining OTHER-01 behaviors need separate tracing or comparative play before M8 closure. |
+| Other program/data differences | FILE-05 identifies the shared ending pages and Victor's reduced animation set (D-056). Same-action comparisons exist for the surfaces named in the register. | Victor's altered reduced records and the remaining OTHER-01 behaviors need tracing or comparative play before M8 closure. |
 
 These entries keep COV-001 open for the full regional merge. They describe
 the bounds of the current audit and hardware candidate.
