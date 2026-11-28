@@ -850,6 +850,9 @@ is not already on the base disc goes on disc).
 - **2026-11-27: release scope decision.** The user explicitly deferred
   `COV-001`, `REF-001`, and `REF-003` from v0.2.0. Those tasks remain open for
   later work; this is a release-specific deferral, not a rejection.
+- **2026-11-27:** annotated tag `v0.2.0` was pushed to `origin`, pointing to
+  release-preparation commit `c5d9923`. The GitHub Release is not published;
+  publication and asset upload are still for the user on github.com.
 
 ### AUD-004 - Reproduce and correct the P1 Anakaris sound issue
 

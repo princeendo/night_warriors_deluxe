@@ -2,7 +2,8 @@
 
 Adapted from Cyberbots' `release/RELEASING.md` (commit `bac6fde`, itself from
 XvSF ← MSHvSF `7d4c587`) for Night Warriors Deluxe (`REL-001`). These steps
-cover the prepared 0.2.0 candidate. Version 0.1.0 is already published.
+cover the prepared 0.2.0 candidate. Version 0.1.0 is already published, and
+the `v0.2.0` tag is pushed. The GitHub Release and asset upload are pending.
 
 The agent prepares, verifies, commits and pushes the tracked release records.
 The user publishes on github.com as `princeendo`, because `gh` on this machine
@@ -78,8 +79,9 @@ draft is in `release/reddit_post_v0.2.0.md`. The download zip is not committed.
 - Keep `README.md` clear about which version is published versus prepared.
 - Stage only tracked files: never commit the zip, `.xdelta`, images, or
   `local_agent_guidance.md` (`AGENTS.md` rule 21).
-- After release decisions are recorded, commit and push the intended tracked
-  files, then tag and push `v0.2.0`.
+- The release decision, package metadata, and notes are committed and pushed;
+  the annotated tag is pushed separately. The user publishes the GitHub
+  Release and uploads the zip below.
 
 ## 5. Publish (User, on github.com)
 

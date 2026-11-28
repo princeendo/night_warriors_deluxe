@@ -1860,3 +1860,20 @@ candidate. Their source paths and SHA-256 hashes are in
 `release/reddit_images_v0.2.0.md`. The Arcade screenshot is identified as
 gameplay from the candidate; the separate EXP-0051 record carries the 4 MiB
 allocation and `FULL` evidence. No emulator was launched for this selection.
+
+## 2026-11-27 — Push v0.2.0 tag
+
+After recording the user's v0.2.0 deferrals, re-ran
+`tools.release.check_zips`; applying the package to untouched US Track 1
+reproduced candidate hash
+`d74e7476e73b24b2a21f0f3824795cfc9bb5ded698d8ed6678a7a83c72555d6d`. The zip
+remains 66,177 bytes with SHA-256
+`45f8ea0883b7db1dc97cacaa2bf8357113a817a738d23abf408a533d5369bef5`.
+
+Pushed commit `c5d9923f25a0840d6587f3f18b72cccaa21dddc9` and annotated tag
+`v0.2.0` (tag object
+`0642c76b7e48728af6ff0457c72182520b64cc87`) to `origin`. The tag points to
+that commit. The GitHub Release remains unpublished; the user will upload the
+zip and paste `release/notes_v0.2.0.md` on github.com. The Reddit drafts and
+image inventory are in `release/` and the four screenshot copies are in the
+ignored `build/reddit_0.2.0/` folder.
