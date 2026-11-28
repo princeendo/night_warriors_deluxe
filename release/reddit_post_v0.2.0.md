@@ -28,3 +28,7 @@ Project and instructions: https://github.com/princeendo/night_warriors_deluxe
 
 This is a fan restoration project; it does not include game images or BIOS
 files.
+
+**Images to attach (remove this note before posting):** use the four files in
+`build/reddit_0.2.0/`, in the order and with the descriptions in
+[`reddit_images_v0.2.0.md`](reddit_images_v0.2.0.md).

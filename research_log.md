@@ -1841,3 +1841,22 @@ Updated `release/README.md` and the top-level README to describe 0.2.0 as the
 next draft while keeping v0.1.0 identified as the current published release.
 No release was tagged or published. `COV-001` remains in progress; optional
 `REF-001` and `REF-003` remain in backlog. No task deferrals were inferred.
+
+## 2026-11-27 — v0.2.0 release scope deferrals
+
+User decision: "I explicitly defer those tasks." In response to the explicit
+list in the prior turn, this defers `COV-001`, `REF-001`, and `REF-003` from
+v0.2.0. Their task statuses and acceptance criteria remain open for later
+work; none is marked rejected. This satisfies the release checklist's
+requirement that open tasks be explicitly deferred by name.
+
+## 2026-11-27 — Reddit screenshot selection for v0.2.0
+
+Reviewed existing EXP-0046, EXP-0048, EXP-0049, and EXP-0050 captures. Copied
+four unedited 352×240 images to the ignored `build/reddit_0.2.0/` folder for
+posting: the JP Enhanced/NAMES menu, Rikuo's added Japanese ending page, a
+translated US Enhanced victory quote, and Arcade play from the combined
+candidate. Their source paths and SHA-256 hashes are in
+`release/reddit_images_v0.2.0.md`. The Arcade screenshot is identified as
+gameplay from the candidate; the separate EXP-0051 record carries the 4 MiB
+allocation and `FULL` evidence. No emulator was launched for this selection.

@@ -10,12 +10,13 @@ is signed in as the work account, which this project never uses.
 
 ## Before You Start
 
-- [ ] Every open task in `TASKS.md` is done or explicitly deferred by the user
-      by name. As of 2026-11-27, `COV-001`, `REF-001` and `REF-003` remain open;
-      their release disposition has not been decided.
-- [ ] The release image cold-booted in Mednafen. The user accepted assuming
-      hardware parity for the 4 MiB animation path; real Saturn timing,
-      stability and sprite behavior remain unverified (`EXP-0051`).
+- [x] Every open task in `TASKS.md` is done or explicitly deferred by the user
+      by name. On 2026-11-27, the user deferred `COV-001`, `REF-001` and
+      `REF-003` from v0.2.0; they remain open for later work.
+- [x] The release image cold-booted in Mednafen (`EXP-0050`, `EXP-0051`). The
+      user accepted assuming hardware parity for the 4 MiB animation path;
+      real Saturn timing, stability and sprite behavior remain unverified
+      (`EXP-0051`).
 - [ ] `git status` is clean, on `main`, and up to date with `origin/main`.
 - [ ] `git config user.email` prints
       `13876322+princeendo@users.noreply.github.com`.

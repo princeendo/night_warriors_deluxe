@@ -475,6 +475,7 @@ is not already on the base disc goes on disc).
 
 ### REF-001 - Decide and intake the arcade sets (optional)
 
+- **Release scope:** explicitly deferred from v0.2.0 by the user on 2026-11-27; task remains open.
 - **Status:** `BACKLOG`
 - **Milestone:** GATE-TRANSLATION
 - **Dependencies:** DOC-002.
@@ -496,6 +497,7 @@ is not already on the base disc goes on disc).
 
 ### REF-003 - Paired manuals (off-disc, optional)
 
+- **Release scope:** explicitly deferred from v0.2.0 by the user on 2026-11-27; task remains open.
 - **Status:** `BACKLOG`
 - **Milestone:** M9 or out of scope
 - **Dependencies:** DOC-002.
@@ -844,8 +846,10 @@ is not already on the base disc goes on disc).
   with SHA-256 `45f8ea08…69bef5`. Release notes and a Reddit post draft are in
   `release/`. This is preparation only: `COV-001` remains `IN_PROGRESS`, and
   optional reference tasks `REF-001` and `REF-003` remain `BACKLOG`. Their
-  release disposition has not been decided. Do not tag or publish until every
-  open task is done or explicitly deferred by the user by name.
+  release disposition had not yet been decided at package preparation.
+- **2026-11-27: release scope decision.** The user explicitly deferred
+  `COV-001`, `REF-001`, and `REF-003` from v0.2.0. Those tasks remain open for
+  later work; this is a release-specific deferral, not a rejection.
 
 ### AUD-004 - Reproduce and correct the P1 Anakaris sound issue
 
@@ -935,6 +939,6 @@ tasks" just in time). The method for each is in the three sibling documents.
 | QUO-001 | M1-M5 for QUO-01 | **Done (2026-11-27, EXP-0049, D-048):** mapped both retail inventories and verified the condition boundaries. US Enhanced keeps all stock quotes and adds one new translation from the Japanese Saturn record in every fighter/condition group. All 56 new records checked on the combined build. |
 | LOC-001 | M7 | **Done (2026-11-27, EXP-0048, D-047):** saved EDITION / US / JAPANESE preference for the stock fighter-name surfaces in the Enhanced editions. Both Original editions use the edition names. The text audit records supporting names inside their scripts. |
 | UI-001 | M8 | **Done (2026-11-27, EXP-0050, D-049):** reviewed the matched title, attract, menus, boot presentation, gameplay text, ending and credits. The captured regional differences are in the surface inventory and register. |
-| COV-001 | M8 | **IN_PROGRESS.** The surface audit is recorded. Remaining rows, test gaps and out-of-scope references are in `docs/coverage_exceptions.md`; full regional coverage remains open. |
+| COV-001 | M8 | **IN_PROGRESS; explicitly deferred from v0.2.0 by the user (2026-11-27).** The surface audit is recorded. Remaining rows, test gaps and out-of-scope references are in `docs/coverage_exceptions.md`; full regional coverage remains open. |
 | SPECIAL-001 | M9, user approval | Unused or unreachable assets, debug features, hidden content. |
 | REL-001 | after M5 | **Done (2026-11-25, v0.1.0 prepared):** `make_patch`, `make_zips`, `check_zips` and unit tests copied from Cyberbots (`bac6fde`) and parameterized for Night Warriors Deluxe (xdelta-only per user decision 2026-11-25). Patch `night_warriors_deluxe.Track1.xdelta` (54,362 bytes, SHA-256 `01f3aeab…fa82`, RA MD5 `8c7156c2…7e9e` unchanged) and zip `night_warriors_deluxe_0.1.0_xdelta.zip` (49,807 bytes, SHA-256 `92b8c26c…30e0`) built twice byte-identically and verified with `check_zips --expect 25e05ec1…f1be`. Release docs in `release/`; remaining backlog tasks (`END-005`, `QUO-001`, `LOC-001`, `REF-004`/`UI-001`/`COV-001`, `DIFF-002`, `REF-001`, `REF-003`) explicitly deferred by user decision 2026-11-25. Patches stay under `build/` as Release assets only (`AGENTS.md` rule 21). |
