@@ -217,8 +217,8 @@ task repeats a sibling task, the note names it for its method only.
   new quotes, persistence and selection of fighter names, and the
   Rikuo JP Enhanced ending. The disc-sector check found zero invalid
   sectors. The user's next check is the combined image on a real Saturn.
-  The 4 MiB timing check (`ANI-003`) and Donovan's ice cue (`AUD-004`)
-  remain open.
+  The 4 MiB timing check (`ANI-003`) remains open; `AUD-004` is closed by
+  user decision on emulator evidence.
 
 ## Milestones
 
@@ -842,8 +842,8 @@ is not already on the base disc goes on disc).
 
 ### AUD-004 - Reproduce and correct the P1 Anakaris sound issue
 
-- **Status:** `IN_PROGRESS` (fixed and verified; Donovan's ice attack not
-  yet triggered live)
+- **Status:** `DONE` (closed by user decision 2026-11-27 on emulator
+  evidence; live Donovan ice-attack trigger waived)
 - **Dependencies:** EMU-021, EDITION-002.
 - **Acceptance criteria:** In stereo, capture Demitri's dash and fireball
   with Anakaris on P1, then swap players and repeat with the same moves and

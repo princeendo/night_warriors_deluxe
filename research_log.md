@@ -1796,3 +1796,8 @@ and logs remain ignored under `local/exp0050/ani003-final-candidate-check/`.
 Combined with EXP-0043's emulator matrix, this satisfies the user's
 emulator-side condition. ANI-003 is `DONE` by explicit acceptance; real
 Saturn timing, sprite behavior, and stability remain UNKNOWN.
+
+## 2026-11-27 — `AUD-004` closed on emulator evidence
+
+User decision (2026-11-27): "Let's consider `AUD-004` closed if we've seen it on an emulator."
+`AUD-004` (`EXP-0044`, D-043, and `EXP-0045` for all editions) is marked `DONE` in `TASKS.md`, and `docs/known_unknowns.md` and `docs/coverage_exceptions.md` are updated to reflect that the live Donovan ice-attack trigger is waived.
