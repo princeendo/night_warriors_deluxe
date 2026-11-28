@@ -85,11 +85,21 @@ identifies the graphics output to trace back to the game's draw routine.
 
 ## Design preview
 
-`title_preview.html` places a new warm-gold pixel-lettered DELUXE tag under
-the right side of each wordmark. It draws the tag in its own 64×16 canvas at
-native screenshot coordinates `(264,144)`. That space is clear in the four
-retail captures and keeps the opening subtitle and centered menu
-legible. The toggle previews both the Enhanced and Original layouts.
+Colin named the original mockup **Design A** and requested alternatives.
+`title_preview.html` compares the four designs on the same region and
+screen. The Enhanced toggle controls whether the label appears.
+
+| Design | Tag treatment | Native overlay origin and size |
+| --- | --- | --- |
+| A · Gold signature | Warm-gold italic serifs under the right side of the logo | `(264,144)`, 64×16 |
+| B · Silver lettering | Cooler italic block letters in the same part of the composition | `(258,145)`, 64×16 |
+| C · Crimson plate | Ivory letters on a dark red plate with a copper outline | `(252,142)`, 80×20 |
+| D · Centered footer | Spaced gold lettering and short horizontal rules below the subtitle or menu | `(126,217)`, 100×16 |
+
+The browser check verified that Design A's overlay pixels match commit
+`59ab485` and that all 16 combinations of design, region and screen fit
+within the 352×240 captures. Design D uses the lower edge of the picture.
+Its legibility on a CRT with overscan remains unverified.
 
 ## Uncertainty and Alternatives
 
@@ -110,18 +120,24 @@ from OPTION MODE.
 ```
 
 Open `title_preview.html` with the retail capture paths above available.
-Changing Enhanced editions should hide or show the four overlay canvases.
-The local browser check at `local/exp0052/preview-check.html` confirmed that
-all four 352×240 images loaded and that the toggle hid and restored the
-painted overlays.
+Pick the region and screen to compare. Changing Enhanced edition hides or
+shows the four tags. The local browser check is
+`local/exp0052/comparison-check.html`.
 
 ```bash
 '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' \
   --headless --disable-gpu --no-first-run \
-  --user-data-dir="$PWD/local/exp0052/chrome-preview" --window-size=800,660 \
-  --hide-scrollbars --screenshot="$PWD/local/exp0052/title-design.png" \
-  "file://$PWD/research/experiments/EXP-0052/title_preview.html"
+  --user-data-dir="$PWD/local/exp0052/chrome-us-comparison" --window-size=800,680 \
+  --hide-scrollbars --screenshot="$PWD/local/exp0052/designs-us-title.png" \
+  "file://$PWD/research/experiments/EXP-0052/title_preview.html?region=us&screen=title"
 ```
 
-Preview screenshot SHA-256
-`6594f414979eeac2673162b3e7a4b797446f21137245a0eec6a54c7f33c25973`.
+For other captures, use `region=jp` or `screen=menu` as needed and change
+the screenshot filename. SHA-256 for captures under `local/exp0052/`:
+
+| Screenshot | SHA-256 |
+| --- | --- |
+| `designs-us-title.png` | `2435ded977602ac3f32999c5614f9a34c04358baaa2f1c7fd471f945b8e79f32` |
+| `designs-us-menu.png` | `1e8988cab3f727281318174f8119cdb3faa964179baba56816065eb4eb121617` |
+| `designs-jp-title.png` | `303b6db658c7404ce25951476ae15799bb10eb2cd0f3754ef105b5c36111f3c2` |
+| `designs-jp-menu.png` | `f8b30a4d020db20c1aabd11ea821d8bb5b2ba095f0b5a347bf3f339c7d95fdc0` |

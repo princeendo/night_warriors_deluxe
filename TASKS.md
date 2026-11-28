@@ -220,7 +220,8 @@ task repeats a sibling task, the note names it for its method only.
   The 4 MiB timing check (`ANI-003`) remains open; `AUD-004` is closed by
   user decision on emulator evidence.
 - **2026-11-27: regional title design started** (`UI-002`, `EXP-0052`).
-  A preview places the DELUXE tag on both retail title screens and menus.
+  The preview compares Designs A through D on both retail title screens
+  and menus. The tag design is open for selection.
   Validated VDP1 dumps isolate both wordmarks and the common glass. The
   title logo's disc source and runtime selection still need tracing.
 

@@ -1908,3 +1908,16 @@ Checks passed via `./invenv.sh`: `pytest -q` (142 tests), `ruff check`,
 `ruff format --check`, and `mypy` on the experiment script. Reproduction
 and local evidence paths are in `EXP-0052`. The next investigation is the
 US wordmark command writer and its input.
+
+## 2026-11-27 — DELUXE tag comparisons
+
+User decision: “Let's call this "Design A".” Preserved the original overlay
+as A and added B (silver lettering), C (crimson plate), and D (centered
+footer). The comparison lets the user switch between regions, the opening
+title and menu, and Original and Enhanced.
+
+Rendered all four region and screen combinations in Chrome. The browser
+check verified that the region and screen controls loaded the expected
+352×240 captures, the Enhanced toggle hid and restored all four tags, and
+Design A's bitmap matched `59ab485`. Layout and capture coordinates are in
+`EXP-0052`. The selection remains open.

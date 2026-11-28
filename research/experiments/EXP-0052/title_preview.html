@@ -12,21 +12,16 @@
   }
   body { margin: 0; padding: 24px; }
   main { max-width: 720px; margin: auto; }
-  header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
+  header { display: grid; gap: 12px; margin-bottom: 20px; }
   h1 { font-size: 22px; margin: 0; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
   label {
     display: flex;
     align-items: center;
     gap: 6px;
     accent-color: #ffca6c;
   }
+  select { padding: 4px 6px; font: inherit; }
   section { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   figure { margin: 0; }
   figcaption { margin-bottom: 6px; color: #d5cbd0; }
@@ -34,10 +29,6 @@
   .screen img { display: block; width: 100%; height: auto; image-rendering: pixelated; }
   .screen canvas {
     position: absolute;
-    left: 75%;
-    top: 60%;
-    width: calc(64 / 352 * 100%);
-    height: calc(16 / 240 * 100%);
     image-rendering: pixelated;
   }
   @media (max-width: 530px) {
@@ -47,8 +38,22 @@
 </style>
 <main>
   <header>
-    <h1>Regional title design</h1>
-    <label><input id="enhanced" type="checkbox" checked> Enhanced editions</label>
+    <h1>DELUXE title designs</h1>
+    <div class="controls">
+      <label>Region
+        <select id="region">
+          <option value="us">US · Night Warriors</option>
+          <option value="jp">JP · Vampire Hunter</option>
+        </select>
+      </label>
+      <label>Screen
+        <select id="surface">
+          <option value="title">Opening title</option>
+          <option value="title-menu">Title menu</option>
+        </select>
+      </label>
+      <label><input id="enhanced" type="checkbox" checked> Enhanced edition</label>
+    </div>
   </header>
   <section id="screens" aria-label="Regional title previews"></section>
 </main>
@@ -61,7 +66,7 @@
     X: ["1110111", "0110010", "0010100", "0011100", "0001100", "0011100", "0010110", "0100011", "1110111"],
   };
 
-  function drawTag(canvas) {
+  function drawGoldSignature(canvas) {
     const context = canvas.getContext("2d");
     for (const shadow of [true, false]) {
       [..."DELUXE"].forEach((letter, index) => {
@@ -78,32 +83,116 @@
     }
   }
 
-  const screens = document.getElementById("screens");
-  for (const [file, caption] of [["title.png", "Opening title"], ["title-menu.png", "Title menu"]]) {
-    for (const [region, title] of [["us", "Night Warriors"], ["jp", "Vampire Hunter"]]) {
-      const figure = document.createElement("figure");
-      const label = document.createElement("figcaption");
-      label.textContent = `${region.toUpperCase()} · ${caption}`;
-      const screen = document.createElement("div");
-      screen.className = "screen";
-      const image = new Image(352, 240);
-      image.src = `../../../local/exp0049/live-${region}/${file}`;
-      image.alt = `${title} ${caption.toLowerCase()}`;
-      const tag = document.createElement("canvas");
-      tag.width = 64;
-      tag.height = 16;
-      tag.setAttribute("role", "img");
-      tag.setAttribute("aria-label", "Deluxe");
-      drawTag(tag);
-      screen.append(image, tag);
-      figure.append(label, screen);
-      screens.append(figure);
+  const blockGlyphs = {
+    D: ["1111100", "1111110", "1100111", "1100011", "1100011", "1100011", "1100111", "1111110", "1111100"],
+    E: ["1111111", "1111111", "1100000", "1100000", "1111110", "1100000", "1100000", "1111111", "1111111"],
+    L: ["1100000", "1100000", "1100000", "1100000", "1100000", "1100000", "1100000", "1111111", "1111111"],
+    U: ["1100011", "1100011", "1100011", "1100011", "1100011", "1100011", "1100011", "1111111", "0111110"],
+    X: ["1100011", "1100011", "0110110", "0011100", "0011100", "0011100", "0110110", "1100011", "1100011"],
+  };
+
+  function drawBlockLetters(context, { x, y, spacing, slant, light, shade, shadow }) {
+    for (const isShadow of [true, false]) {
+      [..."DELUXE"].forEach((letter, index) => {
+        blockGlyphs[letter].forEach((row, line) => {
+          context.fillStyle = isShadow ? shadow : line < 5 ? light : shade;
+          [...row].forEach((pixel, column) => {
+            if (pixel === "1") {
+              const lean = slant ? Math.floor((8 - line) / 3) : 0;
+              const left = x + spacing * index + column + lean;
+              context.fillRect(left, y + line + Number(isShadow), isShadow ? 2 : 1, 1);
+            }
+          });
+        });
+      });
     }
   }
-  document.getElementById("enhanced").addEventListener("change", (event) => {
+
+  function drawSilverLetters(canvas) {
+    drawBlockLetters(canvas.getContext("2d"), {
+      x: 4, y: 2, spacing: 9, slant: true, light: "#edfaff", shade: "#a3c8ec", shadow: "#182341",
+    });
+  }
+
+  function drawCrimsonPlate(canvas) {
+    const context = canvas.getContext("2d");
+    context.fillStyle = "#260e26";
+    context.fillRect(2, 2, 72, 15);
+    context.fillRect(4, 1, 68, 17);
+    context.fillStyle = "#bd6241";
+    context.fillRect(4, 2, 68, 13);
+    context.fillRect(6, 1, 64, 15);
+    context.fillStyle = "#68152a";
+    context.fillRect(5, 3, 66, 11);
+    context.fillRect(7, 2, 62, 13);
+    drawBlockLetters(context, {
+      x: 12, y: 4, spacing: 9, slant: false, light: "#fff1ce", shade: "#ffd692", shadow: "#350e20",
+    });
+  }
+
+  function drawCenteredLetters(canvas) {
+    const context = canvas.getContext("2d");
+    context.fillStyle = "#b89265";
+    context.fillRect(4, 6, 10, 1);
+    context.fillRect(86, 6, 10, 1);
+    drawBlockLetters(context, {
+      x: 19, y: 2, spacing: 11, slant: false, light: "#ffecaa", shade: "#ebbb64", shadow: "#1d155e",
+    });
+  }
+
+  const designs = [
+    { label: "A · Gold signature", x: 264, y: 144, width: 64, height: 16, draw: drawGoldSignature },
+    { label: "B · Silver lettering", x: 258, y: 145, width: 64, height: 16, draw: drawSilverLetters },
+    { label: "C · Crimson plate", x: 252, y: 142, width: 80, height: 20, draw: drawCrimsonPlate },
+    { label: "D · Centered footer", x: 126, y: 217, width: 100, height: 16, draw: drawCenteredLetters },
+  ];
+
+  const screens = document.getElementById("screens");
+  const region = document.getElementById("region");
+  const surface = document.getElementById("surface");
+  const enhanced = document.getElementById("enhanced");
+  const params = new URLSearchParams(location.search);
+  region.value = params.get("region") === "jp" ? "jp" : "us";
+  surface.value = params.get("screen") === "menu" ? "title-menu" : "title";
+
+  for (const design of designs) {
+    const figure = document.createElement("figure");
+    const label = document.createElement("figcaption");
+    label.textContent = design.label;
+    const screen = document.createElement("div");
+    screen.className = "screen";
+    const image = new Image(352, 240);
+    const tag = document.createElement("canvas");
+    tag.width = design.width;
+    tag.height = design.height;
+    tag.style.left = `${design.x / 352 * 100}%`;
+    tag.style.top = `${design.y / 240 * 100}%`;
+    tag.style.width = `${design.width / 352 * 100}%`;
+    tag.style.height = `${design.height / 240 * 100}%`;
+    tag.setAttribute("role", "img");
+    tag.setAttribute("aria-label", "Deluxe");
+    design.draw(tag);
+    screen.append(image, tag);
+    figure.append(label, screen);
+    screens.append(figure);
+  }
+
+  function updateCapture() {
+    const title = region.value === "us" ? "Night Warriors" : "Vampire Hunter";
+    const screen = surface.value === "title" ? "opening title" : "title menu";
+    for (const image of screens.querySelectorAll("img")) {
+      image.src = `../../../local/exp0049/live-${region.value}/${surface.value}.png`;
+      image.alt = `${title} ${screen}`;
+    }
+  }
+
+  region.addEventListener("change", updateCapture);
+  surface.addEventListener("change", updateCapture);
+  enhanced.addEventListener("change", () => {
     for (const tag of screens.querySelectorAll("canvas")) {
-      tag.hidden = !event.currentTarget.checked;
+      tag.hidden = !enhanced.checked;
     }
   });
+  updateCapture();
 </script>
 </html>
