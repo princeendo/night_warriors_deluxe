@@ -2106,3 +2106,27 @@ motion. `./invenv.sh pytest -q` passed 142 tests. Ruff lint and formatting
 passed for `tools`, `tests`, and both edited drivers. Repository mypy and
 individual mypy checks with the relevant experiment import paths passed.
 `git diff --check` passed.
+
+## 2026-11-28 — Training combat selection from disc (TRN-002)
+
+EXP-0061 extends the existing Deluxe title overlay from the untouched US
+source. On an accepted VS selection it consumes the test request and
+installs the three Training combat variants in work RAM. A fresh title
+task writes the stock words. The 1,537-byte zero run in `MAIN.BIN` was
+excluded because EXP-0031 identified its use as a work buffer.
+
+The test image cold-booted in muted Mednafen with `CUT` and no cart. From
+one title checkpoint, the unarmed match showed KO and opened round two.
+The armed replay showed two three-hit chains in one round with six
+executions of the on-disc clamp. Both throw paths also took a second
+throw in the same round. The first reset probe stopped during the opening
+sequence. The extended probe returned to the title with all three stock
+words and a clear request. The fixture used two emulated pads and the
+existing timer. TRN-003 is ready for the playable mode.
+
+The ISO comparison covered all 415 file hashes and isolated the change
+to `TITLE.O`. The track reported zero sector-header errors. The current
+build recipe re-emitted the exact title payload and manifest. The matched
+KO and chain checks passed. `./invenv.sh pytest -q` passed 142 tests.
+Ruff lint, formatting, repository mypy, experiment mypy with the helper
+paths, and `git diff --check` all passed.

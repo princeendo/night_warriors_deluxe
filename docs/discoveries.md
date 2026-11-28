@@ -930,3 +930,20 @@ continued at `0x060229F0`. The next frame reached `0x060264C4` and
 fireball and blocked fireball checks from D-057 and D-059.
 
 Reproduce: [EXP-0060](../research/experiments/EXP-0060/README.md).
+
+## D-061: The Deluxe disc can select the three tested Training combat paths at VS entry
+
+Holds for: `build/exp0061_training` in Mednafen, US Enhanced,
+Demitri versus Victor, `CUT`, no cart (`TRN-002`, `EXP-0061`).
+
+The disc adds a `TITLE.O` start wrapper. On an accepted VS start from the
+title, a one-shot request at `0x0600EA00` selects the strike/projectile,
+Demitri throw, and Victor hold variants from D-058 and D-060. The wrapper
+clears the request and installs the three word sequences in work RAM.
+From a shared title checkpoint, the clear-request branch reached stock
+KO and round two. The armed branch completed two three-hit chains at one
+vitality. Both throw variants reached a second throw in the same armed
+round. Following the stock reset chord and the opening sequence, the new
+title task was present and all three combat sites held the stock words.
+
+Reproduce: [EXP-0061](../research/experiments/EXP-0061/README.md).

@@ -256,6 +256,11 @@ task repeats a sibling task, the note names it for its method only.
   multi-tick hold use separate KO branches. The direct hit, chip, and
   normal strikes shared a branch. Normal strike reactions and the
   `3 HIT CHAIN` banner needed a difference between the two vitality words.
+- **2026-11-28: Training combat selection verified from disc** (`TRN-002`,
+  `EXP-0061`, D-061). The title consumes a one-shot request at VS entry.
+  Normal VS still enters KO and round two. The armed run preserved the
+  chain and the returning title had the stock words. The playable
+  cart-free mode is next (`TRN-003`).
 
 ## Milestones
 
@@ -980,7 +985,7 @@ is not already on the base disc goes on disc).
 
 ### TRN-002 - Qualify the combat hooks for Training Mode
 
-- **Status:** `IN_PROGRESS`
+- **Status:** `DONE` (2026-11-28, `EXP-0061`, D-061, tested paths)
 - **Dependencies:** TRN-001 (done).
 - **Acceptance criteria:** Start with a lethal throw against the same dummy.
   Check lethal chip damage, successive hits in a combo, and both player
@@ -993,13 +998,22 @@ is not already on the base disc goes on disc).
   one-word clamp skipped normal hit reactions, then restored both reactions
   and the chain banner with a ten-byte edit. Direct and blocked projectiles
   passed with that change. The tests use one matchup and isolated RAM edits.
-- **Next:** Gate the proved hooks on a Training runtime flag and exercise
-  both flag states in the same build. Test the stock KO and round transition
-  with the flag clear before enabling it from a new menu entry.
-- **Prototype after combat qualification:** One-controller fighter
-  selection, an idle dummy, no time limit, a position reset and an exit path.
-  Verify the complete flow from a cold boot in a derived image under `CUT`
-  with no cart. Leave release selection for the playable build.
+- **Done:** EXP-0061 installed these variants from `TITLE.O` only when an
+  accepted VS entry consumed the test request. From the same derived image
+  and checkpoint, normal VS showed KO and opened round two. The requested
+  fight preserved two three-hit chains and the return to title restored the
+  stock words. The test request is set by the debugger in this image.
+
+### TRN-003 - Build the cart-free Training menu and fight loop
+
+- **Status:** `READY`
+- **Dependencies:** TRN-002 (done for the tested combat paths).
+- **Acceptance criteria:** Enter Training from the title with one physical
+  controller, choose both fighters, and load an idle dummy with no time
+  limit. Provide a position reset and an exit back to the title. Verify a
+  cold boot and the full path under `CUT` with no cart, then play ordinary
+  VS and confirm stock round endings. Extend move and matchup coverage
+  during prototype validation and record any additional KO branch.
 
 ## Later Milestones (outline only)
 
