@@ -86,8 +86,8 @@ identifies the graphics output to trace back to the game's draw routine.
 ## Design preview
 
 Colin named the original mockup **Design A** and requested alternatives.
-`title_preview.html` offers two sets of four designs, each on the same
-region and screen. The Enhanced toggle controls whether the label appears.
+`title_preview.html` compares designs on the same region and screen. The
+Enhanced toggle controls whether the label appears.
 
 | Design | Tag treatment | Native overlay origin and size |
 | --- | --- | --- |
@@ -99,8 +99,11 @@ region and screen. The Enhanced toggle controls whether the label appears.
 | F · Chiseled silver | Angular silver-blue letters with a small glint | `(245,129)`, 84×17 |
 | G · Crimson slash | Cream letters on a tapered red banner | `(242,128)`, 96×20 |
 | H · Brush gold | Hand-drawn gold letters overlapping the lower-right edge of the wordmark | `(224,119)`, 112×34 |
+| I · Blooded steel | Notched steel letters with a crimson edge along the lower points | `(245,127)`, 84×18 |
+| J · Bloodstone | Angular garnet letters with a pale upper bevel | `(243,128)`, 84×17 |
+| K · Fang serif | Bone-colored gothic lettering with narrow crimson fang tips | `(240,126)`, 88×19 |
 
-E–H rotate the whole overlay by the fitted angle of the lower red edge of
+E–K rotate the whole overlay by the fitted angle of the lower red edge of
 the regional wordmark. For each x in 252–330, take the lowest y in 78–165
 with red above 110 and above 1.7 times both green and blue. Regress y on x
 over the 79 points. The opening and menu captures agree to six decimals
@@ -110,13 +113,15 @@ position of its wordmark. The table gives the US coordinates before rotation.
 
 Colin supplied the *Street Fighter Alpha 2 Gold* title as a reference for
 placing an edition name against a main logo. Design H uses newly drawn
-lettering. Colin also liked how F blends with the existing art. F and H
-appear together in the first row of the aligned comparison.
+lettering. F and H appear together in the first row of the aligned
+comparison. Colin selected F for both Enhanced editions and requested one
+more set of horror-themed studies. I–K are presented alongside F.
 
 The earlier browser check matched Design A's overlay pixels to commit
-`59ab485`. The current check verified capture selection, overlay bounds
-and applied slopes in all 32 combinations. Design D's legibility on a CRT
-with overscan remains unverified.
+`59ab485`. Design F's four rendered views match pixel for pixel across the
+aligned and horror comparisons. The latest check verified capture selection,
+overlay bounds and applied slopes in all 48 combinations. Design D's
+legibility on a CRT with overscan remains unverified.
 
 ## Uncertainty and Alternatives
 
@@ -139,23 +144,23 @@ from OPTION MODE.
 Open `title_preview.html` with the retail capture paths above available.
 Pick the region, screen and design set to compare. Changing Enhanced edition
 hides or shows the four tags. The local browser check is
-`local/exp0052/aligned-check.html`.
+`local/exp0052/horror-check.html`.
 
 ```bash
 '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' \
   --headless --disable-gpu --no-first-run \
-  --user-data-dir="$PWD/local/exp0052/chrome-us-aligned" --window-size=800,700 \
-  --hide-scrollbars --screenshot="$PWD/local/exp0052/aligned-us-title.png" \
-  "file://$PWD/research/experiments/EXP-0052/title_preview.html?region=us&screen=title"
+  --user-data-dir="$PWD/local/exp0052/chrome-jp-horror" --window-size=800,700 \
+  --hide-scrollbars --screenshot="$PWD/local/exp0052/horror-jp-title.png" \
+  "file://$PWD/research/experiments/EXP-0052/title_preview.html?set=horror&region=jp&screen=title"
 ```
 
-For other captures, use `region=jp`, `screen=menu` or `set=earlier` as
-needed and change the screenshot filename. SHA-256 for aligned captures
-under `local/exp0052/`:
+For other captures, use `region=us`, `screen=menu`, `set=aligned` or
+`set=earlier` as needed and change the screenshot filename. SHA-256 for
+horror captures under `local/exp0052/`:
 
 | Screenshot | SHA-256 |
 | --- | --- |
-| `aligned-us-title.png` | `2afcf6b32c399d2d774eb2518f26bb40ffa38fceb1970c6e71e22c5713c5fa2e` |
-| `aligned-us-menu.png` | `e7ba0ed5056597615c62cf38b36499460aace79a850246efb66da64e2ff6e9a9` |
-| `aligned-jp-title.png` | `e55f948b025bd12e0ee965601617daf00c0d7c6074bfb16a9eafba2feff547ad` |
-| `aligned-jp-menu.png` | `f0b12d9a1332d2eec453d7d9630ef4c60e4213fe734a96770959ae7363dd20dc` |
+| `horror-us-title.png` | `60c708b5fc11ccaacf550c468dc261378538465d98a4c1c23c8f7a15734b02d2` |
+| `horror-us-menu.png` | `83f5540646f3bdb9002d67598ed4fec6b331fa0d8765f9fac98f86d989dd635e` |
+| `horror-jp-title.png` | `4f2dcb19d105f54cce13fe6d1f0ae4b660876cc7009a5268aea6b6d96521d3ca` |
+| `horror-jp-menu.png` | `143a372f53fdb434f0f927e1aa418e514a9739d88c596772b34bd94f2dadc2cc` |

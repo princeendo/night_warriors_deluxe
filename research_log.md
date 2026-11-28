@@ -1938,3 +1938,17 @@ opening and menu captures agree within each region. Chrome rendered all
 four aligned views. The local browser check passed all 32 design, region
 and screen combinations, including applied angles, bounds and Enhanced
 toggle behavior across design-set changes.
+
+## 2026-11-27 — Design F selected and horror studies
+
+User decision — “Yeah, let's stay with version F.” Recorded Chiseled
+Silver for both Enhanced editions in `docs/localization_policy.md` and
+`TASKS.md`. The user also asked to explore sharper lettering and a blood
+tint. Added Blooded Steel (I), Bloodstone (J), and Fang Serif (K) to the
+preview alongside F.
+
+Chrome rendered the four region and screen combinations. The browser
+check passed 48 combinations across all three design sets. Compared the
+352×240 Design F crop before and after with `./invenv.sh python` and
+`EXP-0026/pick_text_frame.py`. The RGB bytes matched for all four captures.
+The stock VDP1 command writer and asset source are still open.

@@ -49,6 +49,7 @@
       <h1>DELUXE title designs</h1>
       <label>Designs
         <select id="design-set">
+          <option value="horror">Horror studies</option>
           <option value="aligned">Logo-aligned</option>
           <option value="earlier">Earlier designs</option>
         </select>
@@ -321,6 +322,98 @@
     { label: "E · Painted serif", x: 244, y: 128, width: 84, height: 17, draw: drawPaintedSerif, align: true },
     { label: "G · Crimson slash", x: 242, y: 128, width: 96, height: 20, draw: drawCrimsonSlash, align: true },
   ];
+
+  const bladeGlyphs = {
+    D: [
+      "#######...", "########..", ".###..###.", ".##.....##", ".##.....##", ".##.....##",
+      ".##.....##", ".##....##.", ".###..##..", ".######...", ".#####....", "#.........",
+    ],
+    E: [
+      "##########", ".########.", ".###......", ".##.......", ".##.......", ".######...",
+      ".#####....", ".##.......", ".##.......", ".###......", ".########.", "#......###",
+    ],
+    L: [
+      "####......", ".###......", ".##.......", ".##.......", ".##.......", ".##.......",
+      ".##.......", ".##.......", ".##.......", ".###......", ".########.", "#......###",
+    ],
+    U: [
+      "###....###", ".##....##.", ".##....##.", ".##....##.", ".##....##.", ".##....##.",
+      ".##....##.", ".##....##.", ".###..###.", "..######..", "...####...", "....#.....",
+    ],
+    X: [
+      "####...###", ".###...##.", "..###.##..", "...#####..", "...####...", "....##....",
+      "...####...", "...#####..", "..##.###..", "..##..###.", ".##....##.", "#.......##",
+    ],
+  };
+
+  const fangGlyphs = {
+    D: [
+      "#####......", ".#######...", "..#######..", "..###..###.", "..###...###", "..###...###",
+      "..###...###", "..###...###", "..###..###.", "..#######..", ".#######...", "#####......",
+      "..##.......", "..#........",
+    ],
+    E: [
+      "###########", ".#########.", "..###....##", "..###.....#", "..###..#...", "..######...",
+      "..#####....", "..###..#...", "..###.....#", "..###....##", ".#########.", "###########",
+      "........##.", ".........#.",
+    ],
+    L: [
+      "#######....", ".#####.....", "..###......", "..###......", "..###......", "..###......",
+      "..###......", "..###......", "..###.....#", "..###....##", ".#########.", "###########",
+      "........##.", ".........#.",
+    ],
+    U: [
+      "#####.#####", ".###...###.", "..##...##..", "..##...##..", "..##...##..", "..##...##..",
+      "..##...##..", "..##...##..", "..###..##..", "...#####...", "...####....", "....##.....",
+      "....#......", "...........",
+    ],
+    X: [
+      "#####.#####", ".###...###.", "..###.###..", "...#####...", "....###....", "....###....",
+      "...#####...", "...##.###..", "..##...###.", ".###....###", "#####..####", ".##.....##.",
+      ".#.......#.", "...........",
+    ],
+  };
+
+  function drawBloodedSteel(canvas) {
+    drawLettering(canvas.getContext("2d"), bladeGlyphs, {
+      x: 5, y: 2, advance: 12, lean: 0.15,
+      layers: [
+        { x: -1, y: -1, size: 3, colors: ["#151521"] },
+        { x: 0, y: 0, size: 2, colors: ["#626e7c", "#563441", "#79333c"] },
+        { x: 0, y: 0, size: 1, colors: ["#e9edf0", "#bbc7d1", "#9ba8b5", "#a44c52"] },
+      ],
+    });
+  }
+
+  function drawBloodstone(canvas) {
+    drawLettering(canvas.getContext("2d"), cutGlyphs, {
+      x: 5, y: 3, advance: 13, lean: 0.23,
+      layers: [
+        { x: -1, y: -1, size: 3, colors: ["#27111b", "#290e18"] },
+        { x: 0, y: 0, size: 2, colors: ["#b18382", "#8f545c", "#5e2537"] },
+        { x: 0, y: 0, size: 1, colors: ["#efc2ba", "#c96b72", "#9b3c4d", "#661d31"] },
+      ],
+    });
+  }
+
+  function drawFangSerif(canvas) {
+    drawLettering(canvas.getContext("2d"), fangGlyphs, {
+      x: 4, y: 2, advance: 13, lean: 0,
+      layers: [
+        { x: -1, y: -1, size: 3, colors: ["#24202a", "#3b212d"] },
+        { x: 0, y: 0, size: 2, colors: ["#77757d", "#814a53"] },
+        { x: 0, y: 0, size: 1, colors: ["#f0e5d5", "#cebfb3", "#b5a8a1", "#a7595e"] },
+      ],
+    });
+  }
+
+  const horrorDesigns = [
+    { ...alignedDesigns[0], label: "F · Chiseled silver (selected)" },
+    { label: "I · Blooded steel", x: 245, y: 127, width: 84, height: 18, draw: drawBloodedSteel, align: true },
+    { label: "J · Bloodstone", x: 243, y: 128, width: 84, height: 17, draw: drawBloodstone, align: true },
+    { label: "K · Fang serif", x: 240, y: 126, width: 88, height: 19, draw: drawFangSerif, align: true },
+  ];
+  const designSets = { horror: horrorDesigns, aligned: alignedDesigns, earlier: earlierDesigns };
   // Fit of the red lower edge over x = 252–330 in the native captures.
   const logoSlope = { us: -0.111611, jp: -0.128092 };
 
@@ -332,10 +425,11 @@
   const params = new URLSearchParams(location.search);
   region.value = params.get("region") === "jp" ? "jp" : "us";
   surface.value = params.get("screen") === "menu" ? "title-menu" : "title";
-  designSet.value = params.get("set") === "earlier" ? "earlier" : "aligned";
+  const requestedSet = params.get("set");
+  designSet.value = Object.hasOwn(designSets, requestedSet) ? requestedSet : "horror";
 
   function displayDesigns() {
-    const designs = designSet.value === "earlier" ? earlierDesigns : alignedDesigns;
+    const designs = designSets[designSet.value];
     screens.replaceChildren();
     for (const design of designs) {
       const figure = document.createElement("figure");
