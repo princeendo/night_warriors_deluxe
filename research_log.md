@@ -1801,3 +1801,43 @@ Saturn timing, sprite behavior, and stability remain UNKNOWN.
 
 User decision (2026-11-27): "Let's consider `AUD-004` closed if we've seen it on an emulator."
 `AUD-004` (`EXP-0044`, D-043, and `EXP-0045` for all editions) is marked `DONE` in `TASKS.md`, and `docs/known_unknowns.md` and `docs/coverage_exceptions.md` are updated to reflect that the live Donovan ice-attack trigger is waived.
+
+## 2026-11-27 — v0.2.0 release package and posting drafts
+
+Built the xdelta patch from the combined candidate in
+`build/next_release_candidate`. The patch is 73,091 bytes, SHA-256
+`a5ee7e365d03b84a592f0915ac93c3d7afbfbeb6bf611e6283a68e0bbaf61155`, and
+round-trips to candidate Track 1 SHA-256
+`d74e7476e73b24b2a21f0f3824795cfc9bb5ded698d8ed6678a7a83c72555d6d`.
+The xdelta-only zip was built twice; both copies are byte-identical, 66,177
+bytes, SHA-256
+`45f8ea0883b7db1dc97cacaa2bf8357113a817a738d23abf408a533d5369bef5`.
+`tools.release.check_zips` applied the packaged patch to the untouched US
+Track 1 and reproduced the expected candidate hash.
+
+Commands (Python 3.13.13 via `./invenv.sh`, xdelta3 3.2.2):
+
+```bash
+./invenv.sh python -m tools.disc.make_patch --built-dir build/next_release_candidate \
+  --stem night_warriors_deluxe --out-dir build/release/v0.2.0-patch/patch \
+  --record release/night_warriors_deluxe_v0.2.0.json
+./invenv.sh python -m tools.release.make_zips 0.2.0 build/release/v0.2.0 --kinds xdelta \
+  --records release --patches build/release/v0.2.0-patch \
+  --variant night_warriors_deluxe_v0.2.0 patch \
+  "US Enhanced, US Original, JP Enhanced, and JP Original (switched in OPTION MODE)"
+./invenv.sh python -m tools.release.make_zips 0.2.0 build/release/v0.2.0-again --kinds xdelta \
+  --records release --patches build/release/v0.2.0-patch \
+  --variant night_warriors_deluxe_v0.2.0 patch \
+  "US Enhanced, US Original, JP Enhanced, and JP Original (switched in OPTION MODE)"
+cmp build/release/v0.2.0/night_warriors_deluxe_0.2.0_xdelta.zip \
+  build/release/v0.2.0-again/night_warriors_deluxe_0.2.0_xdelta.zip
+./invenv.sh python -m tools.release.check_zips 0.2.0 build/release/v0.2.0 \
+  local/rel/v0.2.0-check --kinds xdelta \
+  --expect d74e7476e73b24b2a21f0f3824795cfc9bb5ded698d8ed6678a7a83c72555d6d
+```
+
+Drafts: `release/notes_v0.2.0.md`, `release/reddit_post_v0.2.0.md`.
+Updated `release/README.md` and the top-level README to describe 0.2.0 as the
+next draft while keeping v0.1.0 identified as the current published release.
+No release was tagged or published. `COV-001` remains in progress; optional
+`REF-001` and `REF-003` remain in backlog. No task deferrals were inferred.

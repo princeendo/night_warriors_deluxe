@@ -22,13 +22,14 @@ Cyberbots. See [docs/playbook_from_mshvsf.md](docs/playbook_from_mshvsf.md),
 
 ## Download
 
-[Version 0.1.0](https://github.com/princeendo/night_warriors_deluxe/releases/tag/v0.1.0),
-as a GitHub Release asset (an xdelta patch for Track 1): what it changes, how
-to apply it, and its known limits are in
-[release/README.md](release/README.md) and
-[release/notes_v0.1.0.md](release/notes_v0.1.0.md).
+[Version 0.1.0](https://github.com/princeendo/night_warriors_deluxe/releases/tag/v0.1.0)
+is the current published release. Draft materials for 0.2.0 are in
+[release/notes_v0.2.0.md](release/notes_v0.2.0.md), with a matching Reddit
+announcement at [release/reddit_post_v0.2.0.md](release/reddit_post_v0.2.0.md).
+The patch instructions and current feature summary are in
+[release/README.md](release/README.md).
 
-## What's Changed
+## Version 0.1.0
 
 In 0.1.0, a new **`EDITION`** setting in `OPTION MODE` (saved in spare bytes
 of the `N_WARRIORS_` save; defaults to **`US ENHANCED`** for new or stock US
@@ -58,11 +59,19 @@ saves) switches between three editions at run time:
   poses, no US missing-pad auto-pause; keeps US title/intro art and US code
   changes).
 
-**Deferred to later versions:** `JP ENHANCED` (`END-005`, hidden in the menu
-until it differs from `JP ORIGINAL`), victory-quote comparison (`QUO-001`),
-standalone names toggle in Enhanced (`LOC-001`), and a full screen/audio
-surface audit (`REF-004`, `UI-001`, `COV-001`). The difference register is
+The regional difference register is
 [docs/difference_register.md](docs/difference_register.md).
+
+## Prepared for 0.2.0
+
+The verified candidate adds **JP ENHANCED**, translated Japanese ending
+additions for Morrigan, Bishamon, Rikuo and Huitzil, a saved fighter-name
+preference in both Enhanced editions, and 56 translated victory-quote
+variants in US Enhanced. The Appendix starts unlocked. A 4 MiB Expansion RAM
+cartridge enables full animation for different fighters in Arcade and VS; two
+sound fixes address Anakaris's opponent effects and Morrigan's Soul Fist
+panning. Full regional surface coverage remains open (`COV-001`); the remaining
+items are listed in [docs/coverage_exceptions.md](docs/coverage_exceptions.md).
 
 ## Patch Files
 
@@ -79,9 +88,8 @@ The steps, tested patchers, and expected Track 1 SHA-256 hash are in
 ## Build the Patch
 
 The build follows the checked-out source. Use tag `v0.1.0` to reproduce the
-published v0.1.0 checksums. The current source adds JP Enhanced, an
-Enhanced names option, and new US Enhanced quote variants. The build
-candidate and hardware verification status are in [TASKS.md](TASKS.md).
+published v0.1.0 checksums. The 0.2.0 candidate uses the latest source. Its
+candidate and verification status are in [TASKS.md](TASKS.md).
 The paired retail comparison is in [the surface audit](docs/text_surfaces.md).
 
 The release image is built from the untouched US source image, with game data

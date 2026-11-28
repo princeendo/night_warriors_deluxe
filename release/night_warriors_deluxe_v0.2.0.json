@@ -1,0 +1,30 @@
+{
+ "tool": "tools.disc.make_patch",
+ "reference": null,
+ "ra_md5": "8c7156c2e38f75a9ec54016427967e9e",
+ "xdelta3_version": "3.2.2",
+ "xdelta3_encode_flags": "-e -9 -S none -A -W 16777216 -f",
+ "patches": [
+  {
+   "component": "Night Warriors - Darkstalkers' Revenge (USA) (Track 1).bin",
+   "patch": "night_warriors_deluxe.Track1.xdelta",
+   "patch_size": 73091,
+   "patch_sha256": "a5ee7e365d03b84a592f0915ac93c3d7afbfbeb6bf611e6283a68e0bbaf61155",
+   "source_size": 493741248,
+   "source_sha256": "d0960087520ff305a919dba3b4921edecb5c02d593c73143e0cb9f872c9970da",
+   "target_sha256": "d74e7476e73b24b2a21f0f3824795cfc9bb5ded698d8ed6678a7a83c72555d6d",
+   "deterministic": true,
+   "round_trip": true
+  }
+ ],
+ "unchanged_components": [
+  {
+   "component": "Night Warriors - Darkstalkers' Revenge (USA) (Track 2).bin",
+   "sha256": "271844bfb734ab4fd322bc753bfad63b8a6e31d7d24272d52b5d10989065cdbb"
+  },
+  {
+   "component": "Night Warriors - Darkstalkers' Revenge (USA).cue",
+   "sha256": "203a53dff34c4adea6a709c822fa485d4325a4bd63aa6b0ea03f1ed7a141fbb2"
+  }
+ ]
+}

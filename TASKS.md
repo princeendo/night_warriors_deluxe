@@ -839,6 +839,13 @@ is not already on the base disc goes on disc).
   `0x22400000`-`0x22708cdc` through both rounds. The user explicitly accepted
   assuming hardware parity with the emulator. Real-Saturn timing, stability,
   and sprite behavior remain unverified; see `EXP-0051`.
+- **2026-11-27: v0.2.0 release package prepared.** The candidate patch
+  round-trips to Track 1 `d74e7476…5d6d`; the reproducible zip is 66,177 bytes
+  with SHA-256 `45f8ea08…69bef5`. Release notes and a Reddit post draft are in
+  `release/`. This is preparation only: `COV-001` remains `IN_PROGRESS`, and
+  optional reference tasks `REF-001` and `REF-003` remain `BACKLOG`. Their
+  release disposition has not been decided. Do not tag or publish until every
+  open task is done or explicitly deferred by the user by name.
 
 ### AUD-004 - Reproduce and correct the P1 Anakaris sound issue
 

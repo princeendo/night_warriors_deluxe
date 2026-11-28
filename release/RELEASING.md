@@ -1,92 +1,92 @@
 # Making a Release
 
 Adapted from Cyberbots' `release/RELEASING.md` (commit `bac6fde`, itself from
-XvSF ← MSHvSF `7d4c587`) for Night Warriors Deluxe (`REL-001`). The examples
-use `0.1.0`.
+XvSF ← MSHvSF `7d4c587`) for Night Warriors Deluxe (`REL-001`). These steps
+cover the prepared 0.2.0 candidate. Version 0.1.0 is already published.
 
-The agent does steps 1-6. You do steps 7-9 on github.com, because `gh` on this
-machine is signed in as the work account, which this project never uses.
+The agent prepares, verifies, commits and pushes the tracked release records.
+The user publishes on github.com as `princeendo`, because `gh` on this machine
+is signed in as the work account, which this project never uses.
 
 ## Before You Start
 
-- [ ] Every open task in `TASKS.md` is done, or explicitly deferred by the user.
-- [ ] The release image has been cold-boot verified (Mednafen, or real hardware).
+- [ ] Every open task in `TASKS.md` is done or explicitly deferred by the user
+      by name. As of 2026-11-27, `COV-001`, `REF-001` and `REF-003` remain open;
+      their release disposition has not been decided.
+- [ ] The release image cold-booted in Mednafen. The user accepted assuming
+      hardware parity for the 4 MiB animation path; real Saturn timing,
+      stability and sprite behavior remain unverified (`EXP-0051`).
 - [ ] `git status` is clean, on `main`, and up to date with `origin/main`.
 - [ ] `git config user.email` prints
       `13876322+princeendo@users.noreply.github.com`.
 - [ ] The untouched US image matches `references/saturn_us/README.md` (Redump
       disc 5836), and `xdelta3 -V` reports 3.2.2.
 
-## 1. Rebuild and Check
+## 1. Candidate and Patch
+
+The combined candidate is `build/next_release_candidate`. Its Track 1 SHA-256
+must match `d74e7476e73b24b2a21f0f3824795cfc9bb5ded698d8ed6678a7a83c72555d6d`
+in `build_manifest.json`.
 
 ```bash
-./invenv.sh python research/experiments/EXP-0038/build_edition.py build/us_edition
+./invenv.sh python -m tools.disc.make_patch --built-dir build/next_release_candidate \
+  --stem night_warriors_deluxe --out-dir build/release/v0.2.0-patch/patch \
+  --record release/night_warriors_deluxe_v0.2.0.json
+./invenv.sh python -m tools.disc.make_patch --built-dir build/next_release_candidate \
+  --stem night_warriors_deluxe --out-dir build/release/v0.2.0-patch-again/patch
+cmp build/release/v0.2.0-patch/patch/night_warriors_deluxe.Track1.xdelta \
+    build/release/v0.2.0-patch-again/patch/night_warriors_deluxe.Track1.xdelta
 ```
 
-Track 1's SHA-256 in `build/us_edition/build_manifest.json` must match the
-release target (`25e05ec14a258e7f2bea49e51023dfbf96c553aae688b67c5044728c4040f1be`
-for `0.1.0`).
+The patch is metadata-recorded in `release/night_warriors_deluxe_v0.2.0.json`;
+patch bytes stay under ignored `build/` paths.
 
-## 2. The Patch and Its Record
+## 2. Zip, Repeat, and Apply Check
 
 ```bash
-./invenv.sh python -m tools.disc.make_patch --built-dir build/us_edition \
-  --stem night_warriors_deluxe --out-dir build/release/patch \
-  --record release/night_warriors_deluxe.json
-./invenv.sh python -m tools.disc.make_patch --built-dir build/us_edition \
-  --stem night_warriors_deluxe --out-dir build/release/patch-again
-cmp build/release/patch/night_warriors_deluxe.Track1.xdelta \
-    build/release/patch-again/night_warriors_deluxe.Track1.xdelta
+V="US Enhanced, US Original, JP Enhanced, and JP Original (switched in OPTION MODE)"
+./invenv.sh python -m tools.release.make_zips 0.2.0 build/release/v0.2.0 --kinds xdelta \
+  --records release --patches build/release/v0.2.0-patch \
+  --variant night_warriors_deluxe_v0.2.0 patch "$V"
+./invenv.sh python -m tools.release.make_zips 0.2.0 build/release/v0.2.0-again --kinds xdelta \
+  --records release --patches build/release/v0.2.0-patch \
+  --variant night_warriors_deluxe_v0.2.0 patch "$V"
+shasum -a 256 build/release/v0.2.0/*.zip build/release/v0.2.0-again/*.zip
+cmp build/release/v0.2.0/night_warriors_deluxe_0.2.0_xdelta.zip \
+    build/release/v0.2.0-again/night_warriors_deluxe_0.2.0_xdelta.zip
+./invenv.sh python -m tools.release.check_zips 0.2.0 build/release/v0.2.0 \
+  local/rel/v0.2.0-check --kinds xdelta \
+  --expect d74e7476e73b24b2a21f0f3824795cfc9bb5ded698d8ed6678a7a83c72555d6d
 ```
 
-Both patches must be byte-identical. `release/night_warriors_deluxe.json` is
-metadata only and is committed.
+The two zips must be byte-identical, and applying the packaged patch to the
+untouched US Track 1 must reproduce the candidate hash. The prepared zip is
+66,177 bytes with SHA-256
+`45f8ea0883b7db1dc97cacaa2bf8357113a817a738d23abf408a533d5369bef5`.
 
-## 3. The Zip, Twice, and the Check
+## 3. Release and Posting Notes
 
-```bash
-V="US Enhanced, US Original, and JP Original (switched in OPTION MODE)"
-./invenv.sh python -m tools.release.make_zips 0.1.0 build/release/v0.1.0 --kinds xdelta \
-  --patches build/release --variant night_warriors_deluxe patch "$V"
-./invenv.sh python -m tools.release.make_zips 0.1.0 build/release/v0.1.0-again --kinds xdelta \
-  --patches build/release --variant night_warriors_deluxe patch "$V"
-shasum -a 256 build/release/v0.1.0/*.zip build/release/v0.1.0-again/*.zip
-./invenv.sh python -m tools.release.check_zips 0.1.0 build/release/v0.1.0 local/rel/v0.1.0-check \
-  --kinds xdelta --expect 25e05ec14a258e7f2bea49e51023dfbf96c553aae688b67c5044728c4040f1be
-```
+Use `release/notes_v0.2.0.md` as the GitHub release description. A Reddit post
+draft is in `release/reddit_post_v0.2.0.md`. The download zip is not committed.
 
-Both zips must hash identically, and applying the patch from the unpacked zip
-to the untouched US Track 1 must match `--expect`.
+## 4. Records and Git
 
-## 4. The Notes
+- Record the session and verification outputs in `research_log.md`.
+- Update `TASKS.md` only when acceptance criteria are met and any open tasks
+  are either completed or explicitly deferred by the user by name.
+- Keep `README.md` clear about which version is published versus prepared.
+- Stage only tracked files: never commit the zip, `.xdelta`, images, or
+  `local_agent_guidance.md` (`AGENTS.md` rule 21).
+- After release decisions are recorded, commit and push the intended tracked
+  files, then tag and push `v0.2.0`.
 
-`release/notes_v0.1.0.md`: what changed, the zip with its size and SHA-256, how
-to apply, and known limits.
-
-## 5. Records
-
-- `TASKS.md`: mark `REL-001` done with the zip hash and list deferred tasks.
-- `research_log.md`: log the release session and verification outputs.
-- `README.md`: link the release and summarize what changed.
-
-Stage only tracked files: never commit the zip, the `.xdelta`, images, or
-`local_agent_guidance.md` (`AGENTS.md` rule 21).
-
-## 6. Commit, Tag, Push
-
-```bash
-git -c user.name=Colin -c user.email=13876322+princeendo@users.noreply.github.com commit ...
-git tag -a v0.1.0 -m "Night Warriors Deluxe (Saturn) 0.1.0"
-git push origin main v0.1.0
-```
-
-## 7-9. Publish (You, on github.com)
+## 5. Publish (User, on github.com)
 
 | Do this | What you should see |
 | --- | --- |
-| Open the repository's Releases page, click **Draft a new release**, and choose tag `v0.1.0`. | The `v0.1.0` tag is selected. |
-| Set the title to `0.1.0` and paste the contents of `release/notes_v0.1.0.md` into the description. | The release notes render cleanly. |
-| Drag in `build/release/v0.1.0/night_warriors_deluxe_0.1.0_xdelta.zip` and click **Publish release**. | The zip appears under Assets. |
+| Open the repository's Releases page, click **Draft a new release**, and choose tag `v0.2.0`. | The `v0.2.0` tag is selected. |
+| Set the title to `0.2.0: Four Editions` and paste `release/notes_v0.2.0.md` into the description. | The release notes render cleanly. |
+| Upload `build/release/v0.2.0/night_warriors_deluxe_0.2.0_xdelta.zip` and publish. | The zip appears under Assets. |
 
-Afterwards, the agent verifies the published asset's size and `sha256:` digest
-through the public GitHub API against the local zip built in step 3.
+After publication, verify the asset size and `sha256:` digest through the
+public GitHub API against the local zip.
