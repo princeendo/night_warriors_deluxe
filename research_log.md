@@ -1877,3 +1877,16 @@ that commit. The GitHub Release remains unpublished; the user will upload the
 zip and paste `release/notes_v0.2.0.md` on github.com. The Reddit drafts and
 image inventory are in `release/` and the four screenshot copies are in the
 ignored `build/reddit_0.2.0/` folder.
+
+## 2026-11-27 — Edition-specific title screen design
+
+User decision: “I like the "Regional logos and tag" version.” The title and
+title menu will use Night Warriors in US editions or Vampire Hunter in JP
+editions. A small DELUXE tag goes beneath the logo in both Enhanced editions.
+With no saved edition, the existing US Enhanced default selects Night Warriors
+with the tag. Returning from OPTION MODE should show the newly active edition.
+
+Recorded as `UI-002` in the backlog and localization policy. The retail title
+captures are in `EXP-0001` and `docs/text_surfaces.md`. The edition hook is
+confirmed in `EXP-0038`. The title logo's specific asset and draw path remain
+unknown. This design entry was checked with `git diff --check`.
