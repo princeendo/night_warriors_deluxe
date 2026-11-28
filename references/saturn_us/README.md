@@ -40,7 +40,7 @@ Produced with `tools.disc.hash_source --json` (ignored
 - **Layout.** Track 1 `MODE1/2352`, 209,924 sectors (FAD 150-210,073), the
   same size as the Japanese track 1. Track 2 `AUDIO`, 751 sectors with a
   2-second pregap; **every byte is zero** (about 8 seconds of silence), where
-  the Japanese track 2 holds about 18 seconds of sound.
+  the Japanese Track 2 holds a repeated spoken data-disc warning (D-054).
 - **System area.** `SEGA SEGASATURN`, maker `SEGA TP T-12`, product
   `T-1208H`, version `V1.001`, date `19960228` (one month after the Japanese
   `19960128`), `CD-1/1`, area `U`, peripherals `J`, title `NIGHT WARRIORS`.
@@ -67,7 +67,8 @@ files. Plain observation; what any difference *does* is **UNKNOWN**.
 - **52 files differ.** The three ISO abstract/bibliography/copyright files
   (`VH_ABS.TXT`, `VH_BIB.TXT`, `VH_CPY.TXT`) are empty on the US disc, which
   moves the 44 files that start before JP LSN 3,238 back by up to three
-  sectors; every later file keeps its LSN.
+  sectors; every later file keeps its LSN. Both primary volume descriptors
+  still name the three files (D-055).
 
 | Files | JP size → US size | Bytes that differ |
 | --- | --- | --- |

@@ -235,6 +235,11 @@ task repeats a sibling task, the note names it for its method only.
   appears in all editions and stays visible behind the OPTION MODE text
   at reduced intensity. Verified five cold boots, settings persistence
   and title redraw in Mednafen. Physical Saturn timing remains open.
+- **2026-11-28: two disc differences identified for `COV-001`.**
+  JP Track 2 has a repeated spoken data-disc warning and US Track 2 is
+  silent (`EXP-0054`, D-054). Both ISO descriptors name the same three
+  descriptive files. JP contains the metadata and US leaves all three
+  empty (`EXP-0055`, D-055). The wider coverage audit remains open.
 
 ## Milestones
 
@@ -508,7 +513,7 @@ is not already on the base disc goes on disc).
 - **Blockers:** None.
 - **Objective:** Decide whether the English PSP *Darkstalkers Chronicle: The Chaos Tower* is a reference for official English epilogues and revised endings, and if so record its identity.
 - **Acceptance criteria:** Either every component is hashed with an identity status, or the task is `REJECTED` with the user's reason.
-- **Notes:** The web research names it the most promising official English source (its sources 6 and 7) but its coverage and alignment with the Saturn text are unverified.
+- **Initial lead:** The web research named it the most promising official English source (its sources 6 and 7).
 - **Done 2026-11-14 (`EXP-0020`, D-019):** the user supplied the US ISO and asked to try it before a new translation (kept as a reference). Hashed with identity SUPPORTED (`references/psp_chronicle_us/README.md`). English epilogues for all 14 characters are text drawn into `movie/hunend/HmovieNN_2.pmf`; frames, hashes and the per-character comparison with the Saturn Japanese are in `EXP-0020`. Whether to use this text, and how to treat its typos and changed meanings, is `GATE-TRANSLATION`.
 
 ### REF-003 - Paired manuals (off-disc, optional)

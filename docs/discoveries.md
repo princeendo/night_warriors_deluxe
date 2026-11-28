@@ -826,3 +826,24 @@ visible in every Options capture. In the paired US Options screenshots,
 the changes were contained within the tag and preserved the menu text.
 
 Evidence and reproduction: [EXP-0053](../research/experiments/EXP-0053/README.md).
+
+## D-054: JP Track 2 plays a spoken warning and US Track 2 is silent
+
+Holds for the JP 1M and US retail images. Both CUEs mark Track 2 as audio
+with a two-second pregap. The JP playable track runs 20 seconds and
+contains a repeated Japanese warning that the disc holds game data and
+should not be played as audio. All samples in the US playable track
+(8.013 seconds) and its pregap are zero.
+
+Evidence and reproduction: [EXP-0054](../research/experiments/EXP-0054/README.md).
+
+## D-055: Both volume descriptors name the same three descriptive files
+
+Holds for the JP 1M and US retail images. The primary volume descriptor
+on both discs names `VH_CPY.TXT` in its copyright field,
+`VH_ABS.TXT` in its abstract field and `VH_BIB.TXT` in its
+bibliographic field. JP stores a copyright notice, a Japanese game
+summary and the English title and subtitle in those files. The US disc
+retains the directory entries at zero length.
+
+Evidence and reproduction: [EXP-0055](../research/experiments/EXP-0055/README.md).

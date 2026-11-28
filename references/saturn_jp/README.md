@@ -78,9 +78,9 @@ independent `shasum -a 256` of each CUE and track 1.
   for track 1 fits all three pressings. Which pressing a release names is
   part of `DOC-002`.
 - **Layout.** Track 1 `MODE1/2352` (209,924 sectors, FAD 150-210,073), track
-  2 `AUDIO` (1,650 sectors including a 2-second `INDEX 00` pregap, about 20
-  seconds of sound). `CATALOG 0000000000000`. Track 2 is probably the usual
-  "do not play track 1" spoken warning (**HYPOTHESIS**; not listened to).
+  2 `AUDIO` (1,650 sectors including a 2-second `INDEX 00` pregap and a
+  20-second playable track). `CATALOG 0000000000000`. Track 2 contains a
+  repeated Japanese data-disc playback warning (**CONFIRMED**, D-054).
 - **System area (track 1, sector 0).** `SEGA SEGASATURN`, maker
   `SEGA TP T-12`, product `T-1202G`, version `V1.000`, date `19960128`,
   `CD-1/1`, area `JT`, peripherals `J`, title `VAMPIRE HUNTER`. These first

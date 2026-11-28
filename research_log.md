@@ -2005,3 +2005,26 @@ across 209,924 sectors. `./invenv.sh pytest -q` passed 142 tests.
 Ruff lint, format check and mypy passed for the two edited Python
 scripts. A separate JP Enhanced cold boot reached the first Arcade
 round. The physical Saturn title check remains open.
+
+## 2026-11-28 — Retail audio track and ISO metadata (COV-001)
+
+The backlog check found `REF-002` already complete. `REF-001` and
+`REF-003` lack the arcade sets and the paired manuals, respectively.
+
+In `EXP-0054`, FFmpeg 9.0.1 decoded both untouched Track 2 files from
+`INDEX 01`. Python verified the WAV payloads byte for byte and found
+the US track and pregap all zero. Offline faster-whisper 1.2.1 found
+the repeated data-disc warning in the Japanese track (D-054). The
+first attempt to pass the WAV filename failed with PyAV 19.0.1. The
+FFmpeg-to-NumPy input path worked and is recorded in the experiment.
+
+In `EXP-0055`, `tools.disc.iso9660.Track` read the same three identifier
+fields and directory records from both untouched images. Both volume
+descriptors name the three metadata files. The Japanese entries have
+payloads and the US entries have zero length (D-055).
+
+Verified source-track SHA-256s against the manifests. `./invenv.sh pytest -q`
+passed 142 tests. `./invenv.sh ruff check tools tests`,
+`./invenv.sh ruff format --check tools tests`, `./invenv.sh mypy`, and
+`git diff --check` passed. Next unblocked coverage check: classify
+`FILE-05` using the existing fighter asset loader evidence.
