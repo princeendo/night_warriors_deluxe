@@ -250,7 +250,12 @@ task repeats a sibling task, the note names it for its method only.
 - **2026-11-28: Training Mode projectile proof complete** (`TRN-001`,
   `EXP-0057`, D-057). A four-byte RAM test kept Victor in the same round
   through two otherwise lethal Demitri fireballs in cart-free Deluxe VS
-  under `CUT`. Throw and multi-hit coverage is next (`TRN-002`).
+  under `CUT`.
+- **2026-11-28: Training Mode throw, chip, and chain proofs** (`TRN-002`,
+  `EXP-0058`–`EXP-0060`, D-058–D-060). Demitri's throw and Victor's
+  multi-tick hold use separate KO branches. The direct hit, chip, and
+  normal strikes shared a branch. Normal strike reactions and the
+  `3 HIT CHAIN` banner needed a difference between the two vitality words.
 
 ## Milestones
 
@@ -973,15 +978,24 @@ is not already on the base disc goes on disc).
   Victor at one vitality, and let him return to idle. The healthy control
   took the same damage with and without the trial edit.
 
-### TRN-002 - Qualify the combat hook for Training Mode
+### TRN-002 - Qualify the combat hooks for Training Mode
 
-- **Status:** `READY`
+- **Status:** `IN_PROGRESS`
 - **Dependencies:** TRN-001 (done).
 - **Acceptance criteria:** Start with a lethal throw against the same dummy.
   Check lethal chip damage, successive hits in a combo, and both player
   sides. Trace any other round-end path and establish whether it needs a
   separate Training-only guard. Demonstrate that normal VS can still finish
   when the training rule is disabled.
+- **Progress:** EXP-0058 kept Demitri's throw and Victor's hold active in
+  the same round with their own RAM edits, including attacking from either
+  pad. EXP-0059 covered one lethal blocked fireball. EXP-0060 found the
+  one-word clamp skipped normal hit reactions, then restored both reactions
+  and the chain banner with a ten-byte edit. Direct and blocked projectiles
+  passed with that change. The tests use one matchup and isolated RAM edits.
+- **Next:** Gate the proved hooks on a Training runtime flag and exercise
+  both flag states in the same build. Test the stock KO and round transition
+  with the flag clear before enabling it from a new menu entry.
 - **Prototype after combat qualification:** One-controller fighter
   selection, an idle dummy, no time limit, a position reset and an exit path.
   Verify the complete flow from a cold boot in a derived image under `CUT`

@@ -2076,3 +2076,33 @@ paths before the playable prototype.
 `tools`, `tests`, and EXP-0057. Repository mypy passed, and mypy also passed
 for `probe.py` with the two helper directories on its import path.
 `git diff --check` passed.
+
+## 2026-11-28 — Training Mode throws, chip, and chains (TRN-002)
+
+EXP-0058 found two throw KO paths separate from the projectile code.
+The unmodified controls ended a round on Demitri's throw or Victor's
+hold. Two independent RAM edits let the first move release the defender
+and let the attacker start a second throw in the same round. These runs
+exercised attacking from each pad in the same cart-free VS matchup.
+
+EXP-0059 first held standing back for too few frames to block the second
+projectile. Holding crouch guard through both contacts gave damage of one
+on both hits. The second blocked shot used the same KO branch as an
+unguarded fireball. The original projectile clamp prevented that KO.
+
+EXP-0060 found a limitation in that clamp. At one vitality all three
+strikes connected, but equal vitality words at the reaction check
+suppressed the normal reactions and the chain banner. A second RAM trial
+left those words different until the reaction code consumed the change.
+Two repetitions showed `3 HIT CHAIN`, with the dummy still active at one
+vitality. The direct and blocked projectiles passed again with the
+refined edit. D-058 through D-060 record the confirmed observations.
+TRN-002 stays open for a Training-only guard and a matched stock round
+transition with that guard inactive.
+
+The probe reuses the existing VS state, adds selectable attacker and
+motion inputs, and can hold down-back on the defending pad throughout a
+motion. `./invenv.sh pytest -q` passed 142 tests. Ruff lint and formatting
+passed for `tools`, `tests`, and both edited drivers. Repository mypy and
+individual mypy checks with the relevant experiment import paths passed.
+`git diff --check` passed.

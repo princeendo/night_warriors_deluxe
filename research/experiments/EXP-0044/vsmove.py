@@ -47,7 +47,14 @@ def hold(
     script: str,
     log: list[object],
     watch: list[str],
+    steady_input: tuple[int, int] | None = None,
 ) -> None:
+    pad_range = f"{pad_words + 2:08X}-{pad_words + 3:08X}"
+    input_ranges = [pad_range]
+    if steady_input is not None:
+        other_pad, steady_word = steady_input
+        steady_data = steady_word.to_bytes(2, "big") + b"\0\0"
+        input_ranges.append(f"{other_pad + 2:08X}-{other_pad + 3:08X}")
     prev = 0
     for item in script.split(","):
         if item.startswith("wait:"):
@@ -59,10 +66,11 @@ def hold(
         word = int(word_text, 16)
         for _ in range(int(count)):
             pressed = word & ~prev
-            pad_range = f"{pad_words + 2:08X}-{pad_words + 3:08X}"
-            agent.breakpoints("write", [pad_range, *watch])
+            agent.breakpoints("write", [*input_ranges, *watch])
             data = word.to_bytes(2, "big") + pressed.to_bytes(2, "big")
             agent.onhit_write(writer, pad_words, data)
+            if steady_input is not None:
+                agent.onhit_write(writer, other_pad, steady_data)
             agent.frames(1)
             agent.wait_halted()
             agent.onhit_clear()

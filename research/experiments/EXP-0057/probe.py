@@ -1,4 +1,4 @@
-"""Create a cart-free VS checkpoint and trace one Demitri fireball."""
+"""Create a cart-free VS checkpoint and trace scripted hits from either side."""
 
 from __future__ import annotations
 
@@ -50,7 +50,14 @@ def sample(agent: Agent, out: Path, name: str) -> None:
 
 
 def trial(
-    agent: Agent, out: Path, low_vitality: bool, patch: tuple[int, bytes] | None
+    agent: Agent,
+    out: Path,
+    low_vitality: bool,
+    patch: tuple[int, bytes] | None,
+    attack_pad: int,
+    approach: str,
+    motion: str,
+    guard: bool,
 ) -> None:
     run_steps(agent, ["1"], out, PAD, WRITER)  # render the loaded checkpoint
     sample(agent, out, "before")
@@ -61,19 +68,27 @@ def trial(
         PAD,
         WRITER,
     )
+    attacker = PAD + (attack_pad - 1) * 4
+    defender = P2 if attack_pad == 1 else P1
+    guard_input = None
+    if guard:
+        guard_input = (PAD + 4, 0xA000) if attack_pad == 1 else (PAD, 0x6000)
     if low_vitality:
-        agent.bus_write(P2, b"\x00\x01")
+        agent.bus_write(defender, b"\x00\x01")
     if patch is not None:
         pc, data = patch
         original = agent.bus_read(pc, len(data))
         (out / "patch.txt").write_text(f"{pc:08X} {original.hex()} -> {data.hex()}\n")
         agent.bus_write(pc, data)
     sample(agent, out, "start")
-    watch = [f"{P2 - 8:08X}-{P2 + 4:08X}"]
+    watch = [f"{defender - 8:08X}-{defender + 4:08X}"]
     agent.clear_events()
     agent.breakpoints("write", watch)
     for shot in (1, 2):
-        hold(agent, PAD, WRITER, FIREBALL, [], watch)
+        if approach:
+            hold(agent, attacker, WRITER, approach, [], watch)
+            sample(agent, out, f"hit{shot}-approach")
+        hold(agent, attacker, WRITER, motion, [], watch, steady_input=guard_input)
         for elapsed, advance in ((20, 20), (40, 20), (90, 50), (180, 90)):
             run_steps(agent, [str(advance)], out, PAD, WRITER)
             sample(agent, out, f"hit{shot}-after-{elapsed}")
@@ -94,6 +109,14 @@ def main() -> None:
     parser.add_argument("--home", type=Path, help="optional isolated Mednafen home")
     parser.add_argument("--low-vitality", action="store_true")
     parser.add_argument("--patch", type=parse_patch, metavar="ADDRESS:HEX")
+    parser.add_argument("--attack-pad", type=int, choices=(1, 2), default=1)
+    parser.add_argument("--approach", default="", help="motion before each attack")
+    parser.add_argument("--motion", default=FIREBALL, help="held input sequence")
+    parser.add_argument(
+        "--guard",
+        action="store_true",
+        help="hold defender down-back through held input segments",
+    )
     args = parser.parse_args()
     out = args.out.resolve()
     out.mkdir(parents=True)
@@ -103,7 +126,16 @@ def main() -> None:
         if args.state is None:
             prepare(agent, out)
             start(agent, out / "vs.mc0")
-        trial(agent, out, args.low_vitality, args.patch)
+        trial(
+            agent,
+            out,
+            args.low_vitality,
+            args.patch,
+            args.attack_pad,
+            args.approach,
+            args.motion,
+            args.guard,
+        )
     finally:
         stop(process)
 

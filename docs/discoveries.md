@@ -880,3 +880,53 @@ idle between them, with the KO bytes clear and the round timer running.
 With healthy starting vitality, both runs took 16 and then 15 damage.
 
 Reproduce: [EXP-0057](../research/experiments/EXP-0057/README.md).
+
+## D-058: Two normal throws have separate KO branches and can recover in the same round
+
+Holds for: `build/exp0053_deluxe_title` in Mednafen, US Enhanced,
+Demitri versus Victor, `CUT`, no cart (`TRN-002`, `EXP-0058`).
+
+At one starting vitality, Demitri's heavy-punch throw writes the damage
+result through R14 at `0x0602B71E`; Victor's heavy-punch hold writes it
+through R12 at `0x0602B8DC`. Both stock runs wrote KO bytes `01 00` after
+the first damage event. The tested RAM edits replace `64E3 4F26` at
+`0x0602B726` with `A046 0EB5` and `4F26 64E3` at `0x0602B8E4` with
+`A014 0CB5`, respectively. Each restores one vitality in the branch
+delay slot and resumes the move's nonnegative path. The first throw or
+hold releases the fighter, and a second one begins in the same round.
+Victor's hold can tick vitality to zero before later ticks use the clamp.
+
+Reproduce: [EXP-0058](../research/experiments/EXP-0058/README.md).
+
+## D-059: The tested blocked fireball uses the projectile KO branch
+
+Holds for: `build/exp0053_deluxe_title` in Mednafen, US Enhanced, Demitri's
+medium fireball against crouch-guarding Victor, `CUT`, no cart
+(`TRN-002`, `EXP-0059`).
+
+Both blocked contacts take one point at `0x06022992`. The first reduced
+Victor from one to zero without ending the round. The second wrote `FFFF`
+and triggered KO with stock code. With the D-057 edit, the same second
+contact triggered the one-vitality store at `0x0602299C`. The KO bytes
+stayed zero and the timer continued. The patched capture shows Victor
+back in play after the second contact.
+
+Reproduce: [EXP-0059](../research/experiments/EXP-0059/README.md).
+
+## D-060: Clamped strikes need a vitality difference to keep their reactions and chain
+
+Holds for: `build/exp0053_deluxe_title` in Mednafen, US Enhanced, Demitri's
+crouching three-punch chain against Victor, `CUT`, no cart
+(`TRN-002`, `EXP-0060`).
+
+The one-word clamp from D-057 kept the round alive and logged each hit.
+It also left the defender's `+0x46` and `+0x48` vitality words equal after
+lethal hits. The equality check at `0x060263D8` skipped reaction setup for
+this strike sequence. Replacing `9015 04EE E075 044C 2448` at `0x0602299A`
+with `0EB5 E048 E202 A026 0E25` wrote one and two to the two words and
+continued at `0x060229F0`. The next frame reached `0x060264C4` and
+`0x0602651C` copied `+0x46` back to `+0x48`. Two repetitions each showed
+`3 HIT CHAIN` at one vitality. The revised edit also passed the direct
+fireball and blocked fireball checks from D-057 and D-059.
+
+Reproduce: [EXP-0060](../research/experiments/EXP-0060/README.md).
