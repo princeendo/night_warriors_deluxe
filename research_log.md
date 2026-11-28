@@ -1890,3 +1890,21 @@ Recorded as `UI-002` in the backlog and localization policy. The retail title
 captures are in `EXP-0001` and `docs/text_surfaces.md`. The edition hook is
 confirmed in `EXP-0038`. The title logo's specific asset and draw path remain
 unknown. This design entry was checked with `git diff --check`.
+
+## 2026-11-27 — Regional title composition and preview
+
+`UI-002` is in progress. `EXP-0052` rendered the validated stock title
+sprite groups independently. The US and JP wordmarks are separate from
+the shared glass (D-050). The direct disc scan found no matches for any
+of the 58 high-variety samples. The disc source and routine that chooses
+the wordmark still need tracing.
+
+The design adds a small warm-gold DELUXE tag underneath the right end of
+each wordmark. Reviewed both opening and menu compositions against the
+retail captures. Chrome's headless preview loaded all four 352×240 sources
+and the Enhanced toggle hid and restored all four tag overlays.
+
+Checks passed via `./invenv.sh`: `pytest -q` (142 tests), `ruff check`,
+`ruff format --check`, and `mypy` on the experiment script. Reproduction
+and local evidence paths are in `EXP-0052`. The next investigation is the
+US wordmark command writer and its input.

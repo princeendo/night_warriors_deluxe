@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regional title design</title>
+<style>
+  :root {
+    color-scheme: dark;
+    font: 15px system-ui, sans-serif;
+    background: #11131b;
+    color: #f3efed;
+  }
+  body { margin: 0; padding: 24px; }
+  main { max-width: 720px; margin: auto; }
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  h1 { font-size: 22px; margin: 0; }
+  label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    accent-color: #ffca6c;
+  }
+  section { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  figure { margin: 0; }
+  figcaption { margin-bottom: 6px; color: #d5cbd0; }
+  .screen { position: relative; }
+  .screen img { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+  .screen canvas {
+    position: absolute;
+    left: 75%;
+    top: 60%;
+    width: calc(64 / 352 * 100%);
+    height: calc(16 / 240 * 100%);
+    image-rendering: pixelated;
+  }
+  @media (max-width: 530px) {
+    body { padding: 16px; }
+    section { grid-template-columns: 1fr; }
+  }
+</style>
+<main>
+  <header>
+    <h1>Regional title design</h1>
+    <label><input id="enhanced" type="checkbox" checked> Enhanced editions</label>
+  </header>
+  <section id="screens" aria-label="Regional title previews"></section>
+</main>
+<script>
+  const glyphs = {
+    D: ["1111100", "0110110", "0110011", "0110011", "0110011", "0110011", "0110011", "0110110", "1111100"],
+    E: ["1111111", "0110001", "0110000", "0110100", "0111100", "0110100", "0110000", "0110001", "1111111"],
+    L: ["1111000", "0110000", "0110000", "0110000", "0110000", "0110000", "0110000", "0110001", "1111111"],
+    U: ["1110111", "0110010", "0110010", "0110010", "0110010", "0110010", "0110010", "0110010", "0011100"],
+    X: ["1110111", "0110010", "0010100", "0011100", "0001100", "0011100", "0010110", "0100011", "1110111"],
+  };
+
+  function drawTag(canvas) {
+    const context = canvas.getContext("2d");
+    for (const shadow of [true, false]) {
+      [..."DELUXE"].forEach((letter, index) => {
+        glyphs[letter].forEach((row, y) => {
+          context.fillStyle = shadow ? "#471828" : y < 3 ? "#fff2ce" : y < 6 ? "#ffd187" : "#ed9c4d";
+          [...row].forEach((pixel, x) => {
+            if (pixel === "1") {
+              const left = 3 + 9 * index + x + Math.floor((8 - y) / 3);
+              context.fillRect(left, 2 + y + Number(shadow), shadow ? 2 : 1, shadow ? 2 : 1);
+            }
+          });
+        });
+      });
+    }
+  }
+
+  const screens = document.getElementById("screens");
+  for (const [file, caption] of [["title.png", "Opening title"], ["title-menu.png", "Title menu"]]) {
+    for (const [region, title] of [["us", "Night Warriors"], ["jp", "Vampire Hunter"]]) {
+      const figure = document.createElement("figure");
+      const label = document.createElement("figcaption");
+      label.textContent = `${region.toUpperCase()} · ${caption}`;
+      const screen = document.createElement("div");
+      screen.className = "screen";
+      const image = new Image(352, 240);
+      image.src = `../../../local/exp0049/live-${region}/${file}`;
+      image.alt = `${title} ${caption.toLowerCase()}`;
+      const tag = document.createElement("canvas");
+      tag.width = 64;
+      tag.height = 16;
+      tag.setAttribute("role", "img");
+      tag.setAttribute("aria-label", "Deluxe");
+      drawTag(tag);
+      screen.append(image, tag);
+      figure.append(label, screen);
+      screens.append(figure);
+    }
+  }
+  document.getElementById("enhanced").addEventListener("change", (event) => {
+    for (const tag of screens.querySelectorAll("canvas")) {
+      tag.hidden = !event.currentTarget.checked;
+    }
+  });
+</script>
+</html>

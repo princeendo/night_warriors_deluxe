@@ -769,3 +769,14 @@ English continue prompts with quotes in each release's language and
 the GALLON / JON TALBAIN distinction in the stock cast rolls.
 
 Evidence and reproduction: [EXP-0050](../research/experiments/EXP-0050/README.md).
+
+## D-050: VDP1 draws each regional title wordmark separately from the glass
+
+At the stock opening-title checkpoints from EXP-0006, isolating normal
+sprites in color banks `0x7070/0x7080` yields Night Warriors on US T-1208H
+(28 commands) and Vampire Hunter on JP 1M T-1202G (85 commands). Rendering
+the 43 sprites in banks `0x7100/0x7110` yields byte-identical shattered-glass
+images. The first wordmark command sits at VDP1 VRAM offset `0x0BA0` in both
+captures. The finding covers the captured opening title.
+
+Evidence and reproduction: [EXP-0052](../research/experiments/EXP-0052/README.md).
