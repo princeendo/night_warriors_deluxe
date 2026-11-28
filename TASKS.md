@@ -810,7 +810,8 @@ is not already on the base disc goes on disc).
 
 ### ANI-003 - Enable full animation for different fighters
 
-- **Status:** `IN_PROGRESS` (only the real-Saturn check remains)
+- **Status:** `DONE` (2026-11-27; emulator evidence accepted, real-hardware
+  parity assumed by explicit user decision)
 - **Dependencies:** ANI-002 (done).
 - **Objective:** Make Appendix `FULL` work across different fighters when
   the required memory is available, with a playable cart-free configuration.
@@ -830,8 +831,14 @@ is not already on the base disc goes on disc).
   Confirmed in Mednafen from cold boots: the largest pair in both orders,
   every fighter's full set, Arcade rounds, opponent changes, continue and
   rematch, VS, saved `FULL`, and the stock pace. No cart, 1 MiB and `CUT`
-  load stock sets. 1 MiB is not qualified (it needs two more pools). Open:
-  a real-Saturn check with a 4 MiB cart before release (the user).
+  load stock sets. 1 MiB is not qualified (it needs two more pools).
+- **Closeout (`EXP-0051`, 2026-11-27):** the exact combined candidate
+  (`build/next_release_candidate`, Track 1 `d74e7476…5d6d`) cold-booted
+  through OPTION MODE / APPENDIX into Arcade under Mednafen with `extram4`.
+  `FULL` stayed selected, slots `0c02` loaded, and pool 2 occupied
+  `0x22400000`-`0x22708cdc` through both rounds. The user explicitly accepted
+  assuming hardware parity with the emulator. Real-Saturn timing, stability,
+  and sprite behavior remain unverified; see `EXP-0051`.
 
 ### AUD-004 - Reproduce and correct the P1 Anakaris sound issue
 

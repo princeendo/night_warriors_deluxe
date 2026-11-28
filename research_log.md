@@ -1774,3 +1774,25 @@ on the console and the outstanding Donovan cue. The build is still
 a hardware candidate.
 Ruff lint and format passed. Pytest passed 142 tests and mypy passed on
 57 source files.
+
+## 2026-11-27 — ANI-003 closeout on the combined candidate (`EXP-0051`)
+
+The user asked to close ANI-003 if the feature was verified in an emulator,
+and explicitly accepted assuming hardware behaves the same as the emulator.
+The real-Saturn result is therefore not claimed as verified.
+
+Ran the existing `EXP-0043/play.py` driver against the exact combined
+candidate (`build/next_release_candidate`, Track 1 SHA-256
+`d74e7476e73b24b2a21f0f3824795cfc9bb5ded698d8ed6678a7a83c72555d6d`),
+with `--cart extram4`. The driver cold-booted, set and saved `FULL` through
+OPTION MODE / APPENDIX, and played one Arcade stage. At frame 6294, `reads.txt`
+recorded animation `01`, fighter-set slots `0c02`, and pool 2
+`0x22400000`-`0x22708cdc`. Those values persisted through both rounds; the
+next opponent transition freed both fighter slots. The script exited 0.
+Audio was muted by the driver (`-sound.volume 0`). Reproduction and local
+evidence hashes are in `research/experiments/EXP-0051/README.md`; captures
+and logs remain ignored under `local/exp0050/ani003-final-candidate-check/`.
+
+Combined with EXP-0043's emulator matrix, this satisfies the user's
+emulator-side condition. ANI-003 is `DONE` by explicit acceptance; real
+Saturn timing, sprite behavior, and stability remain UNKNOWN.
